@@ -1,0 +1,30 @@
+{
+  "name": "skills_meet",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "client": "cd frontend && npm start",
+    "build" : "cd frontend && npm run build",
+    "server": "cd backend && nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longvulam/COMP-2800-Team-BBY-21.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/longvulam/COMP-2800-Team-BBY-21/issues"
+  },
+  "homepage": "https://github.com/longvulam/COMP-2800-Team-BBY-21#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mysql2": "^2.2.5"
+  },
+  "devDependencies": {
+    "concurrently": "^6.1.0",
+    "nodemon": "^2.0.7"
+  }
+}
