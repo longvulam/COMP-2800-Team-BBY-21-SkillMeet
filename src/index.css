@@ -2,8 +2,8 @@
   margin: 0;
 }
 
-.landing-page-background{
-  height: 99vh;
+.landing-page-background {
+  height: 100vh;
   padding-top: 10vh;
   background-image: url("img/friends1.jpg");
   background-position: center;
@@ -52,7 +52,7 @@
 
 
 
-form {
+.loginContainer {
   background-color: #588BAE;
   height: fit-content;
   padding: 20px;
@@ -60,7 +60,7 @@ form {
   border-radius: 20px;
 }
 
-input[type = button] {
+button {
   background-color: #0e4d92;
   border: none;
   border-radius: 5px;
@@ -72,8 +72,9 @@ input[type = button] {
   cursor: pointer;
 }
 
-input[type = text],
-input[type = Email] {
+input[type=text],
+input[type=email],
+input[type=password] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -83,24 +84,30 @@ input[type = Email] {
   box-sizing: border-box;
 }
 
-textarea {
-  width: 100%;
-  height: 90px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  background-color: #f8f8f8;
-  resize: none;
+.signInReDirect,
+.signUpReDirect {
+  color: black;
+  font-size: 16px;
+  text-decoration: underline;
+  cursor: pointer;
+  background-color: #588BAE;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: auto;
 }
 
-legend {
+.signInLine,
+.signUpLine {
+  font-size: 20px;
   text-align: center;
-  font-size: 30px;
-  font-weight: 500;
 }
 
+.formHeading {
+  text-align: center;
+  font-size: 25px;
 
+}
 
 
 /* sets layout and style for the top navbar */
@@ -202,3 +209,228 @@ legend {
   border: 4px double rgb(0, 0, 0, .2);
 }
 
+@media (max-width: 1080px) {
+  .landing-page-background {
+    height: 95vh;
+    padding-top: 10vh;
+    display: grid;
+    grid-template-columns: 65% 35%;
+  }
+
+  .white-background {
+    margin-left: 7%;
+    margin-right: 7%;
+    padding: 16px;
+    border-radius: 15px;
+  }
+
+  .app-name {
+    font-size: 65px;
+    font-weight: 700;
+  }
+
+  .app-description {
+    font-size: 30px;
+    font-weight: 400;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .app-hook {
+    font-size: 40px;
+    font-weight: 500;
+  }
+
+  .loginContainer {
+    padding: 15px;
+    margin-right: 10px;
+    border-radius: 10px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 14px 22px;
+    margin: 3px 2px;
+  }
+
+  input[type=text],
+  input[type=email],
+  input[type=password] {
+    padding: 12px 16px;
+    margin: 8px 0;
+  }
+
+  .signInReDirect,
+  .signUpReDirect {
+    font-size: 16px;
+    padding: 8px 10px;
+    margin: auto;
+  }
+
+  .signInLine,
+  .signUpLine {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .formHeading {
+    font-size: 25px;
+  }
+}
+
+
+@media (max-width: 870px) {
+
+  .form-background {
+    background-image: url("img/bottom.JPG");
+    padding-bottom: 70px;
+  }
+
+  .landing-page-background {
+    height: 55vh;
+    padding-top: 8vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 3vh;
+  }
+
+  .white-background {
+    margin-left: auto 2%;
+    padding: 16px;
+    border-radius: 15px;
+  }
+
+  .app-name {
+    font-size: 55px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .app-description {
+    font-size: 25px;
+    font-weight: 400;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .app-hook {
+    font-size: 35px;
+    font-weight: 500;
+  }
+
+  .loginContainer {
+    margin: auto 15%;
+    width: 70%;
+    padding: 15px;
+    margin-right: 10px;
+    border-radius: 10px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 14px 22px;
+    margin: 3px 2px;
+  }
+
+  input[type=text],
+  input[type=email],
+  input[type=password] {
+    width: 100%;
+    padding: 12px 16px;
+    margin: 8px 0;
+  }
+
+  .signInReDirect,
+  .signUpReDirect {
+    font-size: 16px;
+    padding: 8px 10px;
+    margin: auto;
+  }
+
+  .signInLine,
+  .signUpLine {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .formHeading {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 620px) {
+
+  .landing-page-background {
+    height: 55vh;
+    min-height: 400px;
+    padding-top: 7vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 3vh;
+  }
+
+  .white-background {
+    margin-left: auto 2%;
+    padding: 16px;
+    border-radius: 15px;
+  }
+
+  .app-name {
+    font-size: 55px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .app-description {
+    font-size: 22px;
+    font-weight: 400;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .app-hook {
+    font-size: 30px;
+    font-weight: 500;
+  }
+
+  .loginContainer {
+    /* margin: 0 15%; */
+    width: 70%;
+    padding: 15px;
+    margin-right: 10px;
+    border-radius: 10px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 14px 22px;
+    margin: 3px 2px;
+  }
+
+  input[type=text],
+  input[type=email],
+  input[type=password] {
+    width: 100%;
+    padding: 12px 16px;
+    margin: 8px 0;
+  }
+
+  .signInReDirect,
+  .signUpReDirect {
+    font-size: 16px;
+    padding: 8px 10px;
+    margin: auto;
+  }
+
+  .signInLine,
+  .signUpLine {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .formHeading {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 420px) {}
