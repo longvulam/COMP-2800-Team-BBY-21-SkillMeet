@@ -1,5 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import Navbar from './classes/Navbar';
+import Profile from './classes/Profile';
 
 function fetchCallExample() {
     fetch("/fetchExampleApi")
@@ -10,12 +13,10 @@ function App() {
     // fetchCallExample();
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <div>Add your page components here,</div>
-                <div>we'll merge them later.</div>
-            </header>
-        </div>
+      <div className="App">
+      <Profile/>
+      <Navbar/>
+     </div>
     );
 }
 
