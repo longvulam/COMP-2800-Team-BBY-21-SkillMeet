@@ -5,7 +5,7 @@
   "scripts": {
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "client": "cd frontend && npm start",
-    "build" : "cd frontend && npm run build",
+    "build": "cd frontend && npm run build",
     "server": "cd backend && nodemon server.js"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "firebase": "^8.6.1",
     "mysql2": "^2.2.5"
   },
   "devDependencies": {
