@@ -1,8 +1,14 @@
-const Navbar = () => {
+import { Link } from 'react-router-dom';
+
+const Navbar = (props) => {
+
+    const {
+        handleLogout
+    } = props;
 
     return ( 
         <nav className="navbar">
-        <a className="brand-title" href="index.html">SkillMeet</a>
+        <Link className="brand-title" to="/">SkillMeet</Link>
         <a href = "#" className="toggle-button">
             <span className="bar"></span>
             <span className="bar"></span>
@@ -10,7 +16,7 @@ const Navbar = () => {
         </a>
         <div className="navbar-links">
             <ul>
-                <li className="logged-in">
+                {/* <li className="logged-in">
                     <i className="fa fa-user" aria-hidden="true"></i>
                     <a className="navbar-active" href="profile.html">USER PROFILE</a>
                 </li>
@@ -21,23 +27,15 @@ const Navbar = () => {
                 <li className="logged-in">
                     <i className="fa fa-bar-chart" aria-hidden="true"></i>
                     <a className="navbar-active" href="main.html">FRIENDS</a>
-                </li>
+                </li> */}
                 <li>
                     <i className="fa fa-question-circle" aria-hidden="true"></i>
                     <a className="navbar-active" href="help.html">ABOUT US</a>
                 </li>
-                <li className="logged-out">
-                    <i className="fa fa-sign-in" aria-hidden="true"></i>
-                    <a className="navbar-active" href="login.html">LOGIN</a>
-                </li>
 
-                <li className="logged-out">
-                    <i className="fa fa-user-plus" aria-hidden="true"></i>
-                    <a className="navbar-active" href="login.html">SIGNUP</a>
-                </li>
-                <li id="btnLogout" className="logged-in">
-                    <i className="fa fa-sign-out" aria-hidden="true"></i>
-                    <a className="navbar-active" href="login.html">LOGOUT</a>
+                <li>
+                    <i className="fa fa-question-circle" aria-hidden="true"></i>
+                    <a className="navbar-active" onClick = {() => handleLogout()}> LOGOUT</a>
                 </li>
             </ul>
         </div>
@@ -46,3 +44,4 @@ const Navbar = () => {
 }
  
 export default Navbar;
+

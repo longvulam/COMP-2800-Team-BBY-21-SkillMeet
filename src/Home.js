@@ -1,121 +1,141 @@
-const home = (props) => {
+import React, {useState, useEffect} from "react";
+import fire from './fire';
+import Login from './Login';
+import Create from './Create';
+import Navbar from './Navbar';
+
+const Home = () => {
 
     const appName = "SkillMeet";
-    const appDescription = "Blah blah blah Blah blah blahBlah blah blah Blah blah blah Blah blah blah Blah blah blah Blah blah blahBlah Blah blah blah Blah blah blah Blah blah blah blah blah";
-    const appHook = "Blah blah blah Blah blah blahBlah blah blah Blah blah";
+    const appDescription = "Discover people interested in the same skills as yours, connect and make friends with them, find companions to practice skills together, join groups to expand your friendship circle.";
+    const appHook = "Building Connections Based On Skills";
 
-    const { 
-        email,
-        setEmail, 
-        password, 
-        firstName,
-        setFirstName,
-        lastName,
-        setLastName,
-        setPassword, 
-        handleLogin, 
-        handleSignup, 
-        hasAccount, 
-        setHasAccount, 
-        emailError, 
-        passwordError
-    } = props;
+    const [user, setUser] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [hasAccount, setHasAccount] = useState(false);
+  
+    const clearInputsLogin = () => {
+      setEmail("");
+      setPassword("");
+    }
+
+      
+    const clearInputsSignUp = () => {
+      setEmail("");
+      setPassword("");
+      setFirstName("");
+      setLastName("");
+    }
+  
+    const clearErrors = () => {
+      setEmailError("");
+      setPasswordError("");
+    }
+  
+    const handleLogin = () => {
+      clearErrors();
+      console.log("A user is logged in!");
+  
+      fire
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch((err) => {
+          switch (err.code){
+            case "auth/invalid-email":
+            case "auth/user-disabled":
+            case "auth/user-not-found":
+              setEmailError(err.message);
+              break;
+            case "auth/wrong-password":
+              setPasswordError(err.message);
+              break;
+          }
+        });
+    }
+  
+    const handleSignup = () => {
+      clearErrors();
+      console.log("A user is signed up!");
+  
+      fire
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .catch((err) => {
+          switch (err.code){
+            case "auth/email-already-in-use":
+            case "auth/invalid-email":
+              setEmailError(err.message);
+              break;
+            case "auth/weak-password":
+              setPasswordError(err.message);
+              break;
+          }
+        });
+    };
+  
+    const handleLogout = () => {
+      fire.auth().signOut();
+    }
+  
+    const authListener = () => {
+      fire.auth().onAuthStateChanged((user) => {
+        if (user) {
+          clearInputsSignUp();
+          setUser(user);
+        } else {
+          setUser("");
+        }
+      });
+    }
+  
+    useEffect(() => {
+      authListener()
+    }, []) ;
+
 
     return ( 
-        <div className = "landing-page-background">
-            <div className="white-background">
+      <div className = "landingPage">
+          <Navbar handleLogout = {handleLogout} />
+
+          {user ? (
+            <Create />
+          ): (
+            <div className = "landing-page-background">
+
+              <div className="white-background">
                 <div className = "app-name">{appName}</div>
-                <div className = "app-description">{appDescription}</div>
                 <div className = "app-hook">{appHook}</div>
+                <div className = "app-description">{appDescription}</div>
+              </div>
+            <Login
+                email = {email}
+                setEmail = {setEmail} 
+                firstName = {firstName}
+                setFirstName = {setFirstName}
+                lastName = {lastName}
+                setLastName = {setLastName}
+                password = {password} 
+                setPassword = {setPassword} 
+                handleLogin = {handleLogin} 
+                handleSignup = {handleSignup}
+                clearInputsLogin = {clearInputsLogin}
+                clearInputsSignUp = {clearInputsSignUp}
+                clearErrors = {clearErrors}
+                hasAccount = {hasAccount}
+                setHasAccount = {setHasAccount}
+                emailError = {emailError}
+                passwordError = {passwordError}
+            />
+
             </div>
-
-
-            <div className="form-background">
-            <div className = "loginContainer">
-
-            {hasAccount ? (
-                        <>
-                            <h3 className = "formHeading">Sign In Form</h3>
-
-                            <label>Email:</label>
-                            <input 
-                                type = "email" 
-                                autoFocus 
-                                required 
-                                placeholder = "johnShelby@gmail.com"
-                                value = {email} 
-                                onChange = {(e) => setEmail(e.target.value)} 
-                            />
-                            <p className = "errorMsg">{emailError}</p>
-
-                            <label>Password:</label>
-                            <input 
-                                type = "password" 
-                                required 
-                                value = {email} 
-                                onChange = {(e) => setPassword(e.target.value)} 
-                            />
-                            <p className = "errorMsg">{passwordError}</p>
-
-                            <button onClick = {handleLogin}>Sign In</button>
-                            <p className = "signUpLine"> 
-                                Don't have an Account? 
-                                <button className = "signUpReDirect" onClick = {() => setHasAccount(!hasAccount)}>Sign Up</button>
-                            </p>
-                        </>
-                    ) : (
-                        <>
-                            <h3 className = "formHeading">Sign Up Form</h3>
-                            <label>Email:</label>
-                            <input 
-                                type = "email" 
-                                autoFocus 
-                                required 
-                                placeholder = "johnShelby@gmail.com"
-                                value = {email} 
-                                onChange = {(e) => setEmail(e.target.value)} 
-                            />
-                            <p className = "errorMsg">{emailError}</p>
-
-                            <label>FirstName:</label>
-                            <input 
-                                type = "text" 
-                                required 
-                                value = {firstName} 
-                                placeholder = "John"
-                                onChange = {(e) => setFirstName(e.target.value)} 
-                            />
-
-                            <label>FirstName:</label>
-                            <input 
-                                type = "text" 
-                                required 
-                                value = {lastName} 
-                                placeholder = "Shelby"
-                                onChange = {(e) => setLastName(e.target.value)} 
-                            />
-
-                            <label>Password:</label>
-                            <input 
-                                type = "password" 
-                                required 
-                                value = {email} 
-                                onChange = {(e) => setPassword(e.target.value)} 
-                            />
-                            <p className = "errorMsg">{passwordError}</p>
-
-                            <button onClick = {handleSignup}>Sign Up</button>
-                            <p className = "signInLine">
-                                Have an Account? 
-                                <button className = "signInReDirect" onClick = {() => setHasAccount(!hasAccount)}>Sign In</button>
-                            </p>
-                        </>
-                    )}
-            </div>
-            </div>
+          )}
         </div>
-
      );
 }
  
-export default home;
+export default Home;
