@@ -4,8 +4,10 @@ import Login from './Login';
 import Create from './Create';
 import Navbar from '../Navbar';
 
-const Home = () => {
+import { useHistory } from "react-router-dom";
 
+const Home = () => {
+    const history = useHistory();
     const appName = "SkillMeet";
     const appDescription = "Discover people interested in the same skills as yours, connect and make friends with them, find companions to practice skills together, join groups to expand your friendship circle.";
     const appHook = "Building Connections Based On Skills";
@@ -44,6 +46,7 @@ const Home = () => {
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
+        .then(value => history.push(        "/profile"))
         .catch((err) => {
           switch (err.code){
             case "auth/invalid-email":
