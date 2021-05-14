@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import firebase from '../firebase';
+import {db} from '../firebase';
 import Login from './Login';
 import Create from './Create';
 import Navbar from '../Navbar';
@@ -57,25 +58,44 @@ const Home = () => {
           }
         });
     }
+
+    // Error in creating user FirebaseError:
+    // Function DocumentReference.set() called with invalid data.
+    // Unsupported field value: undefined (found in field email in document users/${user.uid})
+
+    const createUserDocument = (user) => {
+      if(user) return;
+
+      db.collection("users").doc(user.uid).set({ //write to firestore
+        email: email, //with authenticated user's ID (user.uid)
+        displayName: firstName + " " + lastName
+      }).then(function () {
+        console.log("New user added to firestore");
+      })
+      .catch(function (error) {
+        console.log("Error adding new user: " + error);
+      });
+    }
   
     const handleSignup = () => {
       clearErrors();
       console.log("A user is signed up!");
   
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .catch((err) => {
-          switch (err.code){
+      try{
+        firebase.auth().createUserWithEmailAndPassword(email, password);
+
+        createUserDocument(user);
+      } catch (error){
+          switch (error.code){
             case "auth/email-already-in-use":
             case "auth/invalid-email":
-              setEmailError(err.message);
+              setEmailError(error.message);
               break;
             case "auth/weak-password":
-              setPasswordError(err.message);
+              setPasswordError(error.message);
               break;
           }
-        });
+        };
     };
   
     const handleLogout = () => {
