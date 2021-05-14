@@ -50,9 +50,9 @@ export default function LabelBottomNavigation() {
     <div className = {classes.navbarWrap}>
     <BottomNavigation value={value} onChange={twoCallbacks} className={classes.root}>
       <BottomNavigationAction label="Profile" value="/profile" icon={<AccountIcon />} />
-      <BottomNavigationAction disabled={true} label="Friends" value="/friends" icon={<LocationOnIcon />} />
+      <BottomNavigationAction disabled label="Friends" value="/friends" icon={<LocationOnIcon style={{color:'lightgrey'}} />} />
       <BottomNavigationAction label="Search" value="/search" icon={<SearchIcon />} />
-      <BottomNavigationAction disabled={true} label="Chat" value="/chat" icon={<ChatIcon />} />
+      <BottomNavigationAction disabled label="Chat" value="/chat" icon={<ChatIcon style={{color:'lightgrey'}} />} />
     </BottomNavigation>
     </div>
   );
