@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
-import firebase from './firebase';
+import firebase from '../firebase';
 import Login from './Login';
 import Create from './Create';
-import Navbar from './Navbar';
+import Navbar from '../Navbar';
 
 const Home = () => {
 

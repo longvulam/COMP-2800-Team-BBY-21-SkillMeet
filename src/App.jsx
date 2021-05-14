@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import Home from './Home';
+import React from "react";
+import Home from './RegistrationPages/Home';
 import BottomNavBar from './classes/BottomNavbar';
 import Profile from './classes/Profile';
 
