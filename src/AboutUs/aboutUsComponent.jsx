@@ -15,8 +15,7 @@ function handleLogout (){
 
 class AboutUs extends Component {
     render() { 
-        return (
-        <div>
+        return (<div>
             <Navbar handleLogout = {handleLogout} />
             <HeroImage />
             <Mission />

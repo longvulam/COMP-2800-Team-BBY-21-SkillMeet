@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 export default function ProfileBio(props) {
-  const defaultBioText = "Bio Empty"
+  const defaultBioText = "Bio Loading"
   const bioInfo = props.bio? props.bio : defaultBioText;
   return (
     <Paper 
@@ -13,7 +13,10 @@ export default function ProfileBio(props) {
       width: '100%',
     }}
     >
-      <Typography>
+      <Typography style={{
+        textAlign: 'center',
+        width:'95%',
+      }}>
         {bioInfo}
       </Typography>
     </Paper>

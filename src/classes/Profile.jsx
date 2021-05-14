@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Fab from '@material-ui/core/Fab';
-import IconButton from '@material-ui/core/IconButton';
-
-import EditIcon from '@material-ui/icons/Edit';
-
 import Avatar from '@material-ui/core/Avatar';
-
 import Grid from '@material-ui/core/Grid';
-
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InputBase from '@material-ui/core/InputBase';
 
-import ProfileBio from './profileBio';
+import SkillAccordion from './profileClasses/SkillAccordion';
+import ProfileBio from './profileClasses/ProfileBio';
+import EditButton from './profileClasses/ProfileEditButton';
+import LogOutButton from  './profileClasses/LogOutButton';
 
 import firebase from '../firebase';
 
@@ -49,86 +40,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-class EditButton extends React.Component {
-  constructor(props) {
-    super(props);
-    props.setEditable(false);
-  }
-  render() {
-    const { editable, setEditable } = this.props;
-    const editButtonClick = () => setEditable(!editable);
-    return (
-      <Fab style={this.props.styles}
-        onClick={editButtonClick}
-        aria-label="edit"
-        color={editable ? 'primary' : 'default'}>
-        <EditIcon />
-      </Fab>
-    );
-  }
-}
-
-function SkillAccordion(props) {
-  const { skillName, skillLevel, skillDescription }= props;
-  
-  const [expanded, setExpanded] = React.useState(false);
-  
-  function expandSkills() {
-    setExpanded(!expanded);
-  }
-  
-  return (
-    <Accordion
-      expanded={expanded}
-      onChange={expandSkills}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1bh-content"
-        id="panel1bh-header"
-        key={skillName}
-      >
-        <InputBase
-          defaultValue={skillName}
-          inputProps={{
-            'aria-label': 'naked',
-            style: {
-              textAlign: 'center',
-            }
-          }}
-        />
-        <InputBase
-          defaultValue={skillLevel}
-          inputProps={{
-            'aria-label': 'naked',
-            style: {
-              textAlign: 'center',
-            }
-          }}
-        />
-        
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-          {skillDescription}
-        </Typography>
-      </AccordionDetails>
-    </Accordion>
-  );
-}
-
-
 
 export default function Profile() {
   const classes = useStyles();
-  const data = getSkillData();
-  const [editable, setEditable] = React.useState(false);
-
-  const updateSkill = (e) => {
-    if (e.target.readOnly) {
-      console.log('Value', e.target.value);
-    }
-  }
+  const [skills, setSkills] = useState([]);
+  getProfileDataAsync(setSkills);
+  const data = sampleSkilldata;
+  const [editable, setEditable] = useState(false);
 
   return (
     <div style={{
@@ -138,10 +56,16 @@ export default function Profile() {
       overflowX:'hidden',
     }}>
       <div className={classes.editWrap}>
+      <LogOutButton 
+          style={{marginRight: '6vw',
+          marginTop: '2vw',
+          height: '2.5em',
+          width: '2.5em',}}
+        />
         <EditButton 
           editable={editable} 
           setEditable={setEditable}
-          styles={{marginRight: '4vw',
+          style={{marginRight: '4vw',
           marginTop: '2vw',
           height: '2.5em',
           width: '2.5em',}}
@@ -159,6 +83,7 @@ export default function Profile() {
         style={{
           margin:'auto',
           marginTop: '2vh',
+          alignItems: 'center',
         }}>
         <Grid item xs={12}>
           <InputBase
@@ -168,6 +93,7 @@ export default function Profile() {
               'aria-label': 'naked',
               style: {
                 textAlign: 'center',
+                border:'none',
               }
            }}
           />
@@ -180,6 +106,7 @@ export default function Profile() {
               'aria-label': 'naked',
               style: {
                 textAlign: 'center',
+                border:'none',
               }
            }}
           />
@@ -217,20 +144,29 @@ export default function Profile() {
   );
 }
 
-const skillsList = [
-  { skillName: 'Java' },
-  { skillName: 'Python' },
-  { skillName: 'SQL' },
-  { skillName: 'Roblox' },
+
+const sampleSkilldata = [
+  {
+    skillName:'Pythong',
+    skillLevel:'Expert',
+    skillDescription:'SkillDescription',
+  }
 ]
 
-function getSkillData(props) {
-  const skillData = [
-    {
-    skillDescription: 'SkillDescription',
-    skillLevel: 'Expert',
-    skillName: 'Python',
-    },
-  ]
-  return (skillData);
+async function getProfileDataAsync(setDataCallback) {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            
+            // setDataCallback(user);
+          console.log(user);
+        } else {
+            // redirect
+        }
+      });
+  
+  const data = {
+      
+  };
+
+  return (data);
 }
