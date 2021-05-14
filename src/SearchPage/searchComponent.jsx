@@ -53,34 +53,6 @@ const useStyles = ((theme) => ({
     },
 }));
 
-function changeState() {
-    //replacable with onChange, and maybe the function with params that Lam talked about    
-    // let numSkillsSearched = (document.querySelectorAll('MuiAutocomplete-root').childElementCount) - 2;
-
-    // let skillSearch = [numSkillsSearched];
-    // for (let i = 0; i < numSkillsSearched; i++) {
-    //     skillSearch[i] = document.querySelectorAll("[data-tag-index='i']".child.text());
-
-    //// let skillSearch = ["juggling"];
-
-    ////     db.collectionGroup('powers').where('name', 'in', skillSearch)
-   // //         .get()
-   // //         .then(snapshot => {
-   /// //             const users = []
-   // //             snapshot.forEach(doc => {
-   // //                 const data = doc.data()
-  //  //                 users.push(data)
-   // //             })
-  //  //             this.setState({ users: users })
-  //  //             console.log(users)
-  //  //         })
-  //  //         .catch(error => console.log(error)) 
-
-    // db.collection('users').doc("Paul").set({
-    //     name: "Paul",
-    //     age: "old"
-    // })
-}
 
 class Search extends Component {
     constructor(props) {
@@ -94,14 +66,6 @@ class Search extends Component {
     }
 
     changeState() {
-        //replacable with onChange, and maybe the function with params that Lam talked about    
-        // let numSkillsSearched = (document.querySelectorAll('MuiAutocomplete-root').childElementCount) - 2;
-    
-        // let skillSearch = [numSkillsSearched];
-        // for (let i = 0; i < numSkillsSearched; i++) {
-        //     skillSearch[i] = document.querySelectorAll("[data-tag-index='i']".child.text());
-    
-        // let skillSearch = ["juggling", "running"];
         let skillSearch = this.state.selectedSkills.map(obj => obj.title.toLowerCase());
         console.log(skillSearch);
         db.collection('users')
@@ -117,11 +81,6 @@ class Search extends Component {
                 console.log(users)
             })
             .catch(error => console.log(error)) 
-    
-        // db.collection('users').doc("Paul").set({
-        //     name: "Paul",
-        //     age: "old"
-        // })
     }
 
     updateSelectedSkills(event, currentSelectedSkills){
@@ -168,17 +127,6 @@ class Search extends Component {
                     <Button color='primary' variant='outlined' style={{ marginLeft: '48%' }} onClick={this.changeState}> Search </Button>
                 </div>
                 <br />
-                {/* we could maybe do the following to extract the parent document:
-                
-                db.collectionGroup("subcollection").whereEqualTo("name", searchText).get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()){
-                        //here I want to get the parent id of all results
-                    }
-                }
-            }); */}
                 <div>
                     {
                         this.state.users &&
@@ -234,7 +182,7 @@ export default withStyles(useStyles)(Search);
 const skillsList = [
     { title: 'Bowling' },
     { title: 'Dancing' },
-    { title: 'Long Distance Running' },
+    { title: 'Running' },
     { title: 'Hurdling' },
     { title: 'Beekeeping' },
     { title: 'Taxidermy' },
