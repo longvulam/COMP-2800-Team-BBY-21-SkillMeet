@@ -11,9 +11,12 @@ export default function ProfileBio(props) {
     elevation={2}
     style={{
       width: '100%',
+      textAlign: 'center',
     }}
     >
-      <Typography>
+      <Typography style={{
+        width:'95%',
+      }}>
         {bioInfo}
       </Typography>
     </Paper>
