@@ -4,6 +4,7 @@ import BottomNavBar from './classes/BottomNavbar';
 import Profile from './classes/Profile';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AboutUs from "./AboutUs/aboutUsComponent";
 
 function App() {
 
@@ -13,14 +14,14 @@ function App() {
         <div className = "content">
           <Switch>
             <Route exact path = "/">
-              <Home />
+                <Home />
             </Route>
             <Route path = "/profile">
                 <Profile/>
                 <BottomNavBar />
             </Route>
             <Route path = "/aboutUs">
-                {/* <AboutUsPage/> */}
+                <AboutUs/>
             </Route>
           </Switch>
         </div>
