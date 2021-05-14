@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import fire from './fire';
+import firebase from './firebase';
 import Login from './Login';
 import Create from './Create';
 import Navbar from './Navbar';
@@ -41,7 +41,7 @@ const Home = () => {
       clearErrors();
       console.log("A user is logged in!");
   
-      fire
+      firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .catch((err) => {
@@ -62,7 +62,7 @@ const Home = () => {
       clearErrors();
       console.log("A user is signed up!");
   
-      fire
+      firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .catch((err) => {
@@ -79,11 +79,11 @@ const Home = () => {
     };
   
     const handleLogout = () => {
-      fire.auth().signOut();
+      firebase.auth().signOut();
     }
   
     const authListener = () => {
-      fire.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           clearInputsSignUp();
           setUser(user);
