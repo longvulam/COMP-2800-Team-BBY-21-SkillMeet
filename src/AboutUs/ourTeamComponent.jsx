@@ -18,18 +18,18 @@ class Team extends Component {
             <Container>
                 <Row>
                     <Col>
-                        <Card style={{ width: '11rem' }}>
+                        <Card style={{ width: '10rem' }}>
                             <Card.Img variant="top" src={DustinPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
                             <Card.Body>
                                 <Card.Title>Dustin Lott</Card.Title>
                                 <Card.Text style={{ fontSize: '10pt' }}>
-                                    Dustin is one of our newer members.  He is about to start term 2 of his CST program in September.
+                                    Dustin a new member to the team.  He brings energy and hardwork, and is a welcomed asset to our company.
                             </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col className='col4'>
-                        <Card style={{ width: '11rem' }}>
+                        <Card style={{ width: '10rem' }}>
                             <Card.Img variant="top" src={LamPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
                             <Card.Body>
                                 <Card.Title>Lam Long Vu</Card.Title>
@@ -43,7 +43,7 @@ class Team extends Component {
                 <br />
                 <Row>
                     <Col>
-                        <Card style={{ width: '11rem' }}>
+                        <Card style={{ width: '10rem' }}>
                             <Card.Img variant="top" src={ArunabPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
                             <Card.Body>
                                 <Card.Title>Arunab Singh</Card.Title>
@@ -54,7 +54,7 @@ class Team extends Component {
                         </Card>
                     </Col>
                     <Col className='col4'>
-                        <Card style={{ width: '11rem' }}>
+                        <Card style={{ width: '10rem' }}>
                             <Card.Img variant="top" src={OwenPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
                             <Card.Body>
                                 <Card.Title>Owen Arando</Card.Title>
