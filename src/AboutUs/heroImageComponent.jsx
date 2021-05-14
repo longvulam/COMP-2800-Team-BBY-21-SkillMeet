@@ -8,8 +8,9 @@ class HeroImage extends Component {
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        height: '68vh'
-        }}><h1 style={{ textAlign: 'center', transform: 'translate(0%, 170%)', fontSize: '48pt'}}>About Us</h1></header>;
+        height: '47vh',
+        width: '100%'
+        }}><h1 style={{ textAlign: 'center', transform: 'translate(0%, 120%)', fontSize: '48pt'}}>About Us</h1></header>;
     }
 }
  
