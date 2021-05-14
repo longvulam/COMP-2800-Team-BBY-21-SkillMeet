@@ -30,7 +30,7 @@ const Navbar = (props) => {
                 </li> */}
                 <li>
                     <i className="fa fa-question-circle" aria-hidden="true"></i>
-                    <a className="navbar-active" href="help.html">ABOUT US</a>
+                    <Link className="navbar-active" to="/aboutUs">ABOUT US</Link>
                 </li>
 
                 <li>
