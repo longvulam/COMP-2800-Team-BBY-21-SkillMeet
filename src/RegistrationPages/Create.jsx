@@ -1,5 +1,25 @@
+import React, {useState, useEffect} from "react";
+import firebase from '../firebase';
+import {db, auth} from '../firebase';
 
 const Create = () => {
+
+const [bio, setBio] = useState('');
+const [city, setCity] = useState('');
+
+// const writingData = (bio, city) => {
+//   firebase.auth().onAuthStateChanged(function (user) {
+//     if (user) {
+//         db.collection("users").doc(user.uid)
+//             .update({
+//                 "Bio": bio,
+//                 "CIty": city,
+//             }).catch((err) => {
+//                 console.log(err)
+//             })
+//     }
+// })
+// }
 
     return ( 
 
@@ -9,13 +29,27 @@ const Create = () => {
                     <legend>Fill the leftout fields to complete profile setup:</legend>
             
                     <label>Display Name:</label>
-                    <input type="text" autoFocus placeholder = "Trevor Noah" />
+                    <input type="text"  autoFocus placeholder = "Trevor Noah" />
             
                     <label>Bio:</label>
-                    <textarea className = "bioInfo" placeholder="What is your dream job? What is your favourite dish? Any successfull people you look up to? Anything you would like to share with others, go off on here!!" name="bio" id="bio"></textarea>
+                    <textarea 
+                      className = "bioInfo" 
+                      value = {bio} 
+                      placeholder="What is your dream job? What is your favourite dish? Any successfull people you look up to? Anything you would like to share with others, go off on here!!" 
+                      name="bio" 
+                      id="bio"
+                      onChange = {(e) => setBio(e.target.value)}>
+                    </textarea>
 
                     <label>City Name:</label>
-                    <input type="text" placeholder="Surrey" id="city" name="city" />
+                    <input 
+                      type="text" 
+                      placeholder="Surrey" 
+                      id="city" 
+                      name="city"
+                      value = {city} 
+                      onChange = {(e) => setCity(e.target.value)}
+                      />
 
                     <label>Enter your 3 top skills</label>
 
@@ -60,9 +94,8 @@ const Create = () => {
                       </div>
                     </div>
 
-                    <a href = "/profile">
+
                     <input type = "submit" className = "createProfileBtn" value = "Create Profile" />
-                    </a>
             
                   </fieldset>
                 </form>
