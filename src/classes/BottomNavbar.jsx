@@ -30,8 +30,10 @@ export default function LabelBottomNavigation() {
   const history = useHistory();
 
   function handleChangeURL(event, newValue){
-    history.push(`/${newValue}`);
-    setHistoryValue(newValue);
+    if (newValue != "friends" && newValue != "chat") {
+      history.push(`/${newValue}`);
+      setHistoryValue(newValue);
+    }
   };
 
   function handleChange(event, newValue){
@@ -48,9 +50,9 @@ export default function LabelBottomNavigation() {
     <div className = {classes.navbarWrap}>
     <BottomNavigation value={value} onChange={twoCallbacks} className={classes.root}>
       <BottomNavigationAction label="Profile" value="/profile" icon={<AccountIcon />} />
-      <BottomNavigationAction label="Friends" value="/friends" icon={<LocationOnIcon />} />
+      <BottomNavigationAction disabled={true} label="Friends" value="/friends" icon={<LocationOnIcon />} />
       <BottomNavigationAction label="Search" value="/search" icon={<SearchIcon />} />
-      <BottomNavigationAction label="Chat" value="/chat" icon={<ChatIcon />} />
+      <BottomNavigationAction disabled={true} label="Chat" value="/chat" icon={<ChatIcon />} />
     </BottomNavigation>
     </div>
   );
