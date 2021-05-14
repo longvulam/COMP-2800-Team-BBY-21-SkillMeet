@@ -2,6 +2,7 @@ import React from "react";
 import Home from './RegistrationPages/Home';
 import BottomNavBar from './classes/BottomNavbar';
 import Profile from './classes/Profile';
+import Friends from './classes/Friends';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
@@ -22,6 +23,10 @@ function App() {
             </Route>
             <Route path = "/profile">
                 <Profile/>
+                <BottomNavBar />
+            </Route>
+            <Route path = "/friends">
+                <Friends/>
                 <BottomNavBar />
             </Route>
             <Route path = "/search">

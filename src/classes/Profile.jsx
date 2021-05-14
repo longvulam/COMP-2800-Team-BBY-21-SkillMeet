@@ -144,13 +144,27 @@ export default function Profile() {
   );
 }
 
-
 const sampleSkilldata = [
-  {
-    skillName:'Pythong',
-    skillLevel:'Expert',
-    skillDescription:'SkillDescription',
-  }
+    {
+      skillName:'Python',
+      skillLevel:'Expert',
+      skillDescription:'SkillDescription',
+    },
+    {
+      skillName:'Java',
+      skillLevel:'Beginner',
+      skillDescription:'SkillDescription',
+    },
+    {
+      skillName:'SQL',
+      skillLevel:'Intermediate',
+      skillDescription:'SkillDescription',
+    },
+    {
+      skillName:'React',
+      skillLevel:'Beginner',
+      skillDescription:'SkillDescription',
+    },
 ]
 
 async function getProfileDataAsync(setDataCallback) {
