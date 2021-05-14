@@ -19,6 +19,9 @@ function App() {
                 <Profile/>
                 <BottomNavBar />
             </Route>
+            <Route path = "/aboutUs">
+                {/* <AboutUsPage/> */}
+            </Route>
           </Switch>
         </div>
       </div>
