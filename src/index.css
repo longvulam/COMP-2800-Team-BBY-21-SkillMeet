@@ -4,6 +4,7 @@
 
 .landing-page-background {
   height: 100vh;
+  min-height: 900px;
   padding-top: 10vh;
   background-image: url("img/friends1.jpg");
   background-position: center;
@@ -273,6 +274,7 @@ input[type=password] {
 @media (max-width: 1080px) {
   .landing-page-background {
     height: 95vh;
+  min-height: 750px;
     padding-top: 10vh;
     display: grid;
     grid-template-columns: 65% 35%;
@@ -349,6 +351,7 @@ input[type=password] {
 
   .landing-page-background {
     height: 55vh;
+    min-height: 700px;
     padding-top: 8vh;
     display: grid;
     grid-template-columns: 1fr;
@@ -454,8 +457,8 @@ input[type=password] {
 @media (max-width: 620px) {
 
   .landing-page-background {
-    height: 55vh;
-    min-height: 400px;
+    height: 65vh;
+    min-height: 600px;
     padding-top: 7vh;
     display: grid;
     grid-template-columns: 1fr;

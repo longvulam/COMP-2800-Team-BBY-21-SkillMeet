@@ -7,7 +7,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
+import { useHistory } from "react-router-dom";
+import firebase from '../../firebase';
+
 export default function LogoutButton (props) {
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -20,6 +24,8 @@ export default function LogoutButton (props) {
   //Logout Function Here
   function handleLogout() {
     console.log('loggingOut');
+    firebase.auth().signOut();
+    history.push('/');
   }
 
   return (

@@ -15,9 +15,10 @@ import firebase from 'firebase';
 
  const fire = firebase.initializeApp(firebaseConfig);
 
+
+export default fire;
  export const auth = firebase.auth();
  export const db = firebase.firestore();
- export default fire;
 
   // Initialize Firebase
 //   firebase.analytics();
