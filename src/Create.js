@@ -60,9 +60,10 @@ const Create = () => {
                       </div>
                     </div>
 
-
-            
+                    <a href = "/profile">
                     <input type = "submit" className = "createProfileBtn" value = "Create Profile" />
+                    </a>
+            
                   </fieldset>
                 </form>
               </div>
