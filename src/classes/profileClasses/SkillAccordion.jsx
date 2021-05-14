@@ -34,6 +34,7 @@ export default function SkillAccordion(props) {
               'aria-label': 'naked',
               style: {
                 textAlign: 'center',
+                border: 'none',
               }
             }}
           />
@@ -43,13 +44,19 @@ export default function SkillAccordion(props) {
               'aria-label': 'naked',
               style: {
                 textAlign: 'center',
+                border: 'none',
               }
             }}
           />
           
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography
+            style={{
+              textAlign:'center',
+              width: '95%',
+            }}
+            >
             {skillDescription}
           </Typography>
         </AccordionDetails>

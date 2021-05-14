@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Fab from '@material-ui/core/Fab';
-import EditIcon from '@material-ui/icons/Edit';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
 
-import SkillAccordion from './SkillAccordion';
-import ProfileBio from './profileBio';
+import SkillAccordion from './profileClasses/SkillAccordion';
+import ProfileBio from './profileClasses/ProfileBio';
+import EditButton from './profileClasses/ProfileEditButton';
+import LogOutButton from  './profileClasses/LogOutButton';
 
 import firebase from '../firebase';
 
@@ -40,30 +40,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-class EditButton extends React.Component {
-  constructor(props) {
-    super(props);
-    props.setEditable(false);
-  }
-  render() {
-    const { editable, setEditable } = this.props;
-    const editButtonClick = () => setEditable(!editable);
-    return (
-      <Fab style={this.props.styles}
-        onClick={editButtonClick}
-        aria-label="edit"
-        color={editable ? 'primary' : 'default'}>
-        <EditIcon />
-      </Fab>
-    );
-  }
-}
 
 export default function Profile() {
   const classes = useStyles();
   const [skills, setSkills] = useState([]);
   getProfileDataAsync(setSkills);
-  const data = [];
+  const data = sampleSkilldata;
   const [editable, setEditable] = useState(false);
 
   return (
@@ -74,10 +56,16 @@ export default function Profile() {
       overflowX:'hidden',
     }}>
       <div className={classes.editWrap}>
+      <LogOutButton 
+          style={{marginRight: '6vw',
+          marginTop: '2vw',
+          height: '2.5em',
+          width: '2.5em',}}
+        />
         <EditButton 
           editable={editable} 
           setEditable={setEditable}
-          styles={{marginRight: '4vw',
+          style={{marginRight: '4vw',
           marginTop: '2vw',
           height: '2.5em',
           width: '2.5em',}}
@@ -95,6 +83,7 @@ export default function Profile() {
         style={{
           margin:'auto',
           marginTop: '2vh',
+          alignItems: 'center',
         }}>
         <Grid item xs={12}>
           <InputBase
@@ -104,6 +93,7 @@ export default function Profile() {
               'aria-label': 'naked',
               style: {
                 textAlign: 'center',
+                border:'none',
               }
            }}
           />
@@ -116,6 +106,7 @@ export default function Profile() {
               'aria-label': 'naked',
               style: {
                 textAlign: 'center',
+                border:'none',
               }
            }}
           />
@@ -153,11 +144,13 @@ export default function Profile() {
   );
 }
 
-const skillsList = [
-  { skillName: 'Java' },
-  { skillName: 'Python' },
-  { skillName: 'SQL' },
-  { skillName: 'Roblox' },
+
+const sampleSkilldata = [
+  {
+    skillName:'Pythong',
+    skillLevel:'Expert',
+    skillDescription:'SkillDescription',
+  }
 ]
 
 async function getProfileDataAsync(setDataCallback) {
