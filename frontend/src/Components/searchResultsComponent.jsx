@@ -1,5 +1,5 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -8,7 +8,7 @@ import DustinPic from '../dustinPic.jpg';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { Button } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = ((theme) => ({
     root: {
         flexGrow: 1,
     },
@@ -35,13 +35,17 @@ const useStyles = makeStyles((theme) => ({
         transform: 'translate(0, 25%)',
     },
 }));
+ 
 
-export default function Results() {
-    const classes = useStyles();
+
+class Results extends Component {
+state = {  }
+    render() { 
+    const { classes} = this.props;
 
     return (
         <div>
-        <div className={classes.root}>
+        <div className ={classes.root}>
             <Paper className={classes.paper}>
                 <Grid container spacing={1}>
                     <Grid item xs={3}  className={classes.pic}>
@@ -186,6 +190,8 @@ export default function Results() {
             <br />
         </div>
     </div>
-);
-
+    );
+    }
 }
+
+export default withStyles(useStyles)(Results);

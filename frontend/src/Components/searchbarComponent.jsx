@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import { green } from '@material-ui/core/colors';
+import { Button } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
+const useStyles = ((theme) => ({
+    bar: {
       width: '98vw',
       '& > * + *': {
         marginTop: theme.spacing(3),
@@ -24,11 +25,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
-  export default function Searchbar() {
-    const classes = useStyles();
+  class Searchbar extends Component {
+    state = {  }
+    render() { 
+    const {classes} = this.props;
   
     return (
-      <div className={classes.root}>
+      <div className={classes.bar}>
           <br />
         <Autocomplete
           multiple
@@ -38,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
           renderInput={(params) => (
             <TextField
               {...params}
+              id="autocomplete-text-field"
               variant="standard"
               label="&#8981;
               Enter Skills to Search For Here:"
@@ -53,10 +57,17 @@ const useStyles = makeStyles((theme) => ({
             />
           )}
         />
-   </div>
+        <div>
+          <Button color='primary' variant='outlined' style={{marginLeft: '48%'} } onClick={this.changeState}> Search </Button>
+        </div>
+    </div>
   );
+  }
 }
  
+export default withStyles(useStyles)(Searchbar);
+
+
 const skillsList = [
     { title: 'Bowling' },
     { title: 'Dancing' },
