@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Fab from '@material-ui/core/Fab';
-import IconButton from '@material-ui/core/IconButton';
-
 import EditIcon from '@material-ui/icons/Edit';
-
 import Avatar from '@material-ui/core/Avatar';
-
 import Grid from '@material-ui/core/Grid';
-
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InputBase from '@material-ui/core/InputBase';
 
+import SkillAccordion from './SkillAccordion';
 import ProfileBio from './profileBio';
 
 import firebase from '../firebase';
@@ -68,67 +59,12 @@ class EditButton extends React.Component {
   }
 }
 
-function SkillAccordion(props) {
-  const { skillName, skillLevel, skillDescription }= props;
-  
-  const [expanded, setExpanded] = React.useState(false);
-  
-  function expandSkills() {
-    setExpanded(!expanded);
-  }
-  
-  return (
-    <Accordion
-      expanded={expanded}
-      onChange={expandSkills}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1bh-content"
-        id="panel1bh-header"
-        key={skillName}
-      >
-        <InputBase
-          defaultValue={skillName}
-          inputProps={{
-            'aria-label': 'naked',
-            style: {
-              textAlign: 'center',
-            }
-          }}
-        />
-        <InputBase
-          defaultValue={skillLevel}
-          inputProps={{
-            'aria-label': 'naked',
-            style: {
-              textAlign: 'center',
-            }
-          }}
-        />
-        
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-          {skillDescription}
-        </Typography>
-      </AccordionDetails>
-    </Accordion>
-  );
-}
-
-
-
 export default function Profile() {
   const classes = useStyles();
-  const data = getSkillData();
-  const [editable, setEditable] = React.useState(false);
-
-  const updateSkill = (e) => {
-    if (e.target.readOnly) {
-      console.log('Value', e.target.value);
-    }
-  }
+  const [skills, setSkills] = useState([]);
+  getProfileDataAsync(setSkills);
+  const data = [];
+  const [editable, setEditable] = useState(false);
 
   return (
     <div style={{
@@ -224,13 +160,20 @@ const skillsList = [
   { skillName: 'Roblox' },
 ]
 
-function getSkillData(props) {
-  const skillData = [
-    {
-    skillDescription: 'SkillDescription',
-    skillLevel: 'Expert',
-    skillName: 'Python',
-    },
-  ]
-  return (skillData);
+async function getProfileDataAsync(setDataCallback) {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            
+            // setDataCallback(user);
+          console.log(user);
+        } else {
+            // redirect
+        }
+      });
+  
+  const data = {
+      
+  };
+
+  return (data);
 }
