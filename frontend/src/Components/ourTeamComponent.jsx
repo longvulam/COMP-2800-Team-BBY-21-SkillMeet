@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Jumbotron, Button, Card, Row, Col } from 'react-bootstrap';
 import DustinPic from '../dustinPic.jpg';
+import LamPic from '../lamPic.jpg';
+import ArunabPic from '../arunabPic.jpg';
+import OwenPic from '../owenPic.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Team extends Component {
@@ -20,18 +23,18 @@ class Team extends Component {
                             <Card.Body>
                                 <Card.Title>Dustin Lott</Card.Title>
                                 <Card.Text style={{ fontSize: '10pt' }}>
-                                    Some quick example about what a great guy I am.  Wow so cool.  Wow so skill.  Is he even human?  Best Game of the year 2008.
+                                    Dustin is one of our newer members.  He is about to start term 2 of his CST program in September.
                             </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col className='col4'>
                         <Card style={{ width: '11rem' }}>
-                            <Card.Img variant="top" src={DustinPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
+                            <Card.Img variant="top" src={LamPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
                             <Card.Body>
-                                <Card.Title>Dustin Lott</Card.Title>
+                                <Card.Title>Lam Long Vu</Card.Title>
                                 <Card.Text style={{ fontSize: '10pt' }}>
-                                    Some quick example about what a great guy I am.  Wow so cool.  Wow so skill.  Is he even human?  Best Game of the year 2008.
+                                    Lam brings a wealth of knowledge and experience to our team.  He is a quick thinker and excellent developer.
                             </Card.Text>
                             </Card.Body>
                         </Card>
@@ -41,22 +44,22 @@ class Team extends Component {
                 <Row>
                     <Col>
                         <Card style={{ width: '11rem' }}>
-                            <Card.Img variant="top" src={DustinPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
+                            <Card.Img variant="top" src={ArunabPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
                             <Card.Body>
-                                <Card.Title>Dustin Lott</Card.Title>
+                                <Card.Title>Arunab Singh</Card.Title>
                                 <Card.Text style={{ fontSize: '10pt' }}>
-                                    Some quick example about what a great guy I am.  Wow so cool.  Wow so skill.  Is he even human?  Best Game of the year 2008.
+                                    Arunab is a great asset to our team, and we are happy to have him on.  He brings skills and tenacity to the team.
                             </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col className='col4'>
                         <Card style={{ width: '11rem' }}>
-                            <Card.Img variant="top" src={DustinPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
+                            <Card.Img variant="top" src={OwenPic} style={{ height: '100px', width: 'auto', borderRadius: '20%' }} />
                             <Card.Body>
-                                <Card.Title>Dustin Lott</Card.Title>
+                                <Card.Title>Owen Arando</Card.Title>
                                 <Card.Text style={{ fontSize: '10pt' }}>
-                                    Some quick example about what a great guy I am.  Wow so cool.  Wow so skill.  Is he even human?  Best Game of the year 2008.
+                                    Owen is a smart hardworking developer, who were glad had joined our team.  He is driven and passionate.
                             </Card.Text>
                             </Card.Body>
                         </Card>
