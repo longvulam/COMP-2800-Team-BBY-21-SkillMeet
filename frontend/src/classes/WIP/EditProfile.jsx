@@ -5,21 +5,23 @@ import Fab from '@material-ui/core/Fab';
 import IconButton from '@material-ui/core/IconButton';
 
 import EditIcon from '@material-ui/icons/Edit';
-
 import Avatar from '@material-ui/core/Avatar';
-
 import Grid from '@material-ui/core/Grid';
-
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import InputBase from '@material-ui/core/InputBase';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import ProfileBio from './profileBio';
+import ProfileBio from '../profileBio';
 
-import firebase from '../firebase';
+
+
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 
 const useStyles = makeStyles((theme) => ({
   editIcon: {
@@ -68,8 +70,40 @@ class EditButton extends React.Component {
   }
 }
 
+function getSkillData(props) {
+  const skillData = [
+    {
+      id: 'panel2',
+      skill: 'Java',
+      level: 'expert',
+    },
+    {
+      id: 'panel3',
+      skill: 'Python',
+      level: 'beginner',
+    },
+    {
+      id: 'panel4',
+      skill: 'SQL',
+      level: 'novice',
+    },
+    // {
+    //   id:'panel5',
+    // },
+    // {
+    //   id:'panel6',
+    // },
+    // {
+    //   id:'panel6',
+    // }
+  ]
+  return (skillData);
+}
+
+
+
 function SkillAccordion(props) {
-  const { skillName, skillLevel, skillDescription }= props;
+  const { id,skill,skillLevel, isEditable }= props;
   
   const [expanded, setExpanded] = React.useState(false);
   
@@ -79,39 +113,36 @@ function SkillAccordion(props) {
   
   return (
     <Accordion
-      expanded={expanded}
+      expanded={true}
       onChange={expandSkills}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1bh-content"
         id="panel1bh-header"
-        key={skillName}
+        key={id}
       >
-        <InputBase
-          defaultValue={skillName}
-          inputProps={{
-            'aria-label': 'naked',
-            style: {
-              textAlign: 'center',
-            }
-          }}
-        />
-        <InputBase
-          defaultValue={skillLevel}
-          inputProps={{
-            'aria-label': 'naked',
-            style: {
-              textAlign: 'center',
-            }
-          }}
-        />
+        <div style={{
+          display:'flex',
+          width:'100%',
+          justifyContent: 'space-between',
+        }}>
+      
+    
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </div>
         
+       
+       
+
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-          {skillDescription}
-        </Typography>
+          Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
+          maximus est, id dignissim quam.
+          </Typography>
       </AccordionDetails>
     </Accordion>
   );
@@ -193,15 +224,12 @@ export default function Profile() {
           width: '95vw',
           alignItems: 'center',
         }}>
+
         {data.map(accordion => {
-          const { skillName, skillLevel, skillDescription } = accordion;
+          const { id, skill, level } = accordion;
           return (
             <Grid item xs={12}>
-              <SkillAccordion 
-                skillName={skillName}
-                skillLevel={skillLevel} 
-                skillDescription={skillDescription}
-              />
+              <SkillAccordion id={id} skillLevel={level} skill={skill}/>
             </Grid>
           );
         })}
@@ -209,7 +237,9 @@ export default function Profile() {
           style={{
             width: '100%'
           }}>
-          <ProfileBio/>
+          <ProfileBio>
+
+          </ProfileBio>
         </Grid>
       </Grid>
     
@@ -223,14 +253,3 @@ const skillsList = [
   { skillName: 'SQL' },
   { skillName: 'Roblox' },
 ]
-
-function getSkillData(props) {
-  const skillData = [
-    {
-    skillDescription: 'SkillDescription',
-    skillLevel: 'Expert',
-    skillName: 'Python',
-    },
-  ]
-  return (skillData);
-}
