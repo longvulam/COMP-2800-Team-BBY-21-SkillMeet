@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Jumbotron, Button, Card, Row, Col } from 'react-bootstrap';
-import DustinPic from './media/dustinPic.jpg';
-import LamPic from './media/lamPic.jpg';
-import ArunabPic from './media/arunabPic.jpg';
-import OwenPic from './media/owenPic.jpg';
+import DustinPic from '../img/dustinPic.jpg';
+import LamPic from '../img/lamPic.jpg';
+import ArunabPic from '../img/arunabPic.jpg';
+import OwenPic from '../img/owenPic.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Team extends Component {

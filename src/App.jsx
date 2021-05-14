@@ -5,6 +5,7 @@ import Profile from './classes/Profile';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
+import Search from "./SearchPage/searchComponent";
 
 function App() {
 
@@ -16,12 +17,16 @@ function App() {
             <Route exact path = "/">
                 <Home />
             </Route>
+            <Route path = "/aboutUs">
+                <AboutUs/>
+            </Route>
             <Route path = "/profile">
                 <Profile/>
                 <BottomNavBar />
             </Route>
-            <Route path = "/aboutUs">
-                <AboutUs/>
+            <Route path = "/search">
+                <Search/>
+                <BottomNavBar />
             </Route>
           </Switch>
         </div>
