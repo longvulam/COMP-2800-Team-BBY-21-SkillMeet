@@ -17,9 +17,9 @@ function App() {
             </Route>
             <Route path = "/profile">
                 <Profile/>
+                <BottomNavBar />
             </Route>
           </Switch>
-        <BottomNavBar />
         </div>
       </div>
     </Router>
