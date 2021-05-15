@@ -74,7 +74,7 @@ export default function Profile() {
   
       <div className={classes.avatarWrap}>
        <Avatar 
-        alt="Profile Picture" 
+        alt="C" 
         src="/static/images/avatar/1.jpg" 
         className={classes.avatar} />
       </div>
@@ -87,7 +87,7 @@ export default function Profile() {
         }}>
         <Grid item xs={12}>
           <InputBase
-            defaultValue="Name"
+            defaultValue="Chris"
             readOnly= {!editable}
             inputProps={{ 
               'aria-label': 'naked',
@@ -101,7 +101,7 @@ export default function Profile() {
         <Grid item xs={12}>
           <InputBase
             readOnly= {!editable}
-            defaultValue="Location"
+            defaultValue="That Expensive Hotel"
             inputProps={{ 
               'aria-label': 'naked',
               style: {
@@ -123,11 +123,14 @@ export default function Profile() {
         {data.map(accordion => {
           const { skillName, skillLevel, skillDescription } = accordion;
           return (
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{
+              width:'100%',
+            }}>
               <SkillAccordion 
                 skillName={skillName}
                 skillLevel={skillLevel} 
                 skillDescription={skillDescription}
+                editable={editable}
               />
             </Grid>
           );
@@ -136,7 +139,7 @@ export default function Profile() {
           style={{
             width: '100%'
           }}>
-          <ProfileBio/>
+          <ProfileBio editable={editable}/>
         </Grid>
       </Grid>
     

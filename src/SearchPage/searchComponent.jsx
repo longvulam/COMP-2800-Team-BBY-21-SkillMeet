@@ -11,6 +11,9 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { fire, db, auth } from '../firebase';
 
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+
 const useStyles = ((theme) => ({
     root: {
         flexGrow: 1,
@@ -44,9 +47,10 @@ const useStyles = ((theme) => ({
         },
         marginLeft: '1vw',
         marginBottom: '3rem',
+         border:'none',
     },
     textField: {
-        border: '1px solid blue',
+      border:'none',
     },
     input: {
 
@@ -94,13 +98,25 @@ class Search extends Component {
         const searchList = [];
 
         return (
-            <div>
-                <div className={classes.bar}>
-                    <br />
+            <div style={{
+              position:'fixed',
+              top:'1em',
+            }}>
+                <div style={{
+                  width:'100vw',
+                  display:'flex',
+                  justifyContent:'space-evenly',
+                  alignItems:'center',
+                }}>
                     <Autocomplete
                         onChange={this.updateSelectedSkills.bind(this)}
                         multiple
                         id="tags-standard"
+                        style={{
+                          width: 'calc(100vw - 5em)',
+                          display:'inline-block',
+                          marginLeft:'0.5em',
+                        }}
                         options={skillsList}
                         getOptionLabel={(option) => option.title}
                         renderInput={(params) => (
@@ -109,7 +125,7 @@ class Search extends Component {
                                 id="autocomplete-text-field"
                                 variant="standard"
                                 label="&#8981;
-                            Enter Skills to Search For Here:"
+                            Enter Skills to Search:"
                                 className={classes.textField}
                                 placeholder=""
                             //    InputProps={{ ...params.InputProps,
@@ -122,9 +138,14 @@ class Search extends Component {
                             />
                         )}
                     />
+                 
+                      <IconButton color='primary' onClick={this.changeState}> 
+                        <SearchIcon style={{width:'1.2em', height:'1.2em'}}/> 
+                      </IconButton>
+         
                 </div>
                 <div>
-                    <Button color='primary' variant='outlined' style={{ marginLeft: '48%' }} onClick={this.changeState}> Search </Button>
+                    
                 </div>
                 <br />
                 <div>

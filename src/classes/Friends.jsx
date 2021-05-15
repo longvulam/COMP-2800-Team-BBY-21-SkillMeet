@@ -11,12 +11,12 @@ export default function FriendsPage() {
       <div
         style={{
           position:'fixed',
-          top:'4.5em',
+          top:'3em',
           width:'100vw',
           overflowY:'scroll',
           overFlowX:'hidden',
         }}>
-        <Grid container direction="column" spacing = {2}
+        <Grid container direction="column" spacing = {3}
         style={{
           margin: 'auto',
           marginTop: '2vh',
@@ -26,7 +26,9 @@ export default function FriendsPage() {
         {data.map(friendInfo => {
           const { Name } = friendInfo;
           return (
-            <Grid item xs={12} style={{
+            <Grid item xs={12}
+            key={Name} 
+            style={{
               width:'100%',
             }}>
             <Friend name={Name}/>

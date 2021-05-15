@@ -12,15 +12,23 @@ export default function SkillAccordion(props) {
     const { skillName, skillLevel, skillDescription }= props;
     
     const [expanded, setExpanded] = useState(false);
+    const editable = props.editable;
     
     function expandSkills() {
-      setExpanded(!expanded);
+      if(editable) {
+        setExpanded(true);
+      } else {
+        setExpanded(!expanded);
+      }
     }
     
     return (
       <Accordion
         expanded={expanded}
         onChange={expandSkills}
+        style={{
+          width: '100%',
+        }}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -28,37 +36,52 @@ export default function SkillAccordion(props) {
           id="panel1bh-header"
           key={skillName}
         >
-          <InputBase
-            defaultValue={skillName}
-            inputProps={{
-              'aria-label': 'naked',
-              style: {
-                textAlign: 'center',
-                border: 'none',
-              }
-            }}
-          />
-          <InputBase
-            defaultValue={skillLevel}
-            inputProps={{
-              'aria-label': 'naked',
-              style: {
-                textAlign: 'center',
-                border: 'none',
-              }
-            }}
-          />
-          
+          <div
+           style={{
+            display:'flex',
+            justifyContent:'center',
+            width:'100%',
+          }}>
+            <InputBase
+              readOnly={!editable}
+              defaultValue={skillName}
+              inputProps={{
+                'aria-label': 'naked',
+                style: {
+                  textAlign: 'center',
+                  border: 'none',
+                }
+              }}
+            />
+            <InputBase
+              readOnly={!editable}
+              defaultValue={skillLevel}
+              inputProps={{
+                'aria-label': 'naked',
+                style: {
+                  textAlign: 'center',
+                  border: 'none',
+                }
+              }}
+            />
+          </div>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography
+          <div style={{
+            display:'flex',
+            justifyContent:'center',
+            width:'100%',
+          }}>
+             <InputBase
+            defaultValue={skillDescription}
+            readOnly={!editable}
+            multiline
             style={{
-              textAlign:'center',
-              width: '95%',
+              textAlign:'center'
             }}
             >
-            {skillDescription}
-          </Typography>
+            </InputBase>
+          </div>
         </AccordionDetails>
       </Accordion>
     );

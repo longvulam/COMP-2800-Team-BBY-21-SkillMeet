@@ -8,6 +8,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import { green } from '@material-ui/core/colors';
 import { Button } from '@material-ui/core';
 
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+
 const useStyles = ((theme) => ({
     bar: {
       width: '98vw',
@@ -58,7 +61,7 @@ const useStyles = ((theme) => ({
           )}
         />
         <div>
-          <Button color='primary' variant='outlined' style={{marginLeft: '48%'} } onClick={this.changeState}> Search </Button>
+          <IconButton color='primary' style={{marginLeft: '48%'} } onClick={this.changeState}> Search </IconButton>
         </div>
     </div>
   );
