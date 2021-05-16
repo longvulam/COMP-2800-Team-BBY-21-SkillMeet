@@ -35,7 +35,6 @@ const Login = (props) => {
                                 type = "email" 
                                 autoFocus 
                                 required 
-                                placeholder = "johnShelby@gmail.com"
                                 value = {email} 
                                 onChange = {(e) => setEmail(e.target.value)} 
                             />
@@ -70,7 +69,6 @@ const Login = (props) => {
                                 type = "email" 
                                 autoFocus 
                                 required 
-                                placeholder = "johnShelby@gmail.com"
                                 value = {email} 
                                 onChange = {(e) => setEmail(e.target.value)} 
                             />
@@ -81,7 +79,6 @@ const Login = (props) => {
                                 type = "text" 
                                 required 
                                 value = {firstName} 
-                                placeholder = "John"
                                 onChange = {(e) => setFirstName(e.target.value)} 
                             />
 
@@ -90,7 +87,6 @@ const Login = (props) => {
                                 type = "text" 
                                 required 
                                 value = {lastName} 
-                                placeholder = "Shelby"
                                 onChange = {(e) => setLastName(e.target.value)} 
                             />
 
