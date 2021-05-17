@@ -1,30 +1,42 @@
 {
-  "name": "skills_meet",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "client": "cd frontend && npm start",
-    "build" : "cd frontend && npm run build",
-    "server": "cd backend && nodemon server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/longvulam/COMP-2800-Team-BBY-21.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/longvulam/COMP-2800-Team-BBY-21/issues"
-  },
-  "homepage": "https://github.com/longvulam/COMP-2800-Team-BBY-21#readme",
+  "name": "skills_meet_frontend",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "mysql2": "^2.2.5"
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
+    "mobx": "^6.3.0",
+    "mobx-react-lite": "^3.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2"
   },
-  "devDependencies": {
-    "concurrently": "^6.1.0",
-    "nodemon": "^2.0.7"
-  }
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {}
 }
