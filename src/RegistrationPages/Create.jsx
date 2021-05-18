@@ -42,7 +42,7 @@ const Create = () => {
         db.collection('users').doc(user.uid).collection("Skills").doc("skill1").set({
           "skillName": skillOneName,
           "skillLevel": skillOneLevel,
-          "skillDesciption": skillOneDesc,
+          "skillDescription": skillOneDesc,
         }).catch((err) => {
           console.log(err)
         })
@@ -50,7 +50,7 @@ const Create = () => {
         db.collection('users').doc(user.uid).collection("Skills").doc("skill2").set({
           "skillName": skillTwoName,
           "skillLevel": skillTwoLevel,
-          "skillDesciption": skillTwoDesc,
+          "skillDescription": skillTwoDesc,
         }).catch((err) => {
           console.log(err)
         })
@@ -58,7 +58,7 @@ const Create = () => {
         db.collection('users').doc(user.uid).collection("Skills").doc("skill3").set({
           "skillName": skillThreeName,
           "skillLevel": skillThreeLevel,
-          "skillDesciption": skillThreeDesc,
+          "skillDescription": skillThreeDesc,
         }).catch((err) => {
           console.log(err)
         })
