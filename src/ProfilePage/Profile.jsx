@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -10,7 +10,8 @@ import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
 import LogOutButton from  './profileComponents/LogOutButton';
 
-import firebase from '../firebase';
+import firebase, { db } from '../firebase';
+
 
 const useStyles = makeStyles((theme) => ({
   editIcon: {
@@ -37,152 +38,172 @@ const useStyles = makeStyles((theme) => ({
   },
   infoWrap: {
 
-  },
+    },
 }));
 
 
 export default function Profile() {
-  const classes = useStyles();
-  const [skills, setSkills] = useState([]);
-  getProfileDataAsync(setSkills);
-  const data = sampleSkilldata;
-  const [editable, setEditable] = useState(false);
 
-  return (
-    <div style={{
-      width:'100vw',
-      height:'calc(100vh - 4em)',
-      overflowY:'scroll',
-      overflowX:'hidden',
-    }}>
-      <div className={classes.editWrap}>
-      <LogOutButton 
-          style={{marginRight: '6vw',
-          marginTop: '2vw',
-          height: '2.5em',
-          width: '2.5em',}}
-        />
-        <EditButton 
-          editable={editable} 
-          style={{marginRight: '4vw',
-          marginTop: '2vw',
-          height: '2.5em',
-          width: '2.5em',}}
-        />
-      </div>
-  
-      <div className={classes.avatarWrap}>
-       <Avatar 
-        alt="C" 
-        src="/static/images/avatar/1.jpg" 
-        className={classes.avatar} />
-      </div>
-  
-      <Grid container direction="column" spacing = {1}
-        style={{
-          margin:'auto',
-          marginTop: '2vh',
-          alignItems: 'center',
-        }}>
-        <Grid item xs={12}>
-          <InputBase
-            defaultValue="Chris"
-            readOnly= {!editable}
-            inputProps={{ 
-              'aria-label': 'naked',
-              style: {
-                textAlign: 'center',
-                border:'none',
-              }
-           }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <InputBase
-            readOnly= {!editable}
-            defaultValue="That Expensive Hotel"
-            inputProps={{ 
-              'aria-label': 'naked',
-              style: {
-                textAlign: 'center',
-                border:'none',
-              }
-           }}
-          />
-        </Grid>
-      </Grid>
-  
-      <Grid container direction="column" spacing = {1}
-        style={{
-          margin: 'auto',
-          marginTop: '2vh',
-          width: '95vw',
-          alignItems: 'center',
-        }}>
-        {data.map(accordion => {
-          const { skillName, skillLevel, skillDescription } = accordion;
-          return (
-            <Grid item xs={12} style={{
-              width:'100%',
-            }}>
-              <SkillAccordion 
-                skillName={skillName}
-                skillLevel={skillLevel} 
-                skillDescription={skillDescription}
-                editable={editable}
-              />
-            </Grid>
-          );
-        })}
-        <Grid item xs={12}
-          style={{
-            width: '100%'
-          }}>
-          <ProfileBio editable={editable}/>
-        </Grid>
-      </Grid>
+    const classes = useStyles();
+    const [userProfile, setUserProfile] = useState({
+        location: "",
+        firstName: "",
+        lastName: "",
+        skills: []
+    });
     
-    </div>
-  );
+    useEffect(()=> getProfileDataAsync(setUserProfile));
+    
+    const data = sampleSkilldata;
+    const [editable, setEditable] = useState(false);
+
+    return (
+        <div style={{
+            width: '100vw',
+            height: 'calc(100vh - 4em)',
+            overflowY: 'scroll',
+            overflowX: 'hidden',
+        }}>
+            <div className={classes.editWrap}>
+                <LogOutButton
+                    style={{
+                        marginRight: '6vw',
+                        marginTop: '2vw',
+                        height: '2.5em',
+                        width: '2.5em',
+                    }}
+                />
+                <EditButton
+                    editable={editable}
+                    setEditable={setEditable}
+                    style={{
+                        marginRight: '4vw',
+                        marginTop: '2vw',
+                        height: '2.5em',
+                        width: '2.5em',
+                    }}
+                />
+            </div>
+
+            <div className={classes.avatarWrap}>
+                <Avatar
+                    alt="Profile Picture"
+                    src="/static/images/avatar/1.jpg"
+                    className={classes.avatar} />
+            </div>
+
+            <Grid container direction="column" spacing={1}
+                style={{
+                    margin: 'auto',
+                    marginTop: '2vh',
+                    alignItems: 'center',
+                }}>
+                <Grid item xs={12}>
+                    <InputBase
+                        defaultValue="Loading name..."
+                        value={userProfile.firstName + userProfile.lastName}
+                        readOnly={!editable}
+                        inputProps={{
+                            'aria-label': 'naked',
+                            style: {
+                                textAlign: 'center',
+                                border: 'none',
+                            }
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputBase
+                        readOnly={!editable}
+                        defaultValue="Loading location..."
+                        value={userProfile.location}
+                        inputProps={{
+                            'aria-label': 'naked',
+                            style: {
+                                textAlign: 'center',
+                                border: 'none',
+                            }
+                        }}
+                    />
+                </Grid>
+            </Grid>
+
+            <Grid container direction="column" spacing={1}
+                style={{
+                    margin: 'auto',
+                    marginTop: '2vh',
+                    width: '95vw',
+                    alignItems: 'center',
+                }}>
+                {data.map(accordion => {
+                    const { skillName, skillLevel, skillDescription } = accordion;
+                    return (
+                        <Grid item xs={12}>
+                            <SkillAccordion
+                                skillName={skillName}
+                                skillLevel={skillLevel}
+                                skillDescription={skillDescription}
+                            />
+                        </Grid>
+                    );
+                })}
+                <Grid item xs={12}
+                    style={{
+                        width: '100%'
+                    }}>
+                    <ProfileBio />
+                </Grid>
+            </Grid>
+
+        </div>
+    );
 }
 
 const sampleSkilldata = [
     {
-      skillName:'Python',
-      skillLevel:'Expert',
-      skillDescription:'SkillDescription',
+        skillName: 'Python',
+        skillLevel: 'Expert',
+        skillDescription: 'SkillDescription',
     },
     {
-      skillName:'Java',
-      skillLevel:'Beginner',
-      skillDescription:'SkillDescription',
+        skillName: 'Java',
+        skillLevel: 'Beginner',
+        skillDescription: 'SkillDescription',
     },
     {
-      skillName:'SQL',
-      skillLevel:'Intermediate',
-      skillDescription:'SkillDescription',
+        skillName: 'SQL',
+        skillLevel: 'Intermediate',
+        skillDescription: 'SkillDescription',
     },
     {
-      skillName:'React',
-      skillLevel:'Beginner',
-      skillDescription:'SkillDescription',
+        skillName: 'React',
+        skillLevel: 'Beginner',
+        skillDescription: 'SkillDescription',
     },
 ]
 
-async function getProfileDataAsync(setDataCallback) {
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            
-            // setDataCallback(user);
-          console.log(user);
-        } else {
-            // redirect
-        }
-      });
-  
-  const data = {
-      
-  };
+let isRetrievingData = false;
+function getProfileDataFromDb(uid, setUserProfile) {
 
-  return (data);
+    if (isRetrievingData) return;
+
+    isRetrievingData = true;
+    db.collection('users').doc(uid)
+        .get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                console.log(data);
+                setUserProfile({
+                    ...data
+                });
+            }
+        });
+}
+
+async function getProfileDataAsync(setUserProfile) {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) return;
+
+        getProfileDataFromDb(user.uid, setUserProfile);
+    });
 }
