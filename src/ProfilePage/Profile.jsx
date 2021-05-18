@@ -198,12 +198,19 @@ function getProfileDataFromDb(uid, setUserProfile) {
                 });
             }
         });
+
+    db.collection('users').doc(uid).collection('Skills')
+        .get().then(doc => {
+            if(doc.exists){
+                const skillData = doc.data();
+                console.log(skillData);
+            }
+    })
 }
 
 async function getProfileDataAsync(setUserProfile) {
     firebase.auth().onAuthStateChanged((user) => {
         if (!user) return;
-
         getProfileDataFromDb(user.uid, setUserProfile);
     });
 }

@@ -23,9 +23,6 @@ const Create = () => {
 
   const addUserDetails = () => {
 
-
-
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         db.collection('users').doc(user.uid)
@@ -68,7 +65,7 @@ const Create = () => {
         })
 
       }
-    }).then(window.location.href = "/profile");
+    })
   }
 
   return (
@@ -84,7 +81,6 @@ const Create = () => {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
-
           <label>Bio:</label>
           <textarea
             className="bioInfo"

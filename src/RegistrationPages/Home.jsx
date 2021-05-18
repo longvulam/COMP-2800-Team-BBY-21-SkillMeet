@@ -6,8 +6,6 @@ import Create from './Create';
 import Navbar from '../Navbar';
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 
-
-
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
