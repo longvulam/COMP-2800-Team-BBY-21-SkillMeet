@@ -8,7 +8,6 @@ const Create = () => {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   const [city, setCity] = useState('');
-  // const [user, setUser] = useState('');
 
   const [skillOneName, setSkillOneName] = useState('');
   const [skillOneLevel, setSkillOneLevel] = useState('');
