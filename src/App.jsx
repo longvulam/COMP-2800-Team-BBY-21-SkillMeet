@@ -6,6 +6,7 @@ import Friends from './classes/Friends';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
+import AboutUs2 from "./AboutUs/aboutUs2.0Component";
 import Search from "./SearchPage/searchComponent";
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
             </Route>
             <Route path = "/aboutUs">
                 <AboutUs/>
+            </Route>
+            <Route path = "/aboutUs2">
+                <AboutUs2/>
             </Route>
             <Route path = "/profile">
                 <Profile/>

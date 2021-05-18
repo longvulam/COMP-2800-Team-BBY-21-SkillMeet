@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import HeroImage from './heroImageComponent';
 import Mission from './missionComponent';
 import Team from './ourTeamComponent';
