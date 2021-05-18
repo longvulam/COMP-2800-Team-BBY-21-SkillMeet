@@ -1,12 +1,13 @@
 import React from "react";
 import Home from './RegistrationPages/Home';
-import BottomNavBar from './classes/BottomNavbar';
-import Profile from './classes/Profile';
-import Friends from './classes/Friends';
+import BottomNavBar from './BottomNavbar';
+import Profile from './ProfilePage/Profile';
+import Friends from './Friends/Friends';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
 import Search from "./SearchPage/searchComponent";
+import EditProfilePage from './EditProfile/EditProfilePage';
 
 function App() {
 
@@ -32,6 +33,9 @@ function App() {
             <Route path = "/search">
                 <Search/>
                 <BottomNavBar />
+            </Route>
+            <Route path = '/editProfile'>
+                <EditProfilePage/>
             </Route>
           </Switch>
         </div>

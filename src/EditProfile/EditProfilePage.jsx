@@ -5,12 +5,16 @@ import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
 
-import SkillAccordion from './profileClasses/SkillAccordion';
-import ProfileBio from './profileClasses/ProfileBio';
-import EditButton from './profileClasses/ProfileEditButton';
-import LogOutButton from  './profileClasses/LogOutButton';
+import ProfileBio from '../ProfilePage/profileComponents/ProfileBio';
 
-import firebase from '../firebase';
+import SaveButton from './editProfileComponents/SaveButton';
+import CancelButton from './editProfileComponents/CancelButton';
+import EditableSkill from './editProfileComponents/EditableSkill';
+
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+
+import firebase, { db } from '../firebase';
 
 const useStyles = makeStyles((theme) => ({
   editIcon: {
@@ -55,23 +59,22 @@ export default function Profile() {
       overflowY:'scroll',
       overflowX:'hidden',
     }}>
-      <div className={classes.editWrap}>
-      <LogOutButton 
+       <div className={classes.editWrap}> 
+        <CancelButton
           style={{marginRight: '6vw',
           marginTop: '2vw',
           height: '2.5em',
           width: '2.5em',}}
         />
-        <EditButton 
+        <SaveButton
           editable={editable} 
-          setEditable={setEditable}
           style={{marginRight: '4vw',
           marginTop: '2vw',
           height: '2.5em',
           width: '2.5em',}}
         />
       </div>
-  
+    
       <div className={classes.avatarWrap}>
        <Avatar 
         alt="C" 
@@ -82,7 +85,7 @@ export default function Profile() {
       <Grid container direction="column" spacing = {1}
         style={{
           margin:'auto',
-          marginTop: '2vh',
+          marginTop: '1vh',
           alignItems: 'center',
         }}>
         <Grid item xs={12}>
@@ -126,7 +129,7 @@ export default function Profile() {
             <Grid item xs={12} style={{
               width:'100%',
             }}>
-              <SkillAccordion 
+              <EditableSkill
                 skillName={skillName}
                 skillLevel={skillLevel} 
                 skillDescription={skillDescription}
@@ -135,6 +138,23 @@ export default function Profile() {
             </Grid>
           );
         })}
+        <Grid item xs={12}
+          style={{
+            width: '100%',
+            display:'flex', 
+            alignItems:'center',
+            justifyContent:'center',
+          }}>
+          <IconButton>
+            <AddCircleIcon
+              style={{
+                width:'1.5em',
+                height:'1.5em',
+              }}
+            />
+          </IconButton>
+          
+        </Grid>
         <Grid item xs={12}
           style={{
             width: '100%'
