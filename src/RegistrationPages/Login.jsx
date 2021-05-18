@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 
 const Login = (props) => {
 
@@ -19,7 +20,9 @@ const Login = (props) => {
         hasAccount, 
         setHasAccount, 
         emailError, 
-        passwordError
+        passwordError,
+        firstNameError,
+        lastNameError
     } = props;
 
     return ( 
@@ -81,6 +84,7 @@ const Login = (props) => {
                                 value = {firstName} 
                                 onChange = {(e) => setFirstName(e.target.value)} 
                             />
+                            <p className = "errorMsg">{firstNameError}</p>
 
                             <label>LastName:</label>
                             <input 
@@ -89,6 +93,7 @@ const Login = (props) => {
                                 value = {lastName} 
                                 onChange = {(e) => setLastName(e.target.value)} 
                             />
+                            <p className = "errorMsg">{lastNameError}</p>
 
                             <label>Create Password:</label>
                             <input 

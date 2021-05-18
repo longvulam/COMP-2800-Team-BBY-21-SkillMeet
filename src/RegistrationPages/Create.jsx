@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
 import { db } from '../firebase';
+import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 
 const Create = () => {
 
@@ -22,6 +23,10 @@ const Create = () => {
   const [skillThreeDesc, setSkillThreeDesc] = useState('');
 
   const addUserDetails = () => {
+
+
+
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         db.collection('users').doc(user.uid)
@@ -64,13 +69,13 @@ const Create = () => {
         })
 
       }
-    })
+    }).then(window.location.href = "/profile");
   }
 
   return (
 
     <div className="create-profile-form">
-      <form action="/profile">
+      <form>
         <fieldset>
           <legend>Fill the leftout fields to complete profile setup:</legend>
 

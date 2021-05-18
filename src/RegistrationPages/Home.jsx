@@ -4,6 +4,9 @@ import { db } from '../firebase';
 import Login from './Login';
 import Create from './Create';
 import Navbar from '../Navbar';
+import '../../src/LandingPageStyles/Landing_Page_Styles.css';
+
+
 
 import { useHistory } from "react-router-dom";
 
@@ -20,6 +23,8 @@ const Home = () => {
   const [lastName, setLastName] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
 
   const clearInputsLogin = () => {
@@ -38,6 +43,8 @@ const Home = () => {
   const clearErrors = () => {
     setEmailError("");
     setPasswordError("");
+    setFirstNameError("");
+    setLastNameError("");
   }
 
   const handleLogin = () => {
@@ -65,19 +72,20 @@ const Home = () => {
 
   const handleSignup = () => {
     clearErrors();
-    try {
-      const auth = firebase.auth();
-      auth.createUserWithEmailAndPassword(email, password).then(cred => {
-        return db.collection('users').doc(cred.user.uid).set({
-          email: email,
-          displayName: firstName + " " + lastName
-        }).then(() => {
-          console.log("A user is signed up!");
-        })
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(cred => {
+      return db.collection('users').doc(cred.user.uid).set({
+        email: email,
+        displayName: firstName + " " + lastName
+      }).then(() => {
+        console.log("A user is signed up!");
       })
-      // createUserDocument(newUser);
-
-    } catch (error) {
+    }).catch((error) => {
+      if(firstName.trim.length == 0){
+        setFirstNameError("PLease fill your first name.");
+      }
+      if (lastName.trim.length == 0){
+        setLastNameError("PLease fill your last name.");
+      }
       switch (error.code) {
         case "auth/email-already-in-use":
         case "auth/invalid-email":
@@ -87,7 +95,7 @@ const Home = () => {
           setPasswordError(error.message);
           break;
       }
-    };
+    })
   };
 
   const handleLogout = () => {
