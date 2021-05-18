@@ -15,11 +15,7 @@ export default function SkillAccordion(props) {
     const editable = props.editable;
     
     function expandSkills() {
-      if(editable) {
-        setExpanded(true);
-      } else {
         setExpanded(!expanded);
-      }
     }
     
     return (
@@ -43,7 +39,7 @@ export default function SkillAccordion(props) {
             width:'100%',
           }}>
             <InputBase
-              readOnly={!editable}
+              readOnly={true}
               defaultValue={skillName}
               inputProps={{
                 'aria-label': 'naked',
@@ -54,7 +50,7 @@ export default function SkillAccordion(props) {
               }}
             />
             <InputBase
-              readOnly={!editable}
+              readOnly={true}
               defaultValue={skillLevel}
               inputProps={{
                 'aria-label': 'naked',
@@ -74,7 +70,7 @@ export default function SkillAccordion(props) {
           }}>
              <InputBase
             defaultValue={skillDescription}
-            readOnly={!editable}
+            readOnly={true}
             multiline
             style={{
               textAlign:'center'

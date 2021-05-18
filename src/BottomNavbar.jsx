@@ -25,9 +25,9 @@ const useStyles = makeStyles({
 export default function LabelBottomNavigation() {
   const classes = useStyles();
   const [value, setValue] = React.useState('recents');
-
-  const [historyValue, setHistoryValue] = React.useState("");
   const history = useHistory();
+  const [historyValue, setHistoryValue] = React.useState("");
+
 
   function handleChangeURL(event, newValue){
     if (newValue != "friends" && newValue != "chat") {

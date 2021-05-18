@@ -1,8 +1,8 @@
 import React from 'react';
-import FriendsPageNav from './friendsClasses/friendsPageNav';
+import FriendsPageNav from './friendsComponents/friendsPageNav';
 import Grid from '@material-ui/core/Grid';
 
-import Friend from './friendsClasses/FriendCard';
+import Friend from './friendsComponents/FriendCard';
 export default function FriendsPage() {
   const data = friendData;
   return (

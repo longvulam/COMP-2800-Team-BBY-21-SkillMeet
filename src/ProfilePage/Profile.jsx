@@ -5,10 +5,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
 
-import SkillAccordion from './profileClasses/SkillAccordion';
-import ProfileBio from './profileClasses/ProfileBio';
-import EditButton from './profileClasses/ProfileEditButton';
-import LogOutButton from  './profileClasses/LogOutButton';
+import SkillAccordion from './profileComponents/SkillAccordion';
+import ProfileBio from './profileComponents/ProfileBio';
+import EditButton from './profileComponents/ProfileEditButton';
+import LogOutButton from  './profileComponents/LogOutButton';
 
 import firebase from '../firebase';
 
@@ -64,7 +64,6 @@ export default function Profile() {
         />
         <EditButton 
           editable={editable} 
-          setEditable={setEditable}
           style={{marginRight: '4vw',
           marginTop: '2vw',
           height: '2.5em',

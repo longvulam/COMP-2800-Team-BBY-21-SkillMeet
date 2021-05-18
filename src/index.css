@@ -2,7 +2,7 @@
   margin: 0;
 }
 
-.landing-page-background {
+/* .landing-page-background {
   height: 100vh;
   min-height: 900px;
   padding-top: 10vh;
@@ -527,6 +527,6 @@ input[type=password] {
   .formHeading {
     font-size: 25px;
   }
-}
+} */
 
-/* @media (max-width: 420px) {} */
+@media (max-width: 420px) {}
