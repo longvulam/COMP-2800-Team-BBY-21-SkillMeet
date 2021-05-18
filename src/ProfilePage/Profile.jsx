@@ -52,7 +52,12 @@ export default function Profile() {
         skills: []
     });
     
-    useEffect(()=> getProfileDataAsync(setUserProfile));
+    const [userSkills, setUserSkills] = useState([]);
+
+    useEffect(()=> {
+      getProfileDataAsync(setUserProfile);
+      getUserSkillDataAsync(setUserSkills);
+    });
     
     const data = sampleSkilldata;
     const [editable, setEditable] = useState(false);
@@ -101,7 +106,7 @@ export default function Profile() {
                 <Grid item xs={12}>
                     <InputBase
                         defaultValue="Loading name..."
-                        value={userProfile.firstName + userProfile.lastName}
+                        value={userProfile.displayName}
                         readOnly={!editable}
                         inputProps={{
                             'aria-label': 'naked',
@@ -135,7 +140,7 @@ export default function Profile() {
                     width: '95vw',
                     alignItems: 'center',
                 }}>
-                {data.map(accordion => {
+                {userSkills.map(accordion => {
                     const { skillName, skillLevel, skillDescription } = accordion;
                     return (
                         <Grid item xs={12}>
@@ -213,4 +218,30 @@ async function getProfileDataAsync(setUserProfile) {
         if (!user) return;
         getProfileDataFromDb(user.uid, setUserProfile);
     });
+}
+
+
+let isRetrievingSkillData = false;
+function getSkillDataFromDB(uid, setUserSkills) {
+
+    if (isRetrievingSkillData) return;
+
+    isRetrievingSkillData = true;
+    db.collection('users').doc(uid).collection('Skills')
+        .get().then(snapshot => {
+            const skills = [];
+            snapshot.forEach(doc => {
+              console.log(doc.id, doc.data());
+              skills.push(doc.data());
+            });
+            console.log('Skills', skills);
+            setUserSkills(skills);
+        });
+}
+
+async function getUserSkillDataAsync(setUserSkills) {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) return;
+    getSkillDataFromDB(user.uid, setUserSkills);
+  })
 }
