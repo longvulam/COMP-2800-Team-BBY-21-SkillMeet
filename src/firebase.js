@@ -21,17 +21,16 @@ export const auth = firebase.auth();
 export const db = firebase.firestore();
 
 let isRetrievingData = false;
-
 async function getProfileDataFromDb(uid) {
 
     if (isRetrievingData) return;
     isRetrievingData = true;
 
-    const ref = db.collection('users').doc(uid);
+    const userRef = db.collection('users').doc(uid);
 
     const data = await Promise.all([
-        ref.get().then(doc => doc.data()),
-        ref.collection('Skills')
+        userRef.get().then(doc => doc.data()),
+        userRef.collection('Skills')
         .get().then(querySnapshot => {
             const arr = [];
             querySnapshot.forEach(doc => arr.push(doc.data()));
