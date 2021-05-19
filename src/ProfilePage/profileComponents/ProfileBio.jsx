@@ -6,7 +6,10 @@ import InputBase from '@material-ui/core/InputBase';
 
 export default function ProfileBio(props) {
   const defaultBioText = `Hi I'm Chris, I'm an excellent instructor and I just love group 21!! Click the Edit Button on the top right to edit any of these fields. Notice that the Skills Accordion will stay open during editing. When the editing is done, they will be able to open and close again.`
-  const bioInfo = props.bio? props.bio : defaultBioText;
+  const {
+    bio 
+  } = props;
+  // c bioInfo = props.bio? props.bio : defaultBioText;
   return (
     <Paper 
     elevation={2}
@@ -20,7 +23,7 @@ export default function ProfileBio(props) {
       <InputBase 
       readOnly={!props.editable}
       multiline
-      defaultValue={bioInfo}
+      value = {bio}
       style={{
         textAlign: 'center',
         width:'92.5%',

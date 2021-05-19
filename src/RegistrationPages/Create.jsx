@@ -1,182 +1,263 @@
 import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
+import Container from '@material-ui/core/Container';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel'
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import RemoveIcon from '@material-ui/icons/Remove';
+import AddIcon from '@material-ui/icons/Add';
+import ProfileIcon from '@material-ui/icons/AccountCircle';
+import { Redirect, useHistory } from "react-router-dom";
+
+
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
+import { Grid } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(2),
+    }
+  },
+  button: {
+    margin: theme.spacing(2),
+  }
+}))
+
 
 const Create = () => {
+  const classes = useStyles();
+
+  const history = useHistory();
+  const [skillFields, setSkillFields] = useState([
+    { skillName: "", skillLevel: "", skillDescription: "" },
+    { skillName: "", skillLevel: "", skillDescription: "" },
+  ])
+
+
+
+  const handleChangeInput = (index, event) => {
+    const values = [...skillFields];
+    values[index][event.target.name] = event.target.value;
+    setSkillFields(values);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (displayName.length == 0 || bio.length == 0 || city.length == 0) return;
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+
+        db.collection('users').doc(user.uid).update({
+          "displayName": displayName,
+          "Bio": bio,
+          "City": city
+        }).then(() => {
+          for (let i = 0; i < skillFields.length; i++) {
+            db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
+              "skillName": skillFields[i].skillName,
+              "skillLevel": skillFields[i].skillLevel,
+              "skillDescription": skillFields[i].skillDescription
+            })
+          }
+        }).then(value => history.push("/profile"))
+
+      }
+    })
+
+  };
+
+  const handleAddFields = () => {
+    setSkillFields([...skillFields, { skillName: "", skillLevel: "", skillDescription: "" }])
+  }
+
+  const handleRemoveFields = (index) => {
+    const values = [...skillFields];
+    if (values.length == 1) return;
+    values.splice(index, 1);
+    setSkillFields(values);
+  }
+
 
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   const [city, setCity] = useState('');
 
-  const [skillOneName, setSkillOneName] = useState('');
-  const [skillOneLevel, setSkillOneLevel] = useState('');
-  const [skillOneDesc, setSkillOneDesc] = useState('');
+  // const addUserDetails = () => {
 
-  const [skillTwoName, setSkillTwoName] = useState('');
-  const [skillTwoLevel, setSkillTwoLevel] = useState('');
-  const [skillTwoDesc, setSkillTwoDesc] = useState('');
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       db.collection('users').doc(user.uid)
+  //         .update({
+  //           "Bio": bio,
+  //           "cityName": city,
+  //           "displayName": displayName,
+  //         })
+  //     }
+  //   });
 
-  const [skillThreeName, setSkillThreeName] = useState('');
-  const [skillThreeLevel, setSkillThreeLevel] = useState('');
-  const [skillThreeDesc, setSkillThreeDesc] = useState('');
+  //   addSkills();
+  // }
 
-  const addUserDetails = () => {
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        db.collection('users').doc(user.uid)
-          .update({
-            "Bio": bio,
-            "cityName": city,
-            "displayName": displayName,
-          })
-      }
-    });
-
-    addSkills();
-  }
-
-  const addSkills = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        db.collection('users').doc(user.uid).collection("Skills").doc("skill1").set({
-          "skillName": skillOneName,
-          "skillLevel": skillOneLevel,
-          "skillDescription": skillOneDesc,
-        }).catch((err) => {
-          console.log(err)
-        })
-
-        db.collection('users').doc(user.uid).collection("Skills").doc("skill2").set({
-          "skillName": skillTwoName,
-          "skillLevel": skillTwoLevel,
-          "skillDescription": skillTwoDesc,
-        }).catch((err) => {
-          console.log(err)
-        })
-
-        db.collection('users').doc(user.uid).collection("Skills").doc("skill3").set({
-          "skillName": skillThreeName,
-          "skillLevel": skillThreeLevel,
-          "skillDescription": skillThreeDesc,
-        }).catch((err) => {
-          console.log(err)
-        })
-
-      }
-    })
-  }
+  // const addSkills = () => {
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       db.collection('users').doc(user.uid).collection("Skills").doc("skill1").set({
+  //         "skillName": skillOneName,
+  //         "skillLevel": skillOneLevel,
+  //         "skillDescription": skillOneDesc,
+  //       }).catch((err) => {
+  //         console.log(err)
+  //       })
+  //     }
+  //   })
+  // }
 
   return (
 
-    <div className="create-profile-form">
-      <form>
-        <fieldset>
-          <legend>Fill the leftout fields to complete profile setup:</legend>
+    // <div className="create-profile-form">
+    //   <form>
+    // <input type="button" className="createProfileBtn" onClick={addUserDetails} value="Create Profile" /> */
 
-          <label>Display Name:</label>
-          <input type="text"
-            autoFocus
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-          />
-          <label>Bio:</label>
-          <textarea
-            className="bioInfo"
-            value={bio}
-            placeholder="What is your dream job? What is your favourite dish? Any successfull people you look up to? Anything you would like to share with others, go off on here!!"
-            name="bio"
-            id="bio"
-            onChange={(e) => setBio(e.target.value)}>
-          </textarea>
 
-          <label>City Name:</label>
-          <input
-            type="text"
-            placeholder="Surrey"
-            id="city"
-            name="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
+    <Container>
+      <h1>Profile Info Form</h1>
+      <form className={classes.root} onSubmit={handleSubmit}>
 
-          <label>Enter your 3 top skills</label>
+        <TextField
+          autoFocus
+          label="Display Name"
+          required
+          variant="outlined"
+          name="displayName"
+          className="otherInputs"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+        />
 
-          <div id="skillContent">
-            <div className="skillBox">
-              <label>1st Skill Name:</label>
-              <input type="text"
-                id="skillOneName"
-                value={skillOneName}
-                onChange={(e) => setSkillOneName(e.target.value)}
-              /><br />
-              <label>Select your level:</label>
-              <select name="skillOneLevel" value={skillOneLevel} onChange={(e) => setSkillOneLevel(e.target.value)}>
-                <option value="Expert">Expert</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Beginneer">Begineer</option>
-              </select><br></br>
-              <label>Skill Description:</label>
-              <textarea
-                id="skillOneInfo"
-                placeholder="What inspired yout to start learning this skill? How did you get started with learning it? Anything you would like to share related to the skill, go off here!!"
-                value={skillOneDesc}
-                onChange={(e) => setSkillOneDesc(e.target.value)}>
-              </textarea>
-            </div>
+        <TextField
+          multiline
+          rows={4}
+          className="bioInfo"
+          label="Bio*"
+          value={bio}
+          variant="outlined"
+          onChange={(e) => setBio(e.target.value)}
+        />
 
-            <div className="skillBox">
-              <label>2nd Skill Name:</label>
-              <input type="text"
-                value={skillTwoName}
-                onChange={(e) => setSkillTwoName(e.target.value)}
-                id="skillTwoName">
-                </input><br />
-              <label>Select your level:</label>
-              <select name="skillTwoLevel" value={skillTwoLevel} onChange={(e) => setSkillTwoLevel(e.target.value)}>
-                <option value="Expert">Expert</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Beginneer">Begineer</option>
-              </select><br></br>
-              <label>Skill Description:</label>
-              <textarea 
-                id="skillTwoInfo" 
-                placeholder="What inspired yout to start learning this skill? How did you get started with learning it? Anything you would like to share related to the skill, go off here!!"
-                value={skillTwoDesc}
-                onChange={(e) => setSkillTwoDesc(e.target.value)}>
-                </textarea>
-            </div>
+        <TextField
+          id="city"
+          label="City"
+          className="otherInputs"
+          name="city"
+          required
+          value={city}
+          variant="outlined"
+          onChange={(e) => setCity(e.target.value)}
+        />
 
-            <div className="skillBox">
-              <label>3rd Skill Name:</label>
-              <input type="text"
-                id="skillThreeName"
-                value={skillThreeName}
-                onChange={(e) => setSkillThreeName(e.target.value)}>
-                </input><br/>
-              <label>Select your level:</label>
-              <select name="skillThreeLevel" value={skillThreeLevel} onChange={(e) => setSkillThreeLevel(e.target.value)}>
-                <option value="Expert">Expert</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Beginneer">Begineer</option>
-              </select><br></br>
-              <label>Skill Description:</label>
-              <textarea id="skillThreeInfo"
-                placeholder="What inspired yout to start learning this skill? How did you get started with learning it? Anything you would like to share related to the skill, go off here!!"
-                value={skillThreeDesc}
-                onChange={(e) => setSkillThreeDesc(e.target.value)}>
-                </textarea>
-            </div>
+
+        {skillFields.map((skillField, index) => (
+          <div key={index}>
+            <Grid container spacing={1} style={{
+              margin: 'auto',
+              marginTop: '2vh',
+              alignItems: 'center',
+              textAlign: 'center',
+              backgroundColor: 'lightGrey',
+              borderRadius: '5px'
+            }}>
+              <h5 style={{ textAlign: 'center' }}>Skill Info</h5>
+
+              <Grid xs={12}>
+                <TextField
+                  name="skillName"
+                  label="Skill Name"
+                  variant="outlined"
+                  required
+                  value={skillField.skillName}
+                  onChange={event => handleChangeInput(index, event)}
+                />
+
+              </Grid>
+              <Grid xs={12} style={{
+                marginLeft: "2vw"
+              }}>
+
+                <InputLabel id="level">Skill Level</InputLabel>
+                <Select
+                  native
+                  name="skillLevel"
+                  required
+                  label="Skill Level"
+                  id="level"
+                  value={skillField.skillLevel}
+                  onChange={event => handleChangeInput(index, event)}
+                >
+                  <option aria-label="None" value="Skill Level" />
+                  <option value='Expert'>Expert</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Beginner">Beginner</option>
+                </Select>
+              </Grid>
+              <Grid xs={12}>
+                <TextField
+                  name="skillDescription"
+                  label="skillDescription"
+                  required
+                  variant="outlined"
+                  value={skillField.skillDescription}
+                  onChange={event => handleChangeInput(index, event)}
+                />
+              </Grid>
+              <Grid xs={12}>
+
+                <IconButton
+                  style={{
+                    fontSize: "0.9em",
+                    color: "red"
+                  }}
+                  onClick={() => handleRemoveFields(index)}
+                >
+                  <RemoveIcon />Remove Skill
+              </IconButton>
+                <IconButton
+                  style={{
+                    fontSize: "0.9em",
+                    color: "green"
+                  }}
+                  onClick={() => handleAddFields()}
+                >
+                  <AddIcon />Add Skill
+              </IconButton>
+              </Grid>
+
+            </Grid>
+
+
           </div>
+        ))}
 
-
-          <input type="button" className="createProfileBtn" onClick={addUserDetails} value="Create Profile" />
-
-        </fieldset>
+        <Button
+          onClick={handleSubmit}
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          type="submit">
+          <ProfileIcon />
+            Create Profile
+          </Button>
       </form>
-    </div>
-  );
+    </Container>
+
+    // </div>
+  )
 }
+
 
 export default Create;
