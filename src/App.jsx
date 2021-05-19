@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
 import Search from "./SearchPage/searchComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
+import OtherUserProfile from './OtherUserProfile/OtherUserProfile'
 
 function App() {
 
@@ -24,6 +25,10 @@ function App() {
             </Route>
             <Route path = "/profile">
                 <Profile/>
+                <BottomNavBar />
+            </Route>
+            <Route path = "/otherUserProfile">
+                <OtherUserProfile/>
                 <BottomNavBar />
             </Route>
             <Route path = "/friends">
