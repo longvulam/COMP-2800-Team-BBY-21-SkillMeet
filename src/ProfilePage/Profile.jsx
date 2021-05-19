@@ -44,7 +44,7 @@ export default function Profile() {
 
     const classes = useStyles();
     const [userProfile, setUserProfile] = useState({
-        location: "",
+        city: "",
         displayName: "",
         bio: "",
         skills: []
