@@ -57,12 +57,15 @@ const useStyles = ((theme) => ({
     },
 }));
 
+const currentUserID = auth.currentUser;
+
 
 class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
             users: [],
+            parents: [],
             selectedSkills: []
         };
 
@@ -72,14 +75,25 @@ class Search extends Component {
     changeState() {
         let skillSearch = this.state.selectedSkills.map(obj => obj.title.toLowerCase());
         console.log(skillSearch);
-        db.collection('users')
-            .where('skills', 'array-contains-any', skillSearch)
+        db.collectionGroup('Skills')
+            .where('skillName', 'in', skillSearch)
             .get()
             .then(snapshot => {
                 const users = []
+                
                 snapshot.forEach(doc => {
                     const data = doc.data()
                     users.push(data)
+
+                    const parentDocRef = doc.ref.parent.parent
+                    console.log(parentDocRef)
+                    parentDocRef.get().then(parentSnap => {
+                        const parentData = parentSnap.data();
+                        const parents = []
+                        parents.push(parentData)
+                        this.setState({ parents: parents })
+                        console.log(parents)
+                    });
                 })
                 this.setState({ users: users })
                 console.log(users)
@@ -92,6 +106,16 @@ class Search extends Component {
             selectedSkills: currentSelectedSkills
         });
     }
+
+    sendRequest() {
+        db.collection('users').doc('OtherUsersId').collection('Friends').doc(currentUserID).set({
+        isConfirmed: false
+        })
+        db.collection('users').doc(currentUserID).collection('Friends').doc('OtherUsersId').set({
+            isPending: true
+        })
+    }
+
 
     render() {
         const { classes } = this.props;
@@ -150,8 +174,8 @@ class Search extends Component {
                 <br />
                 <div>
                     {
-                        this.state.users &&
-                        this.state.users.map(user => {
+                        this.state.parents &&
+                        this.state.parents.map(user => {
                             return (
                                 <div className={classes.root}>
                                     <Paper className={classes.paper}>
@@ -165,24 +189,24 @@ class Search extends Component {
                                                 <Grid item xs container direction="column" spacing={2}>
                                                     <Grid item xs>
                                                         <Typography gutterBottom variant="subtitle1">
-                                                            {user.firstName} {user.lastName}
+                                                        {user.displayName}
                                                         </Typography>
                                                         <Typography variant="body2" gutterBottom>
                                                             Skills
                                                         </Typography>
                                                         <Typography variant="body2" color="textSecondary">
-                                                            {user.skills[0]}, {user.skills[1]}, {user.skills[2]}
+                                                            user skills here
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item>
                                                         <Typography variant="body2">
-                                                            {user.city}
+                                                        {user.cityName}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
                                             <Grid item xs={1}>
-                                                <Button className={classes.addFriend}><PersonAddIcon /></Button>
+                                                <Button className={classes.addFriend} onClick={this.sendRequest} uid={auth.currentUser}><PersonAddIcon /></Button>
                                             </Grid>
                                         </Grid>
                                     </Paper>
