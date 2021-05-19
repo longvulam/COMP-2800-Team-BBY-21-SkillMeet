@@ -46,6 +46,8 @@ async function addSkill(profile) {
 
 }
 
+
+
 export default function Profile() {
     const classes = useStyles();
     const [userProfile, setUserProfile] = useState({
@@ -56,6 +58,15 @@ export default function Profile() {
         skills: [],
     });
     useEffect(() => getCurrentUserDataAsync().then(setUserProfile), []);
+
+    async function changeState(newValue, fieldName) {
+        setUserProfile(previousValues => {
+            return {
+                ...previousValues,
+                [fieldName]: newValue
+            }
+        });
+    }
 
     return (
         <div style={{
@@ -98,23 +109,41 @@ export default function Profile() {
                     marginTop: '1vh',
                     alignItems: 'center',
                 }}>
-                <Grid item xs={12}>
-                    <InputBase
-                        value={userProfile.firstName + " " + userProfile.lastName}
-                        readOnly={true}
-                        inputProps={{
-                            'aria-label': 'naked',
-                            style: {
-                                textAlign: 'center',
-                                border: 'none',
-                            }
-                        }}
-                    />
+                <Grid item xs={12} container direction="row">
+                    <Grid item xs={6}>
+                        <InputBase
+                            value={userProfile.firstName}
+                            onChange={(event) => changeState(event.target.value, "firstName")}
+                            readOnly={false}
+                            inputProps={{
+                                'aria-label': 'naked',
+                                style: {
+                                    textAlign: 'right',
+                                    border: 'none',
+                                }
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <InputBase
+                            value={userProfile.lastName}
+                            onChange={(event) => changeState(event.target.value, "lastName")}
+                            readOnly={false}
+                            inputProps={{
+                                'aria-label': 'naked',
+                                style: {
+                                    textAlign: 'left',
+                                    border: 'none',
+                                }
+                            }}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <InputBase
                         readOnly={false}
                         value={userProfile.location}
+                        onChange={(event) => changeState(event.target.value, "location")}
                         inputProps={{
                             'aria-label': 'naked',
                             style: {
@@ -170,7 +199,7 @@ export default function Profile() {
                     }}>
                     <ProfileBio
                         bio={userProfile.bio}
-                        changeState={setUserProfile}
+                        changeState={changeState}
                         editable={true} />
                 </Grid>
             </Grid>

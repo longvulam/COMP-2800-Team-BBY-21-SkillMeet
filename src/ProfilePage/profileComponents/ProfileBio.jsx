@@ -11,15 +11,6 @@ export default function ProfileBio(props) {
 
     const bioInfo = bio ? bio : defaultBioText;
 
-    async function updateBio(newValue) {
-        changeState(previousValues => {
-            return {
-                ...previousValues,
-                bio: newValue
-            }
-        });
-    }
-
     return (
         <Paper
             elevation={2}
@@ -32,7 +23,7 @@ export default function ProfileBio(props) {
         >
             <InputBase
                 value={bioInfo}
-                onChange={(event) => updateBio(event.target.value)}
+                onChange={(event) => changeState(event.target.value, "bio")}
                 readOnly={!editable}
                 multiline
                 style={{
