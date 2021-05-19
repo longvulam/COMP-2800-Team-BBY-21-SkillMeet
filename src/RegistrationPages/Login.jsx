@@ -36,6 +36,7 @@ const Login = (props) => {
                             <label>Email:</label>
                             <input 
                                 type = "email" 
+                                className = "userEmailID"
                                 autoFocus 
                                 required 
                                 value = {email} 
@@ -47,6 +48,7 @@ const Login = (props) => {
                             <input 
                                 type = "password" 
                                 required 
+                                className = "userPassword"
                                 value = {password} 
                                 onChange = {(e) => setPassword(e.target.value)} 
                             />
@@ -70,6 +72,7 @@ const Login = (props) => {
                             <label>Email:</label>
                             <input 
                                 type = "email" 
+                                className = "userEmailID"
                                 autoFocus 
                                 required 
                                 value = {email} 
@@ -80,6 +83,7 @@ const Login = (props) => {
                             <label>FirstName:</label>
                             <input 
                                 type = "text" 
+                                className = "otherInputs"
                                 required 
                                 value = {firstName} 
                                 onChange = {(e) => setFirstName(e.target.value)} 
@@ -90,6 +94,7 @@ const Login = (props) => {
                             <input 
                                 type = "text" 
                                 required 
+                                className = "otherInputs"
                                 value = {lastName} 
                                 onChange = {(e) => setLastName(e.target.value)} 
                             />
@@ -99,6 +104,7 @@ const Login = (props) => {
                             <input 
                                 type = "password" 
                                 required 
+                                className = "userPassword"
                                 value = {password} 
                                 onChange = {(e) => setPassword(e.target.value)} 
                             />

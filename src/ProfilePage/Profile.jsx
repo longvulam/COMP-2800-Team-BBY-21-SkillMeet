@@ -46,9 +46,9 @@ export default function Profile() {
 
     const classes = useStyles();
     const [userProfile, setUserProfile] = useState({
-        location: "",
-        firstName: "",
-        lastName: "",
+        city: "",
+        displayName: "",
+        bio: "",
         skills: []
     });
     
@@ -121,7 +121,7 @@ export default function Profile() {
                     <InputBase
                         readOnly={!editable}
                         defaultValue="Loading location..."
-                        value={userProfile.location}
+                        value={userProfile.city}
                         inputProps={{
                             'aria-label': 'naked',
                             style: {
@@ -156,7 +156,9 @@ export default function Profile() {
                     style={{
                         width: '100%'
                     }}>
-                    <ProfileBio />
+                    <ProfileBio 
+                        bio = {userProfile.bio}
+                    />
                 </Grid>
             </Grid>
 
@@ -199,18 +201,12 @@ function getProfileDataFromDb(uid, setUserProfile) {
                 const data = doc.data();
                 console.log(data);
                 setUserProfile({
-                    ...data
+                    city: data.City,
+                    displayName: data.displayName,
+                    bio: data.Bio
                 });
             }
         });
-
-    db.collection('users').doc(uid).collection('Skills')
-        .get().then(doc => {
-            if(doc.exists){
-                const skillData = doc.data();
-                console.log(skillData);
-            }
-    })
 }
 
 async function getProfileDataAsync(setUserProfile) {
