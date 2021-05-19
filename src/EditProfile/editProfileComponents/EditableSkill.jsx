@@ -7,8 +7,10 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import {skillLevelOptions, skillOptions} from '../../dataStores/skills';
+
 export default function EditableSkill(props) {
-    const { data, skillsList, changeState, skillOptions, skillLevelOptions } = props;
+    const { data, skillsList, changeState } = props;
 
     async function updateSkillsList(newValue, fieldName) {
         const newSkills = skillsList.map(obj => {
