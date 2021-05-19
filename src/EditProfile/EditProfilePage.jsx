@@ -16,6 +16,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import { auth, db, getCurrentUserDataAsync } from '../firebase';
 
+<<<<<<< HEAD
 
 const skillOptions = [];
 const skillLevelOptions = [];
@@ -30,6 +31,8 @@ async function loadSkillsAsync() {
 
 loadSkillsAsync();
 
+=======
+>>>>>>> profilePage
 async function submitChanges(profile) {
     const skills = profile.skills;
     delete profile.skills;
@@ -58,12 +61,20 @@ async function addSkill(profile) {
 export default function Profile() {
     const classes = useStyles();
     const [userProfile, setUserProfile] = useState({
+<<<<<<< HEAD
         firstName: "",
         lastName: "",
+=======
+        displayName: "",
+>>>>>>> profilePage
         location: "",
         bio: "",
         skills: [],
     });
+<<<<<<< HEAD
+=======
+
+>>>>>>> profilePage
     useEffect(() => getCurrentUserDataAsync().then(setUserProfile), []);
 
     async function changeState(newValue, fieldName) {
@@ -116,6 +127,7 @@ export default function Profile() {
                     marginTop: '1vh',
                     alignItems: 'center',
                 }}>
+<<<<<<< HEAD
                 <Grid item xs={12} container direction="row">
                     <Grid item xs={6}>
                         <InputBase
@@ -145,6 +157,20 @@ export default function Profile() {
                             }}
                         />
                     </Grid>
+=======
+                <Grid item xs={12}>
+                    <InputBase
+                        value={userProfile.displayName}
+                        onChange={(event) => changeState(event.target.value, "displayName")}
+                        readOnly={false}
+                        inputProps={{
+                            'aria-label': 'naked',
+                            style: {
+                                textAlign: 'right',
+                                border: 'none',
+                            }
+                        }} />
+>>>>>>> profilePage
                 </Grid>
                 <Grid item xs={12}>
                     <InputBase
@@ -178,8 +204,11 @@ export default function Profile() {
                                 data={skill}
                                 skillsList={userProfile.skills}
                                 changeState={setUserProfile}
+<<<<<<< HEAD
                                 skillOptions={skillOptions}
                                 skillLevelOptions={skillLevelOptions}
+=======
+>>>>>>> profilePage
                             />
                         </Grid>
                     );
