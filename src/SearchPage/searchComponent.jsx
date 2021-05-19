@@ -80,16 +80,16 @@ class Search extends Component {
             .get()
             .then(snapshot => {
                 const users = []
-                
+                const parents = []
                 snapshot.forEach(doc => {
                     const data = doc.data()
                     users.push(data)
-
+                    
                     const parentDocRef = doc.ref.parent.parent
                     console.log(parentDocRef)
                     parentDocRef.get().then(parentSnap => {
                         const parentData = parentSnap.data();
-                        const parents = []
+                        
                         parents.push(parentData)
                         this.setState({ parents: parents })
                         console.log(parents)
