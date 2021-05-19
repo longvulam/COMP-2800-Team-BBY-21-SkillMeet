@@ -17,10 +17,20 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { auth, db, getCurrentUserDataAsync } from '../firebase';
 
 
-async function submitChanges(profile) {
-    console.log(profile);
-    console.log(profile.skills);
+const skillOptions = [];
+const skillLevelOptions = [];
 
+async function loadSkillsAsync() {
+    db.collection("userSkills").get()
+    .then(querySs => querySs.forEach(doc => skillOptions.push(doc.data().name)));
+    
+    db.collection("userSkillLevels").get()
+    .then(querySs => querySs.forEach(doc => skillLevelOptions.push(doc.data().name)));
+}
+
+loadSkillsAsync();
+
+async function submitChanges(profile) {
     const skills = profile.skills;
     delete profile.skills;
 
@@ -29,7 +39,6 @@ async function submitChanges(profile) {
 
     const userRef = db.collection('users').doc(auth.currentUser.uid);
     batch.update(userRef, profile);
-
 
     skills.forEach(skill => {
         const skillRef = userRef.collection("Skills").doc(skill.id);
@@ -45,8 +54,6 @@ async function submitChanges(profile) {
 async function addSkill(profile) {
 
 }
-
-
 
 export default function Profile() {
     const classes = useStyles();
@@ -171,6 +178,8 @@ export default function Profile() {
                                 data={skill}
                                 skillsList={userProfile.skills}
                                 changeState={setUserProfile}
+                                skillOptions={skillOptions}
+                                skillLevelOptions={skillLevelOptions}
                             />
                         </Grid>
                     );

@@ -7,19 +7,10 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const nameList = ["java", "c#"];
-const levelList = ["Beginner", "Intermediate"];
-
 export default function EditableSkill(props) {
-    const { data, skillsList, changeState } = props;
-
-    const [expanded, setExpanded] = useState(false);
-    function expandSkills() {
-        setExpanded(!expanded);
-    }
+    const { data, skillsList, changeState, skillOptions, skillLevelOptions } = props;
 
     async function updateSkillsList(newValue, fieldName) {
-
         const newSkills = skillsList.map(obj => {
             const changedSkill = skillsList.find(o => o.skillName === data.skillName);
             if (changedSkill) {
@@ -51,7 +42,7 @@ export default function EditableSkill(props) {
                     width: 'calc(100% - 5em)',
                 }}>
                     <Autocomplete
-                        options={nameList}
+                        options={skillOptions}
                         value={data.skillName}
                         onChange={(event, newValue) => updateSkillsList(newValue, "skillName")}
                         style={{ width: '55%', }}
@@ -63,7 +54,7 @@ export default function EditableSkill(props) {
                                 variant="standard" />}
                     />
                     <Autocomplete
-                        options={levelList}
+                        options={skillLevelOptions}
                         value={data.skillLevel}
                         onChange={(event, newValue) => updateSkillsList(newValue, "skillLevel")}
                         style={{ width: '35%', }}
