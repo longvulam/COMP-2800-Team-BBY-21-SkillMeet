@@ -1,5 +1,7 @@
 
-frontend/build
+build/
+.firebase/
+
 
 # Logs
 logs
