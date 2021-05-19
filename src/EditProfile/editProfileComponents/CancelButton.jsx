@@ -1,21 +1,18 @@
 import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { withRouter } from "react-router";
 
-
-export default function SaveButton (props) {
-
-  function saveButtonClick () {
-    console.log('saving');
-  }
-
+function CancelButton (props) {
   return (
     <Fab
       style={props.style}
-      onClick={saveButtonClick}
+      onClick={() => props.history.push("/profile")}
       color={''}
       >
       <CancelIcon/>
     </Fab>
   );
 }
+
+export default withRouter(CancelButton);

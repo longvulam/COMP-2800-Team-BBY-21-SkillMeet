@@ -29,11 +29,19 @@ async function getProfileDataFromDb(uid) {
     const userRef = db.collection('users').doc(uid);
 
     const data = await Promise.all([
-        userRef.get().then(doc => doc.data()),
+        userRef.get().then(doc => {
+            const data = doc.data();
+            data.id = doc.id;
+            return data;
+        }),
         userRef.collection('Skills')
         .get().then(querySnapshot => {
             const arr = [];
-            querySnapshot.forEach(doc => arr.push(doc.data()));
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                data.id = doc.id;
+                arr.push(data);
+            });
             return arr;
         }),
     ]);
