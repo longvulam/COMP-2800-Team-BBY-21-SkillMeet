@@ -6,8 +6,6 @@ import Create from './Create';
 import Navbar from '../Navbar';
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 
-
-
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
@@ -69,7 +67,6 @@ const Home = () => {
       });
   }
 
-
   const handleSignup = () => {
     clearErrors();
     firebase.auth().createUserWithEmailAndPassword(email, password).then(cred => {
@@ -80,12 +77,13 @@ const Home = () => {
         console.log("A user is signed up!");
       })
     }).catch((error) => {
-      if(firstName.trim.length == 0){
+      if(firstName.length == 0){
         setFirstNameError("PLease fill your first name.");
-      }
-      if (lastName.trim.length == 0){
+      } 
+      if (lastName.length == 0){
         setLastNameError("PLease fill your last name.");
       }
+
       switch (error.code) {
         case "auth/email-already-in-use":
         case "auth/invalid-email":
@@ -96,6 +94,8 @@ const Home = () => {
           break;
       }
     })
+
+
   };
 
   const handleLogout = () => {
@@ -150,6 +150,8 @@ const Home = () => {
             setHasAccount={setHasAccount}
             emailError={emailError}
             passwordError={passwordError}
+            firstNameError={firstNameError}
+            lastNameError={lastNameError}
           />
 
         </div>
