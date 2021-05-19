@@ -14,14 +14,36 @@ import EditableSkill from './editProfileComponents/EditableSkill';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-import { getCurrentUserDataAsync } from '../firebase';
+import { auth, db, getCurrentUserDataAsync } from '../firebase';
+
 
 async function submitChanges(profile) {
     console.log(profile);
+    console.log(profile.skills);
+
+    const skills = profile.skills;
+    delete profile.skills;
+
+    // Get a new write batch
+    var batch = db.batch();
+
+    const userRef = db.collection('users').doc(auth.currentUser.uid);
+    batch.update(userRef, profile);
+
+
+    skills.forEach(skill => {
+        const skillRef = userRef.collection("Skills").doc(skill.id);
+        batch.update(skillRef, skill);
+    });
+
+    // Commit the batch
+    batch.commit().then(() => {
+        console.log("Profile Saved!")
+    });
 }
 
-async function addSkill(profile){
-    
+async function addSkill(profile) {
+
 }
 
 export default function Profile() {
@@ -52,7 +74,7 @@ export default function Profile() {
                     }}
                 />
                 <SaveButton
-                    onClick={(event)=> submitChanges(userProfile)}
+                    onClick={(event) => submitChanges(Object.assign({}, userProfile))}
                     editable={true}
                     style={{
                         marginRight: '4vw',
@@ -131,8 +153,8 @@ export default function Profile() {
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                    <IconButton 
-                    onClick={() => addSkill(userProfile)}>
+                    <IconButton
+                        onClick={() => addSkill(userProfile)}>
                         <AddCircleIcon
                             style={{
                                 width: '1.5em',
@@ -146,10 +168,10 @@ export default function Profile() {
                     style={{
                         width: '100%'
                     }}>
-                    <ProfileBio 
-                    bio={userProfile.bio}
-                    changeState={setUserProfile}
-                    editable={true} />
+                    <ProfileBio
+                        bio={userProfile.bio}
+                        changeState={setUserProfile}
+                        editable={true} />
                 </Grid>
             </Grid>
 

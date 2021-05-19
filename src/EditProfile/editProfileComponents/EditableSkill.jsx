@@ -13,7 +13,6 @@ const levelList = ["Beginner", "Intermediate"];
 export default function EditableSkill(props) {
     const { data, skillsList, changeState } = props;
 
-
     const [expanded, setExpanded] = useState(false);
     function expandSkills() {
         setExpanded(!expanded);
@@ -54,7 +53,7 @@ export default function EditableSkill(props) {
                     <Autocomplete
                         options={nameList}
                         value={data.skillName}
-                        onChange={(event, newValue) => updateSkillsList(event, newValue, "skillName")}
+                        onChange={(event, newValue) => updateSkillsList(newValue, "skillName")}
                         style={{ width: '55%', }}
                         renderInput={(params) =>
                             <TextField {...params}
@@ -66,7 +65,7 @@ export default function EditableSkill(props) {
                     <Autocomplete
                         options={levelList}
                         value={data.skillLevel}
-                        onChange={(event, newValue) => updateSkillsList(event, newValue, "skillLevel")}
+                        onChange={(event, newValue) => updateSkillsList(newValue, "skillLevel")}
                         style={{ width: '35%', }}
                         renderInput={(params) =>
                             <TextField {...params}
