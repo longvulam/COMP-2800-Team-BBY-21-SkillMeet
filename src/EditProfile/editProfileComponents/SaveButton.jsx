@@ -3,18 +3,15 @@ import Fab from '@material-ui/core/Fab';
 import SaveIcon from '@material-ui/icons/Save';
 
 
-export default function SaveButton (props) {
+export default function SaveButton(props) {
+    const { style, onClick } = props;
 
-  function saveButtonClick () {
-    console.log('saving');
-  }
-
-  return (
-    <Fab
-      style={props.style}
-      onClick={saveButtonClick}
-      >
-      <SaveIcon/>
-    </Fab>
-  );
+    return (
+        <Fab
+            style={style}
+            onClick={onClick}
+        >
+            <SaveIcon />
+        </Fab>
+    );
 }
