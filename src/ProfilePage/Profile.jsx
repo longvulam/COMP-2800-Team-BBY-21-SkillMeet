@@ -91,8 +91,7 @@ export default function Profile() {
                     className={classes.avatar} />
             </div>
 
-            <NameAndLocationInfo displayName={userProfile.displayName}
-                location={userProfile.location} />
+            <NameAndLocationInfo userProfile={userProfile}/>
 
             <Grid container
                 direction="column"
@@ -117,7 +116,7 @@ export default function Profile() {
 }
 
 function NameAndLocationInfo(props) {
-    const { displayName, location } = props;
+    const { userProfile } = props;
     return (<Grid key="userProfile" container direction="column" spacing={1}
         style={{
             margin: 'auto',
@@ -127,7 +126,7 @@ function NameAndLocationInfo(props) {
         <Grid item xs={12}>
             <InputBase
                 key="userName"
-                value={displayName}
+                value={userProfile.displayName}
                 readOnly={true}
                 inputProps={{
                     'aria-label': 'naked',
@@ -141,7 +140,7 @@ function NameAndLocationInfo(props) {
         <Grid item xs={12}>
             <InputBase
                 readOnly={true}
-                value={location}
+                value={userProfile.city}
                 inputProps={{
                     'aria-label': 'naked',
                     style: {
