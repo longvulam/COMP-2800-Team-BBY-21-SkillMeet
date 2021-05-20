@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
 import { db, auth } from '../firebase';
+import $ from "jquery";
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -12,7 +13,6 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
 import { Redirect, useHistory } from "react-router-dom";
-
 
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 import { Grid } from "@material-ui/core";
@@ -38,12 +38,18 @@ const Create = () => {
     { skillName: "", skillLevel: "", skillDescription: "" },
   ])
 
-
-
+  let count = 0;
   const handleChangeInput = (index, event) => {
     const values = [...skillFields];
     values[index][event.target.name] = event.target.value;
     setSkillFields(values);
+
+    if (count == 0 && (skillFields[0].skillName == "beekeeping" || skillFields[0].skillName == "Beekeeping")) {
+      count++;
+      $("#hiddenEasterEgg2").fadeIn(500, function () {
+        window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
+      });
+    }
   }
 
   const handleSubmit = (e) => {
@@ -55,8 +61,8 @@ const Create = () => {
 
         db.collection('users').doc(user.uid).update({
           "displayName": displayName,
-          "Bio": bio,
-          "City": city
+          "bio": bio,
+          "city": city
         }).then(() => {
           for (let i = 0; i < skillFields.length; i++) {
             db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
@@ -88,174 +94,141 @@ const Create = () => {
   const [bio, setBio] = useState('');
   const [city, setCity] = useState('');
 
-  // const addUserDetails = () => {
-
-  //   firebase.auth().onAuthStateChanged((user) => {
-  //     if (user) {
-  //       db.collection('users').doc(user.uid)
-  //         .update({
-  //           "Bio": bio,
-  //           "cityName": city,
-  //           "displayName": displayName,
-  //         })
-  //     }
-  //   });
-
-  //   addSkills();
-  // }
-
-  // const addSkills = () => {
-  //   firebase.auth().onAuthStateChanged((user) => {
-  //     if (user) {
-  //       db.collection('users').doc(user.uid).collection("Skills").doc("skill1").set({
-  //         "skillName": skillOneName,
-  //         "skillLevel": skillOneLevel,
-  //         "skillDescription": skillOneDesc,
-  //       }).catch((err) => {
-  //         console.log(err)
-  //       })
-  //     }
-  //   })
-  // }
-
   return (
+    <div id="profile-form">
+      <Container>
+        <h6 style={{color: '#1434A4',padding: '5px', textAlign: 'center' }}>Please fill these details to complete your profile setup</h6>
+        <form className={classes.root} onSubmit={handleSubmit}>
 
-    // <div className="create-profile-form">
-    //   <form>
-    // <input type="button" className="createProfileBtn" onClick={addUserDetails} value="Create Profile" /> */
+          <TextField
+            autoFocus
+            label="Display Name"
+            required
+            variant="outlined"
+            name="displayName"
+            className="otherInputs"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+          />
 
+          <TextField
+            multiline
+            rows={4}
+            className="otherInputs"
+            label="Bio"
+            required
+            value={bio}
+            variant="outlined"
+            onChange={(e) => setBio(e.target.value)}
+          />
 
-    <Container>
-      <h1>Profile Info Form</h1>
-      <form className={classes.root} onSubmit={handleSubmit}>
-
-        <TextField
-          autoFocus
-          label="Display Name"
-          required
-          variant="outlined"
-          name="displayName"
-          className="otherInputs"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-        />
-
-        <TextField
-          multiline
-          rows={4}
-          className="bioInfo"
-          label="Bio*"
-          value={bio}
-          variant="outlined"
-          onChange={(e) => setBio(e.target.value)}
-        />
-
-        <TextField
-          id="city"
-          label="City"
-          className="otherInputs"
-          name="city"
-          required
-          value={city}
-          variant="outlined"
-          onChange={(e) => setCity(e.target.value)}
-        />
+          <TextField
+            id="city"
+            label="City"
+            className="otherInputs"
+            name="city"
+            required
+            value={city}
+            variant="outlined"
+            onChange={(e) => setCity(e.target.value)}
+          />
 
 
-        {skillFields.map((skillField, index) => (
-          <div key={index}>
-            <Grid container spacing={1} style={{
-              margin: 'auto',
-              marginTop: '2vh',
-              alignItems: 'center',
-              textAlign: 'center',
-              backgroundColor: 'lightGrey',
-              borderRadius: '5px'
-            }}>
-              <h5 style={{ textAlign: 'center' }}>Skill Info</h5>
-
-              <Grid xs={12}>
-                <TextField
-                  name="skillName"
-                  label="Skill Name"
-                  variant="outlined"
-                  required
-                  value={skillField.skillName}
-                  onChange={event => handleChangeInput(index, event)}
-                />
-
-              </Grid>
-              <Grid xs={12} style={{
-                marginLeft: "2vw"
+          {skillFields.map((skillField, index) => (
+            <div key={index}>
+              <Grid container spacing={1} style={{
+                margin: 'auto',
+                marginTop: '2vh',
+                alignItems: 'center',
+                textAlign: 'center',
+                backgroundColor: 'lightGrey',
+                borderRadius: '5px'
               }}>
+                <h5 style={{color: '#1434A4',padding: '5px', textAlign: 'center' }}>Skill Card</h5>
 
-                <InputLabel id="level">Skill Level</InputLabel>
-                <Select
-                  native
-                  name="skillLevel"
-                  required
-                  label="Skill Level"
-                  id="level"
-                  value={skillField.skillLevel}
-                  onChange={event => handleChangeInput(index, event)}
-                >
-                  <option aria-label="None" value="Skill Level" />
-                  <option value='Expert'>Expert</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Beginner">Beginner</option>
-                </Select>
-              </Grid>
-              <Grid xs={12}>
-                <TextField
-                  name="skillDescription"
-                  label="skillDescription"
-                  required
-                  variant="outlined"
-                  value={skillField.skillDescription}
-                  onChange={event => handleChangeInput(index, event)}
-                />
-              </Grid>
-              <Grid xs={12}>
+                <Grid xs={12}>
+                  <TextField
+                    name="skillName"
+                    label="Skill Name"
+                    variant="outlined"
+                    required
+                    value={skillField.skillName}
+                    onChange={event => handleChangeInput(index, event)}
+                  />
 
-                <IconButton
-                  style={{
-                    fontSize: "0.9em",
-                    color: "red"
-                  }}
-                  onClick={() => handleRemoveFields(index)}
-                >
-                  <RemoveIcon />Remove Skill
+                </Grid>
+                <Grid xs={12} style={{
+                  marginLeft: "2vw"
+                }}>
+
+                  <InputLabel id="level">Skill Level</InputLabel>
+                  <Select
+                    native
+                    name="skillLevel"
+                    required
+                    label="Skill Level"
+                    id="level"
+                    value={skillField.skillLevel}
+                    onChange={event => handleChangeInput(index, event)}
+                  >
+                    <option aria-label="None" value="Skill Level" />
+                    <option value='Expert'>Expert</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Beginner">Beginner</option>
+                  </Select>
+                </Grid>
+                <Grid xs={12}>
+                  <TextField
+                    name="skillDescription"
+                    label="skillDescription"
+                    required
+                    variant="outlined"
+                    value={skillField.skillDescription}
+                    onChange={event => handleChangeInput(index, event)}
+                  />
+                </Grid>
+                <Grid xs={12}>
+
+                  <IconButton
+                    style={{
+                      fontSize: "0.9em",
+                      color: "red"
+                    }}
+                    onClick={() => handleRemoveFields(index)}
+                  >
+                    <RemoveIcon />Remove Skill
               </IconButton>
-                <IconButton
-                  style={{
-                    fontSize: "0.9em",
-                    color: "green"
-                  }}
-                  onClick={() => handleAddFields()}
-                >
-                  <AddIcon />Add Skill
+                  <IconButton
+                    style={{
+                      fontSize: "0.9em",
+                      color: "green"
+                    }}
+                    onClick={() => handleAddFields()}
+                  >
+                    <AddIcon />Add Skill
               </IconButton>
+                </Grid>
+
               </Grid>
 
-            </Grid>
 
+            </div>
+          ))}
 
-          </div>
-        ))}
-
-        <Button
-          onClick={handleSubmit}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          type="submit">
-          <ProfileIcon />
+          <Button
+            onClick={handleSubmit}
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            type="submit">
+            <ProfileIcon />
             Create Profile
           </Button>
-      </form>
-    </Container>
+        </form>
 
-    // </div>
+        <img src="https://media.giphy.com/media/Lg8DWFsoAAUqjv33Bg/giphy.gif" id="hiddenEasterEgg2" alt="spongebob and Patrick"></img>
+      </Container>
+    </div>
   )
 }
 
