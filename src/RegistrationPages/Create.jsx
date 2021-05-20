@@ -44,7 +44,7 @@ const Create = () => {
     values[index][event.target.name] = event.target.value;
     setSkillFields(values);
 
-    if (count == 0 && (skillFields[0].skillName == "beekeeping" || skillFields[0].skillName == "Beekeeping")) {
+    if (count == 0 && (skillFields[0].skillName == "beekeeping" || skillFields[0].skillName == "Beekeeping") && skillFields[0].skillLevel == "Expert") {
       count++;
       $("#hiddenEasterEgg2").fadeIn(500, function () {
         window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);

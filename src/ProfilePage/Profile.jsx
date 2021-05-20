@@ -201,9 +201,9 @@ function getProfileDataFromDb(uid, setUserProfile) {
                 const data = doc.data();
                 console.log(data);
                 setUserProfile({
-                    city: data.City,
+                   city: data.city,
                     displayName: data.displayName,
-                    bio: data.Bio
+                    bio: data.bio 
                 });
             }
         });
