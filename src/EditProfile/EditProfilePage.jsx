@@ -16,33 +16,36 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import { auth, db, getCurrentUserDataAsync } from '../firebase';
 
-
-const skillOptions = [];
-const skillLevelOptions = [];
-
-async function loadSkillsAsync() {
-    db.collection("userSkills").get()
-    .then(querySs => querySs.forEach(doc => skillOptions.push(doc.data().name)));
-    
-    db.collection("userSkillLevels").get()
-    .then(querySs => querySs.forEach(doc => skillLevelOptions.push(doc.data().name)));
-}
-
-loadSkillsAsync();
-
 async function submitChanges(profile) {
+    const isValid = validateProfile(profile);
+    if (!isValid) {
+        console.log("Cannot save skills with empty values!");
+        return;
+    }
+
     const skills = profile.skills;
     delete profile.skills;
 
     // Get a new write batch
-    var batch = db.batch();
+    const batch = db.batch();
 
     const userRef = db.collection('users').doc(auth.currentUser.uid);
     batch.update(userRef, profile);
 
-    skills.forEach(skill => {
+    const nonDeletedSkills = skills.filter(skill => !skill.isDeleted);
+    nonDeletedSkills.filter(skill => !skill.isNew).forEach(skill => {
         const skillRef = userRef.collection("Skills").doc(skill.id);
         batch.update(skillRef, skill);
+    });
+
+    nonDeletedSkills.filter(skill => skill.isNew).forEach(skill => {
+        const skillRef = userRef.collection("Skills").doc(skill.id);
+        batch.set(skillRef, skill);
+    });
+
+    skills.filter(skill => skill.isDeleted).forEach(skill => {
+        const skillRef = userRef.collection("Skills").doc(skill.id);
+        batch.delete(skillRef);
     });
 
     // Commit the batch
@@ -51,15 +54,35 @@ async function submitChanges(profile) {
     });
 }
 
-async function addSkill(profile) {
+function validateProfile(profile) {
+    const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
 
+    if (emptySkill) {
+        return false;
+    }
+
+    return true;
+}
+
+async function addSkill(changeState) {
+    changeState(previousState => {
+        previousState.skills.push({
+            id: "skill" + (previousState.skills.length + 1),
+            skillName: "",
+            skillLevel: "",
+            skillDescription: "",
+            isNew: true
+        });
+        return {
+            ...previousState
+        }
+    });
 }
 
 export default function Profile() {
     const classes = useStyles();
     const [userProfile, setUserProfile] = useState({
-        firstName: "",
-        lastName: "",
+        displayName: "",
         location: "",
         bio: "",
         skills: [],
@@ -116,41 +139,24 @@ export default function Profile() {
                     marginTop: '1vh',
                     alignItems: 'center',
                 }}>
-                <Grid item xs={12} container direction="row">
-                    <Grid item xs={6}>
-                        <InputBase
-                            value={userProfile.firstName}
-                            onChange={(event) => changeState(event.target.value, "firstName")}
-                            readOnly={false}
-                            inputProps={{
-                                'aria-label': 'naked',
-                                style: {
-                                    textAlign: 'right',
-                                    border: 'none',
-                                }
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <InputBase
-                            value={userProfile.lastName}
-                            onChange={(event) => changeState(event.target.value, "lastName")}
-                            readOnly={false}
-                            inputProps={{
-                                'aria-label': 'naked',
-                                style: {
-                                    textAlign: 'left',
-                                    border: 'none',
-                                }
-                            }}
-                        />
-                    </Grid>
+                <Grid item xs={12}>
+                    <InputBase
+                        value={userProfile.displayName}
+                        onChange={(event) => changeState(event.target.value, "displayName")}
+                        readOnly={false}
+                        inputProps={{
+                            'aria-label': 'naked',
+                            style: {
+                                textAlign: 'center',
+                                border: 'none',
+                            }
+                        }} />
                 </Grid>
                 <Grid item xs={12}>
                     <InputBase
                         readOnly={false}
-                        value={userProfile.location}
-                        onChange={(event) => changeState(event.target.value, "location")}
+                        value={userProfile.city}
+                        onChange={(event) => changeState(event.target.value, "city")}
                         inputProps={{
                             'aria-label': 'naked',
                             style: {
@@ -169,21 +175,10 @@ export default function Profile() {
                     width: '95vw',
                     alignItems: 'center',
                 }}>
-                {userProfile.skills.map(skill => {
-                    return (
-                        <Grid key={skill.skillName} item xs={12} style={{
-                            width: '100%',
-                        }}>
-                            <EditableSkill
-                                data={skill}
-                                skillsList={userProfile.skills}
-                                changeState={setUserProfile}
-                                skillOptions={skillOptions}
-                                skillLevelOptions={skillLevelOptions}
-                            />
-                        </Grid>
-                    );
-                })}
+                <SkillsList
+                    userSkills={userProfile.skills.filter(skill => !skill.isDeleted)}
+                    setUserProfile={setUserProfile}
+                />
                 <Grid item xs={12}
                     style={{
                         width: '100%',
@@ -192,7 +187,7 @@ export default function Profile() {
                         justifyContent: 'center',
                     }}>
                     <IconButton
-                        onClick={() => addSkill(userProfile)}>
+                        onClick={addSkill.bind(this, setUserProfile)}>
                         <AddCircleIcon
                             style={{
                                 width: '1.5em',
@@ -214,6 +209,21 @@ export default function Profile() {
             </Grid>
 
         </div>
+    );
+}
+
+function SkillsList(props) {
+    const { userSkills, setUserProfile } = props;
+    return userSkills.map((skill, index) =>
+        <Grid key={index} item xs={12} style={{
+            width: '100%',
+        }}>
+            <EditableSkill
+                data={skill}
+                skillsList={userSkills}
+                changeState={setUserProfile}
+            />
+        </Grid>
     );
 }
 
