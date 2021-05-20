@@ -55,8 +55,8 @@ const Create = () => {
 
         db.collection('users').doc(user.uid).update({
           "displayName": displayName,
-          "Bio": bio,
-          "City": city
+          "bio": bio,
+          "city": city
         }).then(() => {
           for (let i = 0; i < skillFields.length; i++) {
             db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
