@@ -6,8 +6,9 @@ import Friends from './Friends/Friends';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
-import Search from "./SearchPage/searchComponent";
+// import Search from "./SearchPage/searchComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
+import Search from "./SearchPage/SearchPage";
 
 function App() {
 

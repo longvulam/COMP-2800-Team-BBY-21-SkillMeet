@@ -79,11 +79,11 @@ class Search extends Component {
             .where('skillName', 'in', skillSearch)
             .get()
             .then(snapshot => {
-                console.log(snapshot)
+                console.log(snapshot);
                 const users = []
-                const parents = []
+                        const parents = []
                 snapshot.forEach(doc => {
-                    console.log(doc.data())
+                    console.log(doc.data());
                     const data = doc.data()
                     users.push(data)
                     
