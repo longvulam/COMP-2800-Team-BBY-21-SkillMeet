@@ -155,8 +155,8 @@ export default function Profile() {
                 <Grid item xs={12}>
                     <InputBase
                         readOnly={false}
-                        value={userProfile.location}
-                        onChange={(event) => changeState(event.target.value, "location")}
+                        value={userProfile.city}
+                        onChange={(event) => changeState(event.target.value, "city")}
                         inputProps={{
                             'aria-label': 'naked',
                             style: {
