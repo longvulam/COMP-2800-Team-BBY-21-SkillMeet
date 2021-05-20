@@ -13,17 +13,12 @@ export default function EditableSkill(props) {
     const { data, skillsList, changeState } = props;
 
     async function updateSkillsList(newValue, fieldName) {
-        const newSkills = skillsList.map(obj => {
-            const changedSkill = skillsList.find(o => o.skillName === data.skillName);
-            if (changedSkill) {
-                changedSkill[fieldName] = newValue;
-            }
-            return changedSkill || obj;
-        });
+        const thisSkill = skillsList.find(skill => skill.skillName === data.skillName);
+        thisSkill[fieldName]= newValue;
         changeState(previousValues => {
             return {
                 ...previousValues,
-                skills: newSkills
+                skills: skillsList
             }
         });
     }
