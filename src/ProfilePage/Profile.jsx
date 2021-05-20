@@ -50,8 +50,6 @@ export default function Profile() {
         skills: []
     });
     
-    const [userSkills, setUserSkills] = useState([]);
-
     useEffect(() => getCurrentUserDataAsync().then(setUserProfile), []);
     
     const [editable, setEditable] = useState(false);
