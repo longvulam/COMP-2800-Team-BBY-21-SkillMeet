@@ -33,11 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
   userContain: {
     width:'98vw',
-    height:'calc(100vh - 7.9em)',
+    height:'calc(100vh - 9.5em)',
     overflowY:'scroll',
     overFlowX:'hidden',
     margin:'auto',
-    marginTop:'0.2em',
+    marginTop:'1em',
     alignItems:'center',
   },
   cardContain: {
@@ -49,10 +49,15 @@ export default function SearchPage() {
   const classes = useStyles();
   const [searchedSkills, setSearchedSkills] = useState([]);
   function searchedSkillUpdate (event, currentSelectedSkills) {
-    setSearchedSkills([currentSelectedSkills], setSearchedUsers);
+    console.log('Onchange', currentSelectedSkills);
+    setSearchedSkills([currentSelectedSkills]);
+    console.log('Skills Searched', searchedSkills);
   }
   const [searchedUsers, setSearchedUsers] = useState([]);
-  
+
+  useEffect(()=> {
+  });
+
   return (
   <>
   <div className={classes.searchWrap}>
@@ -76,23 +81,36 @@ export default function SearchPage() {
     style={{
       height:'100%'
     }}>
-      <Button onClick={() => getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
+      <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
         <SearchIcon color='primary' className={classes.searchIcon}/>
       </Button>
     </Paper>
   </div>
   <Grid container direction="column" 
-  spacing={1}
-  className={classes.userContain}>
-    <Grid Item xs={12} className={classes.cardContain}>
-      <UserSearchCard/>
-    </Grid>
+    spacing={1}
+    className={classes.userContain}>
+  {searchedUsers.map(user => {
+    const { name, city, skillName, skillLevel, id  } = user;
+    return (
+      <Grid Item xs={12} className={classes.cardContain}>
+        <UserSearchCard
+          name={name}
+          city={city}
+          skillName={skillName}
+          skillLevel={skillLevel}
+          id={id}
+        />
+      </Grid>
+    );
+  })
+  }
   </Grid>
   </>  
-    );
+  );
 }
 
 async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
+  console.log('BUTTON CLICKED');
   const searchedSkillList = Array.isArray(searchedSkills) ? searchedSkills.map(skillObj => skillObj.title.toLowerCase()) : searchedSkills;
   const userSkillDocs = [];
   const userInfoDocs = [];
