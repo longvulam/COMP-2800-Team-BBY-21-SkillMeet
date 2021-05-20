@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
 import Search from "./SearchPage/searchComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
+import ChatRooms from "./Chat/ChatPage";
 
 function App() {
 
@@ -36,6 +37,9 @@ function App() {
             </Route>
             <Route path = '/editProfile'>
                 <EditProfilePage/>
+            </Route>
+            <Route path = '/chatRooms'>
+                <ChatRooms></ChatRooms>
             </Route>
           </Switch>
         </div>
