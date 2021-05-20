@@ -8,7 +8,8 @@ import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
 import Search from "./SearchPage/searchComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
-import ChatRooms from "./Chat/ChatPage";
+import ChatRoomsList from "./Chat/ChatRoomsList";
+import ChatRoom from "./Chat/ChatRoom";
 
 function App() {
 
@@ -39,7 +40,10 @@ function App() {
                 <EditProfilePage/>
             </Route>
             <Route path = '/chatRooms'>
-                <ChatRooms></ChatRooms>
+                <ChatRoomsList />
+            </Route>
+            <Route path = '/chatRoom/:chatRoomId'>
+                <ChatRoom/>
             </Route>
           </Switch>
         </div>

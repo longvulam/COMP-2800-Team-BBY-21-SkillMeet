@@ -2,9 +2,8 @@
 const ChatRooms = (props) => {
     return ( 
     <div>
-        CHAT
+        CHAT rooms list
     </div> );
 }
  
 export default ChatRooms;
-
