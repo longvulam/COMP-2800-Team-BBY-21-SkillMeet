@@ -7,14 +7,25 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import {skillLevelOptions, skillOptions} from '../../dataStores/skills';
+import { skillLevelOptions, skillOptions } from '../../dataStores/skills';
 
 export default function EditableSkill(props) {
     const { data, skillsList, changeState } = props;
 
     async function updateSkillsList(newValue, fieldName) {
         const thisSkill = skillsList.find(skill => skill.skillName === data.skillName);
-        thisSkill[fieldName]= newValue;
+        thisSkill[fieldName] = newValue;
+        changeState(previousValues => {
+            return {
+                ...previousValues,
+                skills: skillsList
+            }
+        });
+    }
+
+    async function deleteSkill(event) {
+        const thisSkill = skillsList.find(skill => skill.skillName === data.skillName);
+        thisSkill.isDeleted = true;
         changeState(previousValues => {
             return {
                 ...previousValues,
@@ -63,9 +74,8 @@ export default function EditableSkill(props) {
                                 variant="standard" />}
                     />
                 </div>
-                <IconButton>
-                    <DeleteIcon
-                    />
+                <IconButton onClick={deleteSkill}>
+                    <DeleteIcon />
                 </IconButton>
             </div>
             <div style={{
