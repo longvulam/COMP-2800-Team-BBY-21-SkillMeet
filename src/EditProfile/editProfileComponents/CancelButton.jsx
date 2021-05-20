@@ -8,7 +8,7 @@ function CancelButton (props) {
     <Fab
       style={props.style}
       onClick={() => props.history.push("/profile")}
-      color={''}
+      color='default'
       >
       <CancelIcon/>
     </Fab>
