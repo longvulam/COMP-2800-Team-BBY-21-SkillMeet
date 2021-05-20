@@ -12,6 +12,10 @@ import Grid from '@material-ui/core/Grid';
 import firebase, { db } from '../firebase';
 import { collection, query, where, getDocs } from "firebase/firestore";
 
+import { skillOptions } from '../dataStores/skills';
+import createPalette from '@material-ui/core/styles/createPalette';
+console.log('SkillOptions', skillOptions);
+
 const useStyles = makeStyles((theme) => ({
   searchWrap: {
     width: '98vw',
@@ -33,17 +37,25 @@ const useStyles = makeStyles((theme) => ({
   },
   userContain: {
     width:'98vw',
-    height:'calc(100vh - 9.5em)',
-    overflowY:'scroll',
-    overFlowX:'hidden',
     margin:'auto',
     marginTop:'1em',
-    alignItems:'center',
+    marginBottom:'4.5em',
+    overflowY:'scroll',
   },
   cardContain: {
     width:'100%',
   }
 }));
+
+async function loadSkillsAsync(setSkillListFromDB, mounted) {
+  const skillOptions = [];
+  db.collection("userSkills").get()
+  .then(querySs => {
+    querySs.forEach(doc => skillOptions.push(doc.data().name))
+    if (mounted) {setSkillListFromDB(skillOptions);}
+    return () => mounted = false
+  });
+}
 
 export default function SearchPage() {
   const classes = useStyles();
@@ -54,10 +66,7 @@ export default function SearchPage() {
     console.log('Skills Searched', searchedSkills);
   }
   const [searchedUsers, setSearchedUsers] = useState([]);
-
-  useEffect(()=> {
-  });
-
+  
   return (
   <>
   <div className={classes.searchWrap}>
@@ -65,8 +74,8 @@ export default function SearchPage() {
       <Autocomplete
         id="tags-standard"
         onChange={searchedSkillUpdate}
-        options={skillsList}
-        getOptionLabel={(option) => option.title}
+        options={skillOptions}
+        getOptionLabel={(option) => option}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -86,13 +95,16 @@ export default function SearchPage() {
       </Button>
     </Paper>
   </div>
+
   <Grid container direction="column" 
     spacing={1}
-    className={classes.userContain}>
+    className={classes.userContain}
+    >
   {searchedUsers.map(user => {
+    console.log('Searchedusers', user);
     const { name, city, skillName, skillLevel, id  } = user;
     return (
-      <Grid Item xs={12} className={classes.cardContain}>
+      <Grid item xs={12} className={classes.cardContain}>
         <UserSearchCard
           name={name}
           city={city}
@@ -110,76 +122,34 @@ export default function SearchPage() {
 }
 
 async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
-  console.log('BUTTON CLICKED');
-  const searchedSkillList = Array.isArray(searchedSkills) ? searchedSkills.map(skillObj => skillObj.title.toLowerCase()) : searchedSkills;
+  if(searchedSkills.length <= 0) {return}
+
   const userSkillDocs = [];
-  const userInfoDocs = [];
+  const userRefDocs = [];
   const users = [];
-  db.collectionGroup('Skills')
-  .where('skillName', 'in', searchedSkillList)
-  .get()
-  .then(snapshot => {
-    snapshot.forEach(userSkillDoc => {
-      userSkillDocs.push(userSkillDoc.data());
-      const parentRefDoc = userSkillDoc.ref.parent.parent;
-      parentRefDoc.get()
-        .then(doc => {
-          let userInfoDoc =  {};
-          userInfoDoc.name = doc.data().displayName;
-          userInfoDoc.city = doc.data().city;
-          userInfoDoc.id = doc.id;
-          userInfoDocs.push(userInfoDoc);
-        })
-        .then(() => {
-          userInfoDocs.map((userInfo, i)=> {
-            let user = {};
-            user.name = userInfo.name;
-            user.city = userInfo.city;
-            user.id = userInfo.id
-            user.skillName = userSkillDocs[i].skillName;
-            user.skillLevel = userSkillDocs[i].skillLevel;
-            users.push(user);
-          });
-        })
-        .then(() => {
-          console.log('Users', users);
-          setSearchedUsers(users);
-        });
-    });
+  
+  const snapshots = await db.collectionGroup('Skills')
+  .where('skillName', 'in', searchedSkills)
+  .get();
+  snapshots.forEach(userSkillDoc => {
+    userSkillDocs.push(userSkillDoc.data());
+    userRefDocs.push(userSkillDoc.ref.parent.parent)
   });
+
+  const userInfoDocs = await Promise.all(userRefDocs.map(userRef => userRef.get().then(doc => doc.data())));
+  userInfoDocs.map((userInfo, i)=> {
+    let user = {};
+    user.name = userInfo.displayName;
+    user.city = userInfo.city;
+    user.id = userInfo.id
+    user.skillName = userSkillDocs[i].skillName;
+    user.skillLevel = userSkillDocs[i].skillLevel;
+    users.push(user);
+  });
+  console.log('Users', users);
+  setSearchedUsers(users);
 }
 
 
-const skillsList = [
-  { title: 'Algorithms' },
-  { title: 'Big Data' },
-  { title: 'Statistical Analysis' },
-  { title: 'Modeling' },
-  { title: 'Database Design' },
-  { title: 'Compiling Statistics' },
-  { title: 'Needs Analysis' },
-  { title: 'Documentation' },
-  { title: 'Database Management' },
-  { title: 'Data Mining' },
-  { title: 'Networking' },
-  { title: 'Security' },
-  { title: 'Servers' },
-  { title: 'Testing' },
-  { title: 'Python' },
-  { title: 'C#' },
-  { title: 'Fundamental Analysis' },
-  { title: 'Public Speaking' },
-  { title: 'Technical Analysis' },
-  { title: 'React' },
-  { title: 'Java' },
-  { title: 'Vue' },
-  { title: 'Svelte' },
-  { title: 'Ruby' },
-  { title: 'Javascript' },
-  { title: 'JQuery' },
-  { title: 'Firebase' },
-  { title: 'MongoDB' },
-  { title: 'MySQL' },
-  { title: 'Game Development' },
-  { title: 'Quality Assurance' },
-];
+
+
