@@ -24,8 +24,11 @@ export default function LogoutButton (props) {
   //Logout Function Here
   function handleLogout() {
     console.log('loggingOut');
-    firebase.auth().signOut();
-    history.push('/');
+
+    var promise = firebase.auth().signOut();
+    promise.then(function () {
+    window.location.href = '/';
+  });
   }
 
   return (

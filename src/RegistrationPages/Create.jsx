@@ -35,7 +35,6 @@ const Create = () => {
   const history = useHistory();
   const [skillFields, setSkillFields] = useState([
     { skillName: "", skillLevel: "", skillDescription: "" },
-    { skillName: "", skillLevel: "", skillDescription: "" },
   ])
 
   let count = 0;
@@ -144,12 +143,13 @@ const Create = () => {
                 backgroundColor: 'lightGrey',
                 borderRadius: '5px'
               }}>
-                <h5 style={{color: '#1434A4',padding: '5px', textAlign: 'center' }}>Skill Card</h5>
+                <p style={{color: '#1434A4', fontSize: '14px', padding: '5px', textAlign: 'center' }}>Add a skill to your profile:</p>
 
                 <Grid xs={12}>
                   <TextField
                     name="skillName"
                     label="Skill Name"
+                    placeholder="Enter the skill :"
                     variant="outlined"
                     required
                     value={skillField.skillName}
@@ -179,8 +179,11 @@ const Create = () => {
                 </Grid>
                 <Grid xs={12}>
                   <TextField
+                    multiline
+                    rows={3}
                     name="skillDescription"
-                    label="skillDescription"
+                    label="Skill Description"
+                    placeholder="Enter anything you would like to share with others related to the skill:"
                     required
                     variant="outlined"
                     value={skillField.skillDescription}
