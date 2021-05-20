@@ -1,0 +1,533 @@
+* {
+    margin: 0;
+  }
+  
+  .landing-page-background {
+    height: 100vh;
+    min-height: 900px;
+    padding-top: 10vh;
+    background-image: url("../img/friends1.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 65% 35%;
+  }
+  
+  .white-background {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: auto;
+    padding: 20px;
+    background-color: whitesmoke;
+    opacity: 0.7;
+    border-radius: 20px;
+  }
+  
+  .app-name {
+    font-size: 95px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: 800;
+    text-align: left;
+    color: rgb(0, 33, 71);
+  }
+  
+  .app-description {
+    font-size: 35px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: 400;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    color: #000589;
+    text-align: left;
+    padding-left: 0;
+  }
+  
+  .app-hook {
+    font-size: 45px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: 500;
+    text-align: left;
+    color: #000589;
+  }
+  
+  
+  
+  .loginContainer {
+    background-color: #588BAE;
+    height: fit-content;
+    padding: 20px;
+    margin-right: 20px;
+    border-radius: 20px;
+  }
+  
+  .mainBtn {
+    background-color: #0e4d92;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 17px;
+    padding: 16px 26px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  
+  .otherInputs,
+  .userEmailID,
+  .userPassword {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+  
+  .signInReDirect,
+  .signUpReDirect {
+    color: black;
+    font-size: 16px;
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: #588BAE;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin: auto;
+  }
+  
+  .signInLine,
+  .signUpLine {
+    font-size: 20px;
+    text-align: center;
+  }
+  
+  .formHeading {
+    text-align: center;
+    font-size: 25px;
+  
+  }
+  
+  .create-profile-form{
+    margin: auto 10%;
+    height: fit-content;
+  }
+  
+  .bioInfo {
+    width: 100%;
+    height: 90px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    resize: none;
+  }
+    
+  .createProfileBtn{
+    background-color: #0e4d92;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    padding: 10px 18px;
+    text-decoration: none;
+    margin: 2px 1px;
+    cursor: pointer;
+  }
+  
+  .errorMsg{
+    color: #ff0033;
+    font-size: 14px;
+  }
+  
+  #skillOneName, #skillTwoName, #skillThreeName{
+    height: 30px;
+    width: 250px;
+  }
+  
+  .skillBox{
+    background-color: lightgrey;
+    border-radius: 5px;
+  }
+  
+  #skillContent{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 20px;
+  }
+  
+  #skillOneInfo, #skillTwoInfo, #skillThreeInfo {
+    float: right;
+    width: 80%;
+    height: 110px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    resize: none;
+  }
+  
+  
+  /* sets layout and style for the top navbar */
+  .navbar {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: #95C8D8; */
+    background-color: #588BAE;
+    color: black;
+    border-radius: 0px 0px 4px 4px;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid rgba(0, 0, 0, .5);
+  }
+  
+  /* sets the letter style of 'BESTRIDE' Name on navbar */
+  .brand-title {
+    font-size: 2.7rem;
+    margin: .5rem;
+    font-family: 'Monoton', cursive;
+    color: whitesmoke;
+    letter-spacing: 4px;
+    text-decoration: none;
+  }
+  
+  /* sets the height of links in the navbar to 100% */
+  .navbar-links {
+    height: 100%;
+  }
+  
+  /* sets layout of the individual links in the navbar */
+  .navbar-links ul {
+    display: flex;
+    margin: 0 2vw;
+    padding: 0;
+  }
+  
+  /* changes the background, adds a border, and changes the cursor to pointer when hovering the logout button */
+  #btnLogout:hover {
+    background-image: linear-gradient(rgba(25, 102, 38, 0.986), #33a852);
+    border-radius: 0px 0px 15px 15px;
+    border: 0px double rgb(0, 0, 0, .2);
+    cursor: pointer;
+  }
+  
+  /* styles the individual links in the navbars, sets margins, and sets list-style to none */
+  .navbar-links li {
+    font-size: 1.1rem;
+    list-style: none;
+    margin: 1vw;
+    color: whitesmoke;
+  
+  }
+  
+  /* sets the color and display of the anchor elements of the links for the navbar */
+  .navbar-links li a {
+    display: inline-block;
+    text-decoration: none;
+    color: whitesmoke;
+  }
+  
+  /* sets margins on the icons used in the navbar */
+  .fa {
+    margin: 0.75rem;
+  }
+  
+  /* changes the background, border, and cursor when hovering links in the navbar */
+  .navbar-links li:hover {
+    background-image: linear-gradient(rgba(25, 102, 38, 0.986), #33a852);
+    border-radius: 0px 0px 15px 15px;
+    border: 0px double rgb(0, 0, 0, .2);
+    cursor: pointer;
+  }
+  
+  /* sets position and layout of the navbar toggle menu (on the right side of the navbar) */
+  .toggle-button {
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 35px;
+    height: 30px;
+  }
+  
+  /* sets the style of the bars used as a toggle button */
+  .toggle-button .bar {
+    height: 4px;
+    width: 100%;
+    background-color: black;
+    border-radius: 10px;
+  }
+  
+  /* sets a border around the toggle button when hovered */
+  .toggle-button:hover {
+    border: 4px double rgb(0, 0, 0, .2);
+  }
+  
+  @media (max-width: 1080px) {
+    .landing-page-background {
+      height: 95vh;
+      min-height: 750px;
+      padding-top: 10vh;
+      display: grid;
+      grid-template-columns: 65% 35%;
+    }
+  
+    .white-background {
+      margin-left: 7%;
+      margin-right: 7%;
+      padding: 16px;
+      border-radius: 15px;
+    }
+  
+    .app-name {
+      font-size: 65px;
+      font-weight: 700;
+    }
+  
+    .app-description {
+      font-size: 30px;
+      font-weight: 400;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  
+    .app-hook {
+      font-size: 40px;
+      font-weight: 500;
+    }
+  
+    .loginContainer {
+      padding: 15px;
+      margin-right: 10px;
+      border-radius: 10px;
+    }
+  
+    button {
+      font-size: 16px;
+      padding: 14px 22px;
+      margin: 3px 2px;
+    }
+  
+    input[type=text],
+    input[type=email],
+    input[type=password] {
+      padding: 12px 16px;
+      margin: 8px 0;
+    }
+  
+    .signInReDirect,
+    .signUpReDirect {
+      font-size: 16px;
+      padding: 8px 10px;
+      margin: auto;
+    }
+  
+    .signInLine,
+    .signUpLine {
+      font-size: 20px;
+      text-align: center;
+    }
+  
+    .formHeading {
+      font-size: 25px;
+    }
+  }
+  
+  
+  @media (max-width: 870px) {
+  
+    .form-background {
+      background-image: url("../img/bottom.JPG");
+      padding-bottom: 70px;
+    }
+  
+    .landing-page-background {
+      height: 55vh;
+      min-height: 700px;
+      padding-top: 8vh;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-row-gap: 3vh;
+    }
+  
+    .white-background {
+      margin-left: auto 2%;
+      padding: 16px;
+      border-radius: 15px;
+    }
+  
+    .app-name {
+      font-size: 55px;
+      font-weight: 700;
+      text-align: center;
+    }
+  
+    .app-description {
+      font-size: 25px;
+      font-weight: 400;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  
+    .app-hook {
+      font-size: 35px;
+      font-weight: 500;
+    }
+  
+    .loginContainer {
+      margin: auto 15%;
+      width: 70%;
+      padding: 15px;
+      margin-right: 10px;
+      border-radius: 10px;
+    }
+  
+    button {
+      font-size: 16px;
+      padding: 14px 22px;
+      margin: 3px 2px;
+    }
+  
+    input[type=text],
+    input[type=email],
+    input[type=password] {
+      width: 100%;
+      padding: 12px 16px;
+      margin: 8px 0;
+    }
+  
+    .signInReDirect,
+    .signUpReDirect {
+      font-size: 16px;
+      padding: 8px 10px;
+      margin: auto;
+    }
+  
+    .signInLine,
+    .signUpLine {
+      font-size: 20px;
+      text-align: center;
+    }
+  
+    .formHeading {
+      font-size: 25px;
+    }
+  
+    #skillOneName, #skillTwoName, #skillThreeName{
+      height: 30px;
+      width: 250px;
+    }
+    
+    .skillBox{
+      background-color: lightgrey;
+      border-radius: 5px;
+    }
+    
+    #skillContent{
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-row-gap: 20px;
+    }
+    
+    #skillOneInfo, #skillTwoInfo, #skillThreeInfo {
+      float: right;
+      width: 80%;
+      height: 110px;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      background-color: #f8f8f8;
+      resize: none;
+  }
+  .create-profile-form{
+    margin: auto 1%;
+    height: fit-content;
+  }
+  }
+  
+  @media (max-width: 620px) {
+  
+    .landing-page-background {
+      height: 65vh;
+      min-height: 600px;
+      padding-top: 7vh;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-row-gap: 3vh;
+    }
+  
+    .white-background {
+      margin-left: auto 2%;
+      padding: 16px;
+      border-radius: 15px;
+    }
+  
+    .app-name {
+      font-size: 55px;
+      font-weight: 700;
+      text-align: center;
+    }
+  
+    .app-description {
+      font-size: 22px;
+      font-weight: 400;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  
+    .app-hook {
+      font-size: 30px;
+      font-weight: 500;
+    }
+  
+    .loginContainer {
+      /* margin: 0 15%; */
+      width: 70%;
+      padding: 15px;
+      margin-right: 10px;
+      border-radius: 10px;
+    }
+  
+    button {
+      font-size: 16px;
+      padding: 14px 22px;
+      margin: 3px 2px;
+    }
+  
+    input[type=text],
+    input[type=email],
+    input[type=password] {
+      width: 100%;
+      padding: 12px 16px;
+      margin: 8px 0;
+    }
+  
+    .signInReDirect,
+    .signUpReDirect {
+      font-size: 16px;
+      padding: 8px 10px;
+      margin: auto;
+    }
+  
+    .signInLine,
+    .signUpLine {
+      font-size: 20px;
+      text-align: center;
+    }
+  
+    .formHeading {
+      font-size: 25px;
+    }
+  }
+  
+  @media (max-width: 420px) {}
+  
