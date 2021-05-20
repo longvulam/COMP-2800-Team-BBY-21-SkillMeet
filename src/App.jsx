@@ -9,6 +9,8 @@ import AboutUs from "./AboutUs/aboutUsComponent";
 import Search from "./SearchPage/searchComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
 
+import Chat from './chat/Chat';
+
 function App() {
 
   return (
@@ -36,6 +38,9 @@ function App() {
             </Route>
             <Route path = '/editProfile'>
                 <EditProfilePage/>
+            </Route>
+            <Route path = '/chat'>
+                <Chat/>
             </Route>
           </Switch>
         </div>
