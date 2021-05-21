@@ -18,9 +18,10 @@ async function enableListening(updateMessages) {
         });
         updateMessages(oldArray => {
             return [...oldArray, ...arr];
-        })
+        });
     });
 }
+
 function setDbRef(chatRoomId) {
     collRef = db.collection('chatrooms')
         .doc(chatRoomId)
@@ -41,6 +42,7 @@ const ChatRoom = () => {
     const { chatRoomId } = useParams();
     const [messages, updateMessages] = useState([]);
     const [currentMsg, setCurrentMsg] = useState([]);
+    const [pendingReq, setPendingReqs] = useState([]);
 
     useEffect(() => {
         setDbRef(chatRoomId);
