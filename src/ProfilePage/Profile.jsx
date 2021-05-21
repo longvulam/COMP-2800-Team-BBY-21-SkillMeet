@@ -52,7 +52,7 @@ export default function Profile() {
         skills: []
     });
     
-    useEffect(()=> getProfileDataAsync(setUserProfile));
+    useEffect(()=> getProfileDataAsync(setUserProfile),[]);
     
     const data = sampleSkilldata;
     const [editable, setEditable] = useState(false);

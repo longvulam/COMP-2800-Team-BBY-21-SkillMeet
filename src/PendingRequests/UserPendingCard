@@ -1,8 +1,6 @@
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import { render } from '@testing-library/react';
@@ -52,15 +50,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UserPendingCard(props) {
+export default function UserSearchCard(props) {
   const classes = useStyles();
   const { name, city, skillName, skillLevel, id } = props;
-  async function acceptRequest() {
+  async function addFriend() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
-    db.collection('users').doc(currentUserData.uid).collection('Friends')
-		.add({
-          isConfirmed: "false",
+    db.collection('users').doc(currentUserData.uid).collection('Friends').doc('sent' + id)
+		.set({
+          isConfirmed: false,
           friendID: id,
 		})
 		.then(() => {
@@ -69,9 +67,9 @@ export default function UserPendingCard(props) {
 		.catch((error) => {
     			console.error("Error writing document: ", error);
 		});
-    db.collection('users').doc(id).collection('Friends')
-		.add({
-    			isPending: "true",
+    db.collection('users').doc(id).collection('Friends').doc('received' + currentUserData.uid)
+		.set({
+    			isPending: true,
           friendID: currentUserData.uid
 		})
 		.then(() => {
@@ -109,13 +107,9 @@ export default function UserPendingCard(props) {
               </div>
             </Grid>
           </Grid>
-          <IconButton onClick = { (e) => acceptRequest()}	>
-            <CheckCircleOutlinedIcon className={classes.addIcon}/>
+          <IconButton onClick = { (e) => addFriend()}	>
+            <PersonAddIcon className={classes.addIcon}/>
           </IconButton>
-          <IconButton onClick = { (e) => declineRequest()}	>
-            <CancelOutlinedIcon className={classes.addIcon}/>
-          </IconButton>
-
         </div>
       </Paper>
     </>
@@ -132,3 +126,54 @@ function getCurrentUserDataAsync() {
 }
 
 
+//////////////////////////////////////////////////////////////////
+// addFriend(e.target.id){
+// 		const CurUserID = firebase.auth().currentUser.uid;
+// 		const OtherUserID = e.target.id;
+
+// 		db.collection('users').doc(CurUserID).collection('Friends')
+// 		.add({
+//           isConfirmed: "false",
+//           friendID: OtherUserID,
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+// //3. User B Set() User A.ID in "pending".//
+// 		db.collection('users').doc(OtherUserID).collection('Friends').doc("received" + CurUserID)
+// 		.add({
+//     			isPending: "false",
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+
+// //4. When User B Accepts, both User's documents boolean fields are set to opposite.//
+// 		db.collection('users').doc(CurUserID).collection('Friends').doc("sent" + CurUserID)
+// 		.update({
+//     			isConfirmed: "true",
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+
+// 		db.collection('users').doc(OtherUserID).collection('Friends').doc("received" + CurUserID)
+// 		.update({
+//     			isPending: "false",
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+// 	}

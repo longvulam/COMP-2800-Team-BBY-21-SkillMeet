@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FriendsPageNav from './friendsComponents/friendsPageNav';
 import Grid from '@material-ui/core/Grid';
+import FriendRequest from '../SearchPage/searchComponents//UserSearchCard';
 
-import Friend from './friendsComponents/FriendCard';
+
+import { db, auth } from '../firebase';
 export default function FriendsPage() {
-  const data = friendData;
+  const [requests, setRequests] = useState([]);
+  useEffect(()=> {getFriendDataFromID(setRequests);},[]);
   return (
     <>
       <FriendsPageNav/>
@@ -23,15 +26,22 @@ export default function FriendsPage() {
           width: '95vw',
           alignItems: 'center',
         }}>
-        {data.map(friendInfo => {
-          const { Name } = friendInfo;
+
+        {requests.map(request => {
+          const { displayName, city, id } = request;
           return (
             <Grid item xs={12}
-            key={Name} 
+            key={id} 
             style={{
               width:'100%',
             }}>
-            <Friend name={Name}/>
+            <FriendRequest 
+                name={displayName}
+                city={city}
+                skillName={'Pooping'}
+                skillLevel={'Expert'}
+                id={id}
+            />
             </Grid>
           );
         })}
@@ -41,6 +51,39 @@ export default function FriendsPage() {
   );
 
 }
+
+
+async function getFriendDataFromID(setRequests) {
+    const friendIDs = await getFriendRequestIDs();
+    console.log('FriendRequests', friendIDs);
+    const friendDocs = await Promise.all(friendIDs.map(friendID => {
+        return db.collection('users').doc(friendID).get().then(doc=> doc.data());
+    }));
+    console.log('FriendData', friendDocs);
+    setRequests(friendDocs);
+}
+
+async function getFriendRequestIDs() {
+    const friendRequests = [];
+    const currentUserID = await getCurrentUserID();
+    const requests = 
+        await db.collection('users')
+        .doc(currentUserID).collection('Friends')
+        .where("isPending", "==", true)
+        .get();
+    requests.forEach(request => {friendRequests.push(request.data().friendID)});
+    return (friendRequests);
+}
+
+function getCurrentUserID() {
+    return new Promise((resolve, reject) =>
+        auth.onAuthStateChanged((user) => {
+            if (!user) return;
+            resolve(user.uid);   
+        })
+    );
+}
+
 
 const friendData=[
   {Name:'Carly Orr'},
