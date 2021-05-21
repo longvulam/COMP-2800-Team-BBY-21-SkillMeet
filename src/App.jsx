@@ -22,7 +22,7 @@ function App() {
             <Route path = "/aboutUs">
                 <AboutUs/>
             </Route>
-            <Route path = "/profile">
+            <Route path={["/profile/:uid", "/profile"]}>
                 <Profile/>
                 <BottomNavBar />
             </Route>
