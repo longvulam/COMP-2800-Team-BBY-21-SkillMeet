@@ -9,12 +9,28 @@ import Paper from '@material-ui/core/Paper'
 import UserSearchCard from './searchComponents/UserSearchCard';
 import Grid from '@material-ui/core/Grid';
 
-import firebase, { db } from '../firebase';
+import firebase, { db, auth } from '../firebase';
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 import { skillOptions } from '../dataStores/skills';
 import createPalette from '@material-ui/core/styles/createPalette';
 console.log('SkillOptions', skillOptions);
+
+async function getCurrentUIDAsync() {
+  const curUserID = await getCurrentUserDataAsync();
+  console.log('currentUserId', curUserID);
+}
+
+function getCurrentUserDataAsync() {
+  return new Promise((resolve, reject) =>
+      auth.onAuthStateChanged((user) => {
+          if (!user) return;
+          resolve(user.uid);   
+      })
+  );
+}
+getCurrentUIDAsync();
+
 
 const useStyles = makeStyles((theme) => ({
   searchWrap: {

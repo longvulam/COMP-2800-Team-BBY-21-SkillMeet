@@ -79,7 +79,7 @@ export default function UserSearchCard(props) {
               </div>
             </Grid>
           </Grid>
-          <IconButton>
+          <IconButton id={id} onClick = { (e) => addFriend(e.target.id)}	>
             <PersonAddIcon className={classes.addIcon}/>
           </IconButton>
         </div>
