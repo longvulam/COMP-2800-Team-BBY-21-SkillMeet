@@ -31,10 +31,7 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         height: '4.5em',
         width: '4.5em',
-    },
-    infoWrap: {
-
-    },
+    }
 }));
 
 export default function Profile() {
@@ -44,29 +41,25 @@ export default function Profile() {
     const [isFriend, setIsFriend] = useState(false);
     const [userProfile, setUserProfile] = useState();
 
-    useEffect(() => {
-        const funcs = [
-            getCurrentUserDataAsync(uid).then(setUserProfile),
-            waitForCurrentUser()
-        ]
+    useEffect(() => Promise.all([
+        getCurrentUserDataAsync(uid).then(setUserProfile),
+        waitForCurrentUser()
+    ]).then(res => {
+        const currentUser = res[1];
+        if (!currentUser || !uid) {
+            setIsLoadingData(false);
+            return;
+        }
 
-        Promise.all(funcs).then(res => {
-            const currentUser = res[1];
-            console.log(currentUser);
-            if (!currentUser || !uid) {
+        db.collection('users').doc(currentUser.uid)
+            .collection('Friends').where('friendID', '==', uid)
+            .get()
+            .then(friendDoc => {
+                setIsFriend(!friendDoc.empty);
                 setIsLoadingData(false);
-                return;
-            }
+            });
+    }), []);
 
-            db.collection('users').doc(currentUser.uid)
-                .collection('Friends').where('friendID', '==', uid)
-                .get()
-                .then(friendDoc => {
-                    setIsFriend(!friendDoc.empty);
-                    setIsLoadingData(false);
-                });
-        });
-    }, []);
     return (
         isLoadingData ? <LoadingSpinner /> :
             <div style={{
