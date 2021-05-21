@@ -51,7 +51,7 @@ export default function Profile() {
     });
     
     useEffect(() => getCurrentUserDataAsync().then(setUserProfile), []);
-    
+
     const [editable, setEditable] = useState(false);
 
     return (
