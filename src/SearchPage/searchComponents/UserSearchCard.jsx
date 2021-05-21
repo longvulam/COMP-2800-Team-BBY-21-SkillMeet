@@ -2,14 +2,19 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import { render } from '@testing-library/react';
 import { makeStyles } from '@material-ui/core/styles';
-import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
 import firebase, { db, auth } from '../../firebase';
+import Snackbar from '@material-ui/core/Snackbar';
+import React, { useEffect, useState } from 'react';
+import MuiAlert from '@material-ui/lab/Alert';
+
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const useStyles = makeStyles((theme) => ({
   paper:{
     width:'100%',
@@ -58,12 +63,44 @@ const useStyles = makeStyles((theme) => ({
   },
   avatarNameLocation: {
       display:'flex',
+      alignItems:'center',
   }
 }));
 
 export default function UserSearchCard(props) {
   const classes = useStyles();
   const { name, city, skillName, skillLevel, id } = props;
+
+  const [snackbarState, setSnackbarState] = React.useState({
+    open: false,
+    vertical:'bottom',
+    horizontal:'center',
+    Transition: 'fade',
+  });
+  const { open, vertical, horizontal, Transition } = snackbarState;
+
+  function handleSnackbarOpen () {
+    setSnackbarState({
+      open: true,
+      vertical:'bottom',
+      horizontal:'center',
+      Transition: 'fade',
+    });
+
+  }
+
+  function handleSnackbarClose() {
+    setSnackbarState({
+      ...snackbarState, 
+      open: false,
+    });
+  }
+
+  function handleAddClick() {
+    addFriend();
+    handleSnackbarOpen();
+  }
+
   async function addFriend() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
@@ -95,6 +132,7 @@ export default function UserSearchCard(props) {
       <Paper className={classes.paper}elevation={2} key={id}>
           <Grid container direction="column" 
             spacing={1} className={classes.infoGrid}>
+
             <Grid item className={classes.firstGridItem}>
                 <div className={classes.avatarNameLocation}>
                     <Avatar className={classes.avatar}/>
@@ -103,17 +141,26 @@ export default function UserSearchCard(props) {
                         <Typography variant="subtitle1">{city}</Typography>
                     </div>
                 </div>
-                <Fab className={classes.fab} color="primary" onClick = { (e) => addFriend()}>
+                <Fab className={classes.fab} color="primary" onClick = { () => handleAddClick()}>
                     <PersonAddIcon className={classes.addIcon}/>
                 </Fab>
             </Grid>
+
             <Grid item className={classes.skillGridItem}>
                 <Typography variant="h6" display='inline'>{skillName}</Typography>
                 <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
             </Grid>
-         
           </Grid>
       </Paper>
+      <Snackbar
+        autoHideDuration={1500}
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleSnackbarClose}
+        TransitionComponent={Transition}
+      >
+      <Alert severity="info">Added {name}</Alert>
+      </Snackbar> 
     </>
   );
 }
