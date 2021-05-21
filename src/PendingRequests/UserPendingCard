@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import Grid from '@material-ui/core/Grid';
 
-
 import firebase, { db, auth } from '../../firebase';
 const useStyles = makeStyles((theme) => ({
   paper:{
@@ -83,33 +82,7 @@ export default function UserSearchCard(props) {
     <>
       <Paper className={classes.paper}elevation={2} key={id}>
         <div className={classes.cardContain}>
-          <Avatar className={classes.avatar}/>
-          <Grid container direction="column" 
-            spacing={1} className={classes.infoGrid}>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={name}/>
-              </div>
-            </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={skillName}/>
-              </div>
-            </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={skillLevel}/>
-              </div>
-            </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={city}/>
-              </div>
-            </Grid>
-          </Grid>
-          <IconButton onClick = { (e) => addFriend()}	>
-            <PersonAddIcon className={classes.addIcon}/>
-          </IconButton>
+
         </div>
       </Paper>
     </>

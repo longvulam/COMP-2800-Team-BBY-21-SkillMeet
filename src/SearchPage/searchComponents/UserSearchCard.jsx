@@ -1,5 +1,5 @@
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
+import Fab from '@material-ui/core/Fab';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
@@ -7,46 +7,57 @@ import { render } from '@testing-library/react';
 import { makeStyles } from '@material-ui/core/styles';
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import Grid from '@material-ui/core/Grid';
-
+import Typography from '@material-ui/core/Typography';
 
 import firebase, { db, auth } from '../../firebase';
 const useStyles = makeStyles((theme) => ({
   paper:{
     width:'100%',
-    height:'11.5em',
-  },
-  cardContain:{
-    width:'95%',
     display:'flex',
     alignItems:'center',
-    justifyContent:'space-between',
-    height:'11.5em',
-    margin:'auto',
   },
   avatar : {
-    height:'3em',
-    width:'3em',
-  },
-  infoContain: {
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'space-evenly',
-    width:'100%',
+    height:'2.5em',
+    width:'2.5em',
+    marginRight:'1em',
   },
   addIcon: {
-    width:'1.5em',
-    height:'1.5em',
+    width:'0.9em',
+    height:'0.9em',
+  },
+  fab: {
+    width:'2.5em',
+    height:'2.5em',
   },
   chips : {
     fontSize:'1em',
   },
   infoGrid:{
-    width:'calc(100% - 8em)',
-    height:'10em',
+    width:'95%',
+    height:'95%',
     alignItems:'center',
+    margin:'auto',
   },
-  gridItem: {
+  firstGridItem: {
     marginTop:'0.5em',
+    width:'100%',
+    display:'flex',
+    justifyContent:'space-between',
+    alignItems:'top',
+  },
+  skillGridItem: {
+    marginTop:'0.5em',
+    width:'95%',
+  },
+  skillLevel: {
+      marginLeft:'0.5em',
+  },
+  nameAndLocation: {
+      display:'flex',
+      flexDirection:'column',
+  },
+  avatarNameLocation: {
+      display:'flex',
   }
 }));
 
@@ -82,35 +93,26 @@ export default function UserSearchCard(props) {
   return (
     <>
       <Paper className={classes.paper}elevation={2} key={id}>
-        <div className={classes.cardContain}>
-          <Avatar className={classes.avatar}/>
           <Grid container direction="column" 
             spacing={1} className={classes.infoGrid}>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={name}/>
-              </div>
+            <Grid item className={classes.firstGridItem}>
+                <div className={classes.avatarNameLocation}>
+                    <Avatar className={classes.avatar}/>
+                    <div className={classes.nameAndLocation}>
+                        <Typography variant="h6">{name}</Typography>
+                        <Typography variant="subtitle1">{city}</Typography>
+                    </div>
+                </div>
+                <Fab className={classes.fab} color="primary" onClick = { (e) => addFriend()}>
+                    <PersonAddIcon className={classes.addIcon}/>
+                </Fab>
             </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={skillName}/>
-              </div>
+            <Grid item className={classes.skillGridItem}>
+                <Typography variant="h6" display='inline'>{skillName}</Typography>
+                <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
             </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={skillLevel}/>
-              </div>
-            </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={city}/>
-              </div>
-            </Grid>
+         
           </Grid>
-          <IconButton onClick = { (e) => addFriend()}	>
-            <PersonAddIcon className={classes.addIcon}/>
-          </IconButton>
-        </div>
       </Paper>
     </>
   );

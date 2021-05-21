@@ -52,7 +52,6 @@ export default function FriendsPage() {
 
 }
 
-
 async function getFriendDataFromID(setRequests) {
     const friendIDs = await getFriendRequestIDs();
     console.log('FriendRequests', friendIDs);
@@ -84,12 +83,3 @@ function getCurrentUserID() {
     );
 }
 
-
-const friendData=[
-  {Name:'Carly Orr'},
-  {Name:'Chrstopher Thompson'},
-  {Name:'Owen Arando'},
-  {Name:'Dustin Lott'},
-  {Name:'Arunab Singh'},
-  {Name:'Lam Long Vu'},
-];
