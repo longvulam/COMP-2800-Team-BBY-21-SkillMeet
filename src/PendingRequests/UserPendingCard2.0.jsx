@@ -110,9 +110,9 @@ export default function UserPendingCard2(props) {
   async function acceptRequest() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
-    db.collection('users').doc(currentUserData.uid).collection('Friends').doc(id)
+    db.collection('users').doc(currentUserData.uid).collection('Friends').doc('received' + id)
 		.update({
-          isPending: false
+          isPending: false,
 		})
 		.then(() => {
     			console.log("Document successfully written!");
@@ -122,7 +122,7 @@ export default function UserPendingCard2(props) {
 		});
     db.collection('users').doc(id).collection('Friends').doc('sent' + currentUserData.uid)
 		.update({
-    			isConfirmed: true
+    			isConfirmed: true,
 		})
 		.then(() => {
       setRequests(oldArray => {
@@ -181,6 +181,7 @@ export default function UserPendingCard2(props) {
                 variant="contained" 
                 className={classes.fabNo} 
                 color="secondary"
+                onClick = { (e) => declineRequest()}
                 >
                   <CancelOutlinedIcon className={classes.addIcon}/>
               </Button>
@@ -188,7 +189,7 @@ export default function UserPendingCard2(props) {
                 variant="contained" 
                 className={classes.fabYes} 
                 color="primary"
-                onClick={() => handleAcceptClick()}>
+                onClick = { (e) => acceptRequest()}>
                   <CheckCircleOutlinedIcon className={classes.addIcon}/>
               </Button>
             </Grid>
