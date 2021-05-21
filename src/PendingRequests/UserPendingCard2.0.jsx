@@ -1,20 +1,20 @@
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import { render } from '@testing-library/react';
 import { makeStyles } from '@material-ui/core/styles';
-import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-
-
-
+import Button from '@material-ui/core/Button';
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
+import React, { useEffect, useState } from 'react';
 import firebase, { db, auth } from '../firebase';
+import Avatar from '@material-ui/core/Avatar';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 const useStyles = makeStyles((theme) => ({
   paper:{
@@ -28,24 +28,16 @@ const useStyles = makeStyles((theme) => ({
     marginRight:'1em',
   },
   addIcon: {
-    width:'0.9em',
-    height:'0.9em',
+    width:'1.4em',
+    height:'1.4em',
   },
   fabYes: {
-    width:'2.5em',
-    height:'2em',
-    marginTop: '-1em',
-    marginBottom: '.2em',
-    marginLeft: '4em'
+    width:'6em',
+    height:'2.5em',
   },
   fabNo: {
-    width:'2.5em',
-    height:'2em',
-    marginTop: '-1em',
-    marginLeft: '5em',
-  },
-  bottomButtons: {
-    display: 'flex',
+    width:'6em',
+    height:'2.5em',
   },
   chips : {
     fontSize:'1em',
@@ -66,6 +58,10 @@ const useStyles = makeStyles((theme) => ({
   skillGridItem: {
     marginTop:'0.5em',
     width:'95%',
+    display:'flex',
+    justifyContent:'space-around',
+    alignItems:'center',
+    marginBottom:'0.5em',
   },
   skillLevel: {
       marginLeft:'0.5em',
@@ -82,6 +78,30 @@ const useStyles = makeStyles((theme) => ({
 export default function UserPendingCard2(props) {
   const classes = useStyles();
   const { name, city, id, setRequests } = props;
+  const [snackbarState, setSnackbarState] = React.useState({
+    open: false,
+    vertical:'bottom',
+    horizontal:'center',
+    Transition: 'fade',
+  });
+
+  const { open, vertical, horizontal, Transition } = snackbarState;
+
+  function handleSnackbarOpen () {
+    setSnackbarState({
+      open: true,
+      vertical:'bottom',
+      horizontal:'center',
+      Transition: 'fade',
+    });
+
+  }
+  function handleSnackbarClose() {
+    setSnackbarState({
+      ...snackbarState, 
+      open: false,
+    });
+  }
 
   async function acceptRequest() {
     const currentUserData = await getCurrentUserDataAsync();
@@ -153,18 +173,25 @@ export default function UserPendingCard2(props) {
                 
             </Grid>
             <Grid item className={classes.skillGridItem}>
-              <div className={classes.bottomButtons}>
-                <Fab variant="extended" className={classes.fabYes} color="primary">
-                    <CheckCircleOutlinedIcon className={classes.addIcon}/>
-                </Fab>
-                <Fab variant="extended" className={classes.fabNo} color="primary">
-                    <CancelOutlinedIcon className={classes.addIcon}/>
-                </Fab>
-                </div>
+              <Button variant="contained" className={classes.fabNo} color="secondary">
+                  <CancelOutlinedIcon className={classes.addIcon}/>
+              </Button>
+              <Button variant="contained" className={classes.fabYes} color="primary">
+                  <CheckCircleOutlinedIcon className={classes.addIcon}/>
+              </Button>
             </Grid>
          
           </Grid>
       </Paper>
+      <Snackbar
+        autoHideDuration={1500}
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleSnackbarClose}
+        TransitionComponent={Transition}
+      >
+      <Alert severity="info">Added {name}</Alert>
+      </Snackbar> 
     </>
   );
 }
