@@ -41,7 +41,7 @@ export default function LabelBottomNavigation() {
     <div className = {classes.navbarWrap}>
     <BottomNavigation value={value} onChange={twoCallbacks} className={classes.root}>
       <BottomNavigationAction label="Friends" value="/friends" icon={<FriendIcon />} />
-      <BottomNavigationAction disabled label="Groups" value="/groups" icon={<GroupIcon/>} />
+      <BottomNavigationAction disabled label="Groups" value="/groups" icon={<GroupIcon style={{color:'lightgrey'}}/>} />
       <BottomNavigationAction label="Requests" value="/friendRequests" icon={<Pending/>} />
     </BottomNavigation>
     </div>
