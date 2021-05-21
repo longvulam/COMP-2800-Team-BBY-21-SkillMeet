@@ -110,7 +110,7 @@ export default function UserPendingCard2(props) {
   async function acceptRequest() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
-    db.collection('users').doc(currentUserData.uid).collection('Friends').doc(id)
+    db.collection('users').doc(currentUserData.uid).collection('Friends').doc('received' + id)
 		.update({
           isPending: false
 		})
