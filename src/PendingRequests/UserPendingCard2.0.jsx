@@ -181,6 +181,7 @@ export default function UserPendingCard2(props) {
                 variant="contained" 
                 className={classes.fabNo} 
                 color="secondary"
+                onClick = { (e) => declineRequest()}
                 >
                   <CancelOutlinedIcon className={classes.addIcon}/>
               </Button>
@@ -188,7 +189,7 @@ export default function UserPendingCard2(props) {
                 variant="contained" 
                 className={classes.fabYes} 
                 color="primary"
-                onClick={() => handleAcceptClick()}>
+                onClick = { (e) => acceptRequest()}>
                   <CheckCircleOutlinedIcon className={classes.addIcon}/>
               </Button>
             </Grid>
