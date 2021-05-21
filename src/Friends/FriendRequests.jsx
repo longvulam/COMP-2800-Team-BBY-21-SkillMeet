@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FriendsPageNav from './friendsComponents/friendsPageNav';
 import Grid from '@material-ui/core/Grid';
 import FriendRequest from '../SearchPage/searchComponents//UserSearchCard';
+import UserPendingCard2 from '../PendingRequests/UserPendingCard2.0';
 
 
 import { db, auth } from '../firebase';
@@ -28,19 +29,18 @@ export default function FriendsPage() {
         }}>
 
         {requests.map(request => {
-          const { displayName, city, id } = request;
+          const { displayName, city, id, } = request;
           return (
             <Grid item xs={12}
             key={id} 
             style={{
               width:'100%',
             }}>
-            <FriendRequest 
+            <UserPendingCard2 
                 name={displayName}
                 city={city}
-                skillName={'Pooping'}
-                skillLevel={'Expert'}
                 id={id}
+                setRequests={setRequests}
             />
             </Grid>
           );
