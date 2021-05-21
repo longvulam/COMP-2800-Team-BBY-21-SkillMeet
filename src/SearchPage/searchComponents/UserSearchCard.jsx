@@ -71,6 +71,8 @@ export default function UserSearchCard(props) {
   const classes = useStyles();
   const { name, city, skillName, skillLevel, id } = props;
 
+  const [requestSent, setRequestSent] = React.useState(false);
+
   const [snackbarState, setSnackbarState] = React.useState({
     open: false,
     vertical:'bottom',
@@ -88,19 +90,17 @@ export default function UserSearchCard(props) {
     });
 
   }
-
   function handleSnackbarClose() {
     setSnackbarState({
       ...snackbarState, 
       open: false,
     });
   }
-
   function handleAddClick() {
+    setRequestSent(true);
     addFriend();
     handleSnackbarOpen();
   }
-
   async function addFriend() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
@@ -141,7 +141,11 @@ export default function UserSearchCard(props) {
                         <Typography variant="subtitle1">{city}</Typography>
                     </div>
                 </div>
-                <Fab className={classes.fab} color="primary" onClick = { () => handleAddClick()}>
+                <Fab 
+                  disabled={requestSent}
+                  className={classes.fab} 
+                  color={requestSent ? "default" : "primary"} 
+                  onClick = { () => handleAddClick()}>
                     <PersonAddIcon className={classes.addIcon}/>
                 </Fab>
             </Grid>
