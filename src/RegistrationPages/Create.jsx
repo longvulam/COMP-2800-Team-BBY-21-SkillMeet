@@ -33,8 +33,19 @@ const Create = () => {
   const classes = useStyles();
 
   const history = useHistory();
+  const [displayName, setDisplayName] = useState('');
+  const [bio, setBio] = useState('');
+  const [city, setCity] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [bioError, setBioError] = useState('');
+  const [cityError, setCityError] = useState('');
+
+
+
+
+
   const [skillFields, setSkillFields] = useState([
-    { skillName: "", skillLevel: "", skillDescription: "" },
+    { skillName: "", skillLevel: "Expert", skillDescription: "" },
   ])
 
   let count = 0;
@@ -43,37 +54,61 @@ const Create = () => {
     values[index][event.target.name] = event.target.value;
     setSkillFields(values);
 
-    if (count == 0 && (skillFields[0].skillName == "beekeeping" || skillFields[0].skillName == "Beekeeping") && skillFields[0].skillLevel == "Expert") {
-      count++;
-      $("#hiddenEasterEgg2").fadeIn(500, function () {
-        window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
-      });
+    for (let i = 0; i < skillFields.length; i++) {
+      if (count == 0 && (skillFields[i].skillName == "beekeeping" || skillFields[i].skillName == "Beekeeping") 
+        && skillFields[i].skillLevel == "Expert" && skillFields[i].skillDescription == "" ) {
+        count++;
+        $("#hiddenEasterEgg2").fadeIn(500, function () {
+          window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
+        });
+      }
     }
   }
 
+  const validate = () => {
+    let nameError = "";
+    let bioError = "";
+    let cityError = "";
+    
+    
+    if(displayName.length < 3){
+      setNameError("Display Name must be 4 characters or longer");
+      return false
+    } else if (bio.length < 16){
+      setBioError("Bio must be 16 characters or longer");
+      return false
+    } else if (city.length < 1){
+      setCityError("Please fill this field");
+      return false
+    } else {
+      return true;
+    }
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (displayName.length == 0 || bio.length == 0 || city.length == 0) return;
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-
-        db.collection('users').doc(user.uid).update({
-          "displayName": displayName,
-          "bio": bio,
-          "city": city
-        }).then(() => {
-          for (let i = 0; i < skillFields.length; i++) {
-            db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
-              "skillName": skillFields[i].skillName,
-              "skillLevel": skillFields[i].skillLevel,
-              "skillDescription": skillFields[i].skillDescription
-            })
-          }
-        }).then(value => history.push("/profile"))
-
-      }
-    })
+    // const isValid = validate();{
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+  
+          db.collection('users').doc(user.uid).update({
+            "displayName": displayName,
+            "bio": bio,
+            "city": city
+          }).then(() => {
+            for (let i = 0; i < skillFields.length; i++) {
+              db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
+                "skillName": skillFields[i].skillName,
+                "skillLevel": skillFields[i].skillLevel,
+                "skillDescription": skillFields[i].skillDescription
+              })
+            }
+          }).then(value => history.push("/profile"))
+  
+        }
+      })
 
   };
 
@@ -88,15 +123,10 @@ const Create = () => {
     setSkillFields(values);
   }
 
-
-  const [displayName, setDisplayName] = useState('');
-  const [bio, setBio] = useState('');
-  const [city, setCity] = useState('');
-
   return (
     <div id="profile-form">
-      <Container>
-        <h6 style={{color: '#1434A4',padding: '5px', textAlign: 'center' }}>Please fill these details to complete your profile setup</h6>
+      <Container style={{ textAlign: 'center' }}>
+        <h6 style={{ color: '#1434A4', padding: '5px', textAlign: 'center' }}>Please fill these details to complete your profile setup</h6>
         <form className={classes.root} onSubmit={handleSubmit}>
 
           <TextField
@@ -109,6 +139,9 @@ const Create = () => {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
+          <div style = {{fontSize: '0.8em', color: 'red'}}>
+            {nameError}
+          </div>
 
           <TextField
             multiline
@@ -120,6 +153,10 @@ const Create = () => {
             variant="outlined"
             onChange={(e) => setBio(e.target.value)}
           />
+          <div style = {{fontSize: '0.8em', color: 'red'}}>
+            {bioError}
+          </div>
+
 
           <TextField
             id="city"
@@ -131,6 +168,9 @@ const Create = () => {
             variant="outlined"
             onChange={(e) => setCity(e.target.value)}
           />
+          <div style = {{fontSize: '0.8em', color: 'red'}}>
+            {cityError}
+          </div>
 
 
           {skillFields.map((skillField, index) => (
@@ -143,7 +183,7 @@ const Create = () => {
                 backgroundColor: 'lightGrey',
                 borderRadius: '5px'
               }}>
-                <p style={{color: '#1434A4', fontSize: '14px', padding: '5px', textAlign: 'center' }}>Add a skill to your profile:</p>
+                <p style={{ color: '#1434A4', fontSize: '14px', padding: '5px', textAlign: 'center' }}>Add a skill to your profile:</p>
 
                 <Grid xs={12}>
                   <TextField
@@ -165,16 +205,16 @@ const Create = () => {
                   <Select
                     native
                     name="skillLevel"
-                    required
                     label="Skill Level"
                     id="level"
+                    required
                     value={skillField.skillLevel}
                     onChange={event => handleChangeInput(index, event)}
                   >
-                    <option aria-label="None" value="Skill Level" />
                     <option value='Expert'>Expert</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Beginner">Beginner</option>
+                    <option value='Novice'>Novice</option>
                   </Select>
                 </Grid>
                 <Grid xs={12}>
@@ -219,7 +259,6 @@ const Create = () => {
           ))}
 
           <Button
-            onClick={handleSubmit}
             className={classes.button}
             variant="contained"
             color="primary"
@@ -229,7 +268,9 @@ const Create = () => {
           </Button>
         </form>
 
-        <img src="https://media.giphy.com/media/Lg8DWFsoAAUqjv33Bg/giphy.gif" id="hiddenEasterEgg2" alt="spongebob and Patrick"></img>
+        <img src="https://media.giphy.com/media/Lg8DWFsoAAUqjv33Bg/giphy.gif" id="hiddenEasterEgg2" alt="beekeepers"></img>
+        <img src="https://media.giphy.com/media/l0MYzM6y7jcx0hkR2/giphy.gif" id="hiddenEasterEgg3" alt="skateboarders"></img>
+
       </Container>
     </div>
   )

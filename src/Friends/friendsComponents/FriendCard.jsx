@@ -24,7 +24,7 @@ export default function Friend (props) {
         display:'flex',
         alignItems:'center',
         }}>
-          <Typography variant="body"
+          <Typography variant="body1"
             style={{
               textAlign:'center',
               width:'30vw',
