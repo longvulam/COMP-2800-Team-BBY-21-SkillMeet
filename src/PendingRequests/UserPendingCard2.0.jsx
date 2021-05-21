@@ -102,6 +102,10 @@ export default function UserPendingCard2(props) {
       open: false,
     });
   }
+  function handleAcceptClick() {
+    console.log('clicked');
+    handleSnackbarOpen();
+  }
 
   async function acceptRequest() {
     const currentUserData = await getCurrentUserDataAsync();
@@ -173,10 +177,18 @@ export default function UserPendingCard2(props) {
                 
             </Grid>
             <Grid item className={classes.skillGridItem}>
-              <Button variant="contained" className={classes.fabNo} color="secondary">
+              <Button 
+                variant="contained" 
+                className={classes.fabNo} 
+                color="secondary"
+                >
                   <CancelOutlinedIcon className={classes.addIcon}/>
               </Button>
-              <Button variant="contained" className={classes.fabYes} color="primary">
+              <Button 
+                variant="contained" 
+                className={classes.fabYes} 
+                color="primary"
+                onClick={() => handleAcceptClick()}>
                   <CheckCircleOutlinedIcon className={classes.addIcon}/>
               </Button>
             </Grid>
@@ -186,11 +198,10 @@ export default function UserPendingCard2(props) {
       <Snackbar
         autoHideDuration={1500}
         anchorOrigin={{ vertical, horizontal }}
-        open={open}
+        open={true}
         onClose={handleSnackbarClose}
-        TransitionComponent={Transition}
       >
-      <Alert severity="info">Added {name}</Alert>
+      <Alert severity="success">{name}'s request accepted</Alert>
       </Snackbar> 
     </>
   );
