@@ -122,7 +122,8 @@ export default function UserPendingCard2(props) {
 		});
     db.collection('users').doc(id).collection('Friends').doc('sent' + currentUserData.uid)
 		.update({
-    			isConfirmed: true
+    			isConfirmed: true,
+          isPending: false
 		})
 		.then(() => {
       setRequests(oldArray => {
