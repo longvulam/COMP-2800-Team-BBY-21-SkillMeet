@@ -122,7 +122,8 @@ export default function UserPendingCard2(props) {
 		});
     db.collection('users').doc(id).collection('Friends').doc('sent' + currentUserData.uid)
 		.update({
-    			isConfirmed: true
+    			isConfirmed: true,
+          isPending: false
 		})
 		.then(() => {
       setRequests(oldArray => {
@@ -181,6 +182,7 @@ export default function UserPendingCard2(props) {
                 variant="contained" 
                 className={classes.fabNo} 
                 color="secondary"
+                onClick={() => declineRequest()}
                 >
                   <CancelOutlinedIcon className={classes.addIcon}/>
               </Button>
@@ -188,7 +190,7 @@ export default function UserPendingCard2(props) {
                 variant="contained" 
                 className={classes.fabYes} 
                 color="primary"
-                onClick={() => handleAcceptClick()}>
+                onClick={() => acceptRequest()}>
                   <CheckCircleOutlinedIcon className={classes.addIcon}/>
               </Button>
             </Grid>
