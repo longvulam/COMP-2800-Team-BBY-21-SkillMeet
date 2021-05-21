@@ -18,7 +18,7 @@ export default function FriendsPage() {
           top:'3em',
           width:'100vw',
           overflowY:'scroll',
-          overFlowX:'hidden',
+          height: 'calc(100vh - 7.2em)',
         }}>
         <Grid container direction="column" spacing = {3}
         style={{
@@ -26,6 +26,7 @@ export default function FriendsPage() {
           marginTop: '2vh',
           width: '95vw',
           alignItems: 'center',
+
         }}>
 
         {requests.map(request => {

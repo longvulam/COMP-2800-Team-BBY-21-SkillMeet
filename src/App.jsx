@@ -10,6 +10,7 @@ import AboutUs from "./AboutUs/aboutUsComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
 import Search from "./SearchPage/SearchPage";
 import FriendRequests from './Friends/FriendRequests';
+import FriendsPageNav from './Friends/friendsComponents/friendsPageNav'
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
                 <EditProfilePage/>
             </Route>
             <Route path = '/friendRequests'>
+                <FriendsPageNav/>
                 <FriendRequests/>
                 <BottomNavBar />
             </Route>
