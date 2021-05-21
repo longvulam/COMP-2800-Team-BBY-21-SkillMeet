@@ -177,7 +177,6 @@ export default function UserPendingCard2(props) {
                 
             </Grid>
             <Grid item className={classes.skillGridItem}>
-<<<<<<< HEAD
               <div className={classes.bottomButtons}>
                 <Fab onClick = { (e) => acceptRequest()} variant="extended" className={classes.fabYes} color="primary">
                     <CheckCircleOutlinedIcon className={classes.addIcon}/>
@@ -186,22 +185,6 @@ export default function UserPendingCard2(props) {
                     <CancelOutlinedIcon className={classes.addIcon}/>
                 </Fab>
                 </div>
-=======
-              <Button 
-                variant="contained" 
-                className={classes.fabNo} 
-                color="secondary"
-                >
-                  <CancelOutlinedIcon className={classes.addIcon}/>
-              </Button>
-              <Button 
-                variant="contained" 
-                className={classes.fabYes} 
-                color="primary"
-                onClick={() => handleAcceptClick()}>
-                  <CheckCircleOutlinedIcon className={classes.addIcon}/>
-              </Button>
->>>>>>> 88ce281bea38bf444744643e44a512a9f3a6985e
             </Grid>
          
           </Grid>
