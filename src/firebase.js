@@ -69,3 +69,20 @@ async function retrieveUserProfileDataExample(){
 }
 
 // retrieveUserProfileDataExample();
+
+/**
+ * @returns {Promise<firebase.User>}
+ */
+ export function waitForCurrentUser() {
+    return new Promise((resolve, reject) =>{
+        let timer = 0;
+
+        const intr = setInterval(()=>{
+            if (timer == 5 || auth.currentUser) {
+                clearInterval(intr);
+                resolve(auth.currentUser);
+            }
+            timer++;
+        }, 1000);
+    })
+}
