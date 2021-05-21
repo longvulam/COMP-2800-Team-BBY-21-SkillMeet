@@ -28,24 +28,34 @@ export default function FriendsPage() {
     useEffect(
         () => waitForCurrentUser()
             .then((currentUser) => {
-                db.collection('users').doc(currentUser.uid)
-                    .collection('Friends')
+                const friendsRef = db.collection('users').doc(currentUser.uid)
+                    .collection('Friends');
+
+                Promise.all([
+                    friendsRef
                     .where('isPending', '==', false)
-                    .where('isConfirmed', '==', true)
+                    .get()
+                    .then(querySs => {
+                        const arr = [];
+                        querySs.forEach(doc => arr.push(doc.data()));
+                        return arr;
+                    }),
+                    friendsRef.where('isConfirmed', '==', true)
                     .get()
                     .then(querySs => {
                         const arr = [];
                         querySs.forEach(doc => arr.push(doc.data()));
                         return arr;
                     })
-                    .then(friends => {
-                        if (friends.length == 0) {
-                            setIsLoadingData(false);
-                            return;
-                        }
-                        const friendIds = friends.map(item => item.friendID);
-                        loadFriendsData(friendIds);
-                    });
+                ]).then(res => {
+                    const friends = [...res[0], ...res[1]];
+                    if (friends.length == 0) {
+                        setIsLoadingData(false);
+                        return;
+                    }
+                    const friendIds = friends.map(item => item.friendID);
+                    loadFriendsData(friendIds);
+                });
             }).catch((err) => {
                 console.log(err);
             })
