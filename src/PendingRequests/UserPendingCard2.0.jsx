@@ -10,8 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import Grid from '@material-ui/core/Grid';
 
+import firebase, { db, auth } from '../firebase';
 
-import firebase, { db, auth } from '../../firebase';
 const useStyles = makeStyles((theme) => ({
   paper:{
     width:'100%',
@@ -52,16 +52,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UserPendingCard(props) {
+export default function UserPendingCard2(props) {
   const classes = useStyles();
-  const { name, city, skillName, skillLevel, id } = props;
+  const { name, city, id, setRequests } = props;
 
   async function acceptRequest() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
-    db.collection('users').doc(currentUserData.uid).collection('Friends').doc('sent' + id)
+    db.collection('users').doc(currentUserData.uid).collection('Friends').doc('received' + id)
 		.update({
-          isConfirmed: true
+          isPending: false
 		})
 		.then(() => {
     			console.log("Document successfully written!");
@@ -69,11 +69,15 @@ export default function UserPendingCard(props) {
 		.catch((error) => {
     			console.error("Error writing document: ", error);
 		});
-    db.collection('users').doc(id).collection('Friends').doc('received' + currentUserData.uid)
+    db.collection('users').doc(id).collection('Friends').doc('sent' + currentUserData.uid)
 		.update({
-    			isPending: false
+    			isConfirmed: true
 		})
 		.then(() => {
+      setRequests(oldArray => {
+        const newArrayOfRequests = oldArray.filter(req => req.id !== id);
+        return newArrayOfRequests;
+    })
     			console.log("Document successfully written!");
 		})
 		.catch((error) => {
@@ -84,7 +88,7 @@ export default function UserPendingCard(props) {
   async function declineRequest() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
-    db.collection('users').doc(currentUserData.uid).collection('Friends').doc('sent' + id)
+    db.collection('users').doc(currentUserData.uid).collection('Friends').doc('received' + id)
 		.delete()
 		.then(() => {
     			console.log("Document successfully written!");
@@ -92,9 +96,13 @@ export default function UserPendingCard(props) {
 		.catch((error) => {
     			console.error("Error writing document: ", error);
 		});
-    db.collection('users').doc(id).collection('Friends').doc('received' + currentUserData.uid)
+    db.collection('users').doc(id).collection('Friends').doc('sent' + currentUserData.uid)
 		.delete()
 		.then(() => {
+      setRequests(oldArray => {
+        const newArrayOfRequests = oldArray.filter(req => req.id !== id);
+        return newArrayOfRequests;
+    })
     			console.log("Document successfully written!");
 		})
 		.catch((error) => {
@@ -112,16 +120,6 @@ export default function UserPendingCard(props) {
             <Grid Item className={classes.gridItem}>
               <div className={classes.infoContain}>
                 <Chip className={classes.chips} label={name}/>
-              </div>
-            </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={skillName}/>
-              </div>
-            </Grid>
-            <Grid Item className={classes.gridItem}>
-              <div className={classes.infoContain}>
-                <Chip className={classes.chips} label={skillLevel}/>
               </div>
             </Grid>
             <Grid Item className={classes.gridItem}>
