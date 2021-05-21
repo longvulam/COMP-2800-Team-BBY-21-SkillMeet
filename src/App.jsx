@@ -6,8 +6,11 @@ import Friends from './Friends/Friends';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
-import Search from "./SearchPage/searchComponent";
+// import Search from "./SearchPage/searchComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
+import Search from "./SearchPage/SearchPage";
+import FriendRequests from './Friends/FriendRequests';
+import FriendsPageNav from './Friends/friendsComponents/friendsPageNav'
 
 function App() {
 
@@ -36,6 +39,11 @@ function App() {
             </Route>
             <Route path = '/editProfile'>
                 <EditProfilePage/>
+            </Route>
+            <Route path = '/friendRequests'>
+                <FriendsPageNav/>
+                <FriendRequests/>
+                <BottomNavBar />
             </Route>
           </Switch>
         </div>
