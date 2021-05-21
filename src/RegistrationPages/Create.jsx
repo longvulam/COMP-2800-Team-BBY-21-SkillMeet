@@ -51,7 +51,6 @@ const Create = () => {
           window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
         });
       }
-
     }
   }
 
