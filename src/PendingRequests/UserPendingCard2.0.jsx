@@ -112,7 +112,7 @@ export default function UserPendingCard2(props) {
     console.log(currentUserData.uid);
     db.collection('users').doc(currentUserData.uid).collection('Friends').doc('received' + id)
 		.update({
-          isPending: false
+          isPending: false,
 		})
 		.then(() => {
     			console.log("Document successfully written!");
@@ -123,7 +123,6 @@ export default function UserPendingCard2(props) {
     db.collection('users').doc(id).collection('Friends').doc('sent' + currentUserData.uid)
 		.update({
     			isConfirmed: true,
-          isPending: false
 		})
 		.then(() => {
       setRequests(oldArray => {
