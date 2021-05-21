@@ -18,7 +18,6 @@ console.log('SkillOptions', skillOptions);
 
 async function getCurrentUIDAsync() {
   const curUserID = await getCurrentUserDataAsync();
-  console.log('currentUserId', curUserID);
 }
 
 function getCurrentUserDataAsync() {

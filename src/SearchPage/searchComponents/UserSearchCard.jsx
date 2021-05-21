@@ -8,6 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import Grid from '@material-ui/core/Grid';
 
+
+import firebase, { db, auth } from '../../firebase';
 const useStyles = makeStyles((theme) => ({
   paper:{
     width:'100%',
@@ -51,6 +53,32 @@ const useStyles = makeStyles((theme) => ({
 export default function UserSearchCard(props) {
   const classes = useStyles();
   const { name, city, skillName, skillLevel, id } = props;
+  async function addFriend() {
+    const currentUserData = await getCurrentUserDataAsync();
+    console.log(currentUserData.uid);
+    db.collection('users').doc(currentUserData.uid).collection('Friends')
+		.add({
+          isConfirmed: "false",
+          friendID: id,
+		})
+		.then(() => {
+    			console.log("Document successfully written!");
+		})
+		.catch((error) => {
+    			console.error("Error writing document: ", error);
+		});
+    db.collection('users').doc(id).collection('Friends')
+		.add({
+    			isPending: "true",
+          friendID: currentUserData.uid
+		})
+		.then(() => {
+    			console.log("Document successfully written!");
+		})
+		.catch((error) => {
+    			console.error("Error writing document: ", error);
+		});
+  }
   return (
     <>
       <Paper className={classes.paper}elevation={2} key={id}>
@@ -79,7 +107,7 @@ export default function UserSearchCard(props) {
               </div>
             </Grid>
           </Grid>
-          <IconButton id={id} onClick = { (e) => addFriend(e.target.id)}	>
+          <IconButton onClick = { (e) => addFriend()}	>
             <PersonAddIcon className={classes.addIcon}/>
           </IconButton>
         </div>
@@ -87,3 +115,65 @@ export default function UserSearchCard(props) {
     </>
   );
 }
+
+function getCurrentUserDataAsync() {
+    return new Promise((resolve, reject) =>
+        auth.onAuthStateChanged((user) => {
+            if (!user) return;
+            resolve(user);   
+        })
+    );
+}
+
+
+//////////////////////////////////////////////////////////////////
+// addFriend(e.target.id){
+// 		const CurUserID = firebase.auth().currentUser.uid;
+// 		const OtherUserID = e.target.id;
+
+// 		db.collection('users').doc(CurUserID).collection('Friends')
+// 		.add({
+//           isConfirmed: "false",
+//           friendID: OtherUserID,
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+// //3. User B Set() User A.ID in "pending".//
+// 		db.collection('users').doc(OtherUserID).collection('Friends').doc("received" + CurUserID)
+// 		.add({
+//     			isPending: "false",
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+
+// //4. When User B Accepts, both User's documents boolean fields are set to opposite.//
+// 		db.collection('users').doc(CurUserID).collection('Friends').doc("sent" + CurUserID)
+// 		.update({
+//     			isConfirmed: "true",
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+
+// 		db.collection('users').doc(OtherUserID).collection('Friends').doc("received" + CurUserID)
+// 		.update({
+//     			isPending: "false",
+// 		})
+// 		.then(() => {
+//     			console.log("Document successfully written!");
+// 		})
+// 		.catch((error) => {
+//     			console.error("Error writing document: ", error);
+// 		});
+// 	}
