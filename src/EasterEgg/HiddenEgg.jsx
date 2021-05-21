@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import $ from 'jquery';
 
-
+/**
+ * Source:  https://github.com/mikeflynn/egg.js/blob/master/egg.js
+ */
 function Egg(/* keySequence, fn, metadata */) {
     this.eggs = [];
     this.hooks = [];
@@ -51,7 +53,6 @@ Egg.prototype.__toCharCodes = function (keys) {
     return characterKeyCodes.join(',');
 }
 
-// Keycode lookup: http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 Egg.prototype.AddCode = function (keys, fn, metadata) {
     this.eggs.push({ keys: this.__toCharCodes(keys), fn: fn, metadata: metadata });
 
@@ -132,7 +133,7 @@ Egg.prototype.addHook = Egg.prototype.AddHook;
 class HiddenEgg extends Component {
     componentDidMount() {
         var egg = new Egg();
-        egg.addCode("up,down,left,right,b,a", function () {
+        egg.addCode("f,r,i,e,n,d,s", function () {
             $('#hiddenEasterEgg').fadeIn(500, function () {
                 window.setTimeout(function () { $('#hiddenEasterEgg').hide(); }, 5000);
             });
@@ -147,6 +148,7 @@ class HiddenEgg extends Component {
             <div>
                 <img src="https://media.giphy.com/media/ihYEWzTBNT6sqEvhmn/giphy.gif" id="hiddenEasterEgg" alt="spongebob and Patrick"></img>
             </div>
+            // <div style="width:100%"><div style="height:0;padding-bottom:56.25%;position:relative;width:100%"><iframe allowfullscreen="" frameBorder="0" height="100%" src="https://giphy.com/embed/gLiV9vhb02Yikmagf3/video" style="left:0;position:absolute;top:0" width="100%"></iframe></div></div>
         );
     }
 }
