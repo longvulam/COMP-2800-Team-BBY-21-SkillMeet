@@ -16,7 +16,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <div className = "content">
+        <div className = "content" style={styles.content}>
           <Switch>
             <Route exact path = "/">
                 <Home />
@@ -50,6 +50,12 @@ function App() {
       </div>
     </Router>
   );
+}
+
+const styles = {
+    content: {
+        height: '100vh',
+    }
 }
 
 export default App;
