@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 
 const Login = (props) => {
 
@@ -19,7 +20,9 @@ const Login = (props) => {
         hasAccount, 
         setHasAccount, 
         emailError, 
-        passwordError
+        passwordError,
+        firstNameError,
+        lastNameError
     } = props;
 
     return ( 
@@ -33,6 +36,7 @@ const Login = (props) => {
                             <label>Email:</label>
                             <input 
                                 type = "email" 
+                                className = "userEmailID"
                                 autoFocus 
                                 required 
                                 value = {email} 
@@ -44,6 +48,7 @@ const Login = (props) => {
                             <input 
                                 type = "password" 
                                 required 
+                                className = "userPassword"
                                 value = {password} 
                                 onChange = {(e) => setPassword(e.target.value)} 
                             />
@@ -67,6 +72,7 @@ const Login = (props) => {
                             <label>Email:</label>
                             <input 
                                 type = "email" 
+                                className = "userEmailID"
                                 autoFocus 
                                 required 
                                 value = {email} 
@@ -77,23 +83,28 @@ const Login = (props) => {
                             <label>FirstName:</label>
                             <input 
                                 type = "text" 
+                                className = "otherInputs"
                                 required 
                                 value = {firstName} 
                                 onChange = {(e) => setFirstName(e.target.value)} 
                             />
+                            <p className = "errorMsg">{firstNameError}</p>
 
                             <label>LastName:</label>
                             <input 
                                 type = "text" 
                                 required 
+                                className = "otherInputs"
                                 value = {lastName} 
                                 onChange = {(e) => setLastName(e.target.value)} 
                             />
+                            <p className = "errorMsg">{lastNameError}</p>
 
                             <label>Create Password:</label>
                             <input 
                                 type = "password" 
                                 required 
+                                className = "userPassword"
                                 value = {password} 
                                 onChange = {(e) => setPassword(e.target.value)} 
                             />

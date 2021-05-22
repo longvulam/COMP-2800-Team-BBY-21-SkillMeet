@@ -1,12 +1,13 @@
 * {
-  margin: 0;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .landing-page-background {
   height: 100vh;
   min-height: 900px;
   padding-top: 10vh;
-  background-image: url("img/friends1.jpg");
+  background-image: url("../img/friends1.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -73,10 +74,10 @@
   cursor: pointer;
 }
 
-input[type=text],
-input[type=email],
-input[type=password] {
-  width: 100%;
+.otherInputs,
+.userEmailID,
+.userPassword {
+  width: 95%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -110,23 +111,8 @@ input[type=password] {
 
 }
 
-.create-profile-form{
-  margin: auto 10%;
-  height: fit-content;
-}
 
-.bioInfo {
-  width: 100%;
-  height: 90px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  background-color: #f8f8f8;
-  resize: none;
-}
-  
-.createProfileBtn{
+.createProfileBtn {
   background-color: #0e4d92;
   border: none;
   border-radius: 5px;
@@ -138,39 +124,14 @@ input[type=password] {
   cursor: pointer;
 }
 
-.errorMsg{
-  color: red;
-  font-size: 20px;
+.errorMsg {
+  color: #ff0033;
+  font-size: 14px;
 }
 
-#skillOneName, #skillTwoName, #skillThreeName{
-  height: 30px;
-  width: 250px;
+#profile-form {
+  background-color: whitesmoke;
 }
-
-.skillBox{
-  background-color: lightgrey;
-  border-radius: 5px;
-}
-
-#skillContent{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: 20px;
-}
-
-#skillOneInfo, #skillTwoInfo, #skillThreeInfo {
-  float: right;
-  width: 80%;
-  height: 110px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  background-color: #f8f8f8;
-  resize: none;
-}
-
 
 /* sets layout and style for the top navbar */
 .navbar {
@@ -240,7 +201,7 @@ input[type=password] {
 
 /* changes the background, border, and cursor when hovering links in the navbar */
 .navbar-links li:hover {
-  background-image: linear-gradient(rgba(25, 102, 38, 0.986), #33a852);
+  background-color: #B4CDCD;
   border-radius: 0px 0px 15px 15px;
   border: 0px double rgb(0, 0, 0, .2);
   cursor: pointer;
@@ -271,10 +232,38 @@ input[type=password] {
   border: 4px double rgb(0, 0, 0, .2);
 }
 
+#hiddenEasterEgg {
+  position: absolute;
+  top: 33%;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+  display: none;
+  border-radius: 5%;
+}
+
+#hiddenEasterEgg2 {
+  position: absolute;
+  top: 65%;
+  left: 10%;
+  width: 80%;
+  border-radius: 5px;
+  display: none;
+}
+
+#hiddenEasterEgg3 {
+  position: absolute;
+  top: 65%;
+  left: 10%;
+  width: 80%;
+  border-radius: 5px;
+  display: none;
+}
+
 @media (max-width: 1080px) {
   .landing-page-background {
     height: 95vh;
-  min-height: 750px;
+    min-height: 750px;
     padding-top: 10vh;
     display: grid;
     grid-template-columns: 65% 35%;
@@ -316,12 +305,12 @@ input[type=password] {
     margin: 3px 2px;
   }
 
-  input[type=text],
+  /* input[type=text],
   input[type=email],
   input[type=password] {
     padding: 12px 16px;
     margin: 8px 0;
-  }
+  } */
 
   .signInReDirect,
   .signUpReDirect {
@@ -345,7 +334,7 @@ input[type=password] {
 @media (max-width: 870px) {
 
   .form-background {
-    background-image: url("img/bottom.JPG");
+    background-image: url("../img/bottom.JPG");
     padding-bottom: 70px;
   }
 
@@ -396,13 +385,13 @@ input[type=password] {
     margin: 3px 2px;
   }
 
-  input[type=text],
+  /* input[type=text],
   input[type=email],
   input[type=password] {
     width: 100%;
     padding: 12px 16px;
     margin: 8px 0;
-  }
+  } */
 
   .signInReDirect,
   .signUpReDirect {
@@ -421,23 +410,27 @@ input[type=password] {
     font-size: 25px;
   }
 
-  #skillOneName, #skillTwoName, #skillThreeName{
+  #skillOneName,
+  #skillTwoName,
+  #skillThreeName {
     height: 30px;
     width: 250px;
   }
-  
-  .skillBox{
+
+  .skillBox {
     background-color: lightgrey;
     border-radius: 5px;
   }
-  
-  #skillContent{
+
+  #skillContent {
     display: grid;
     grid-template-columns: 1fr;
     grid-row-gap: 20px;
   }
-  
-  #skillOneInfo, #skillTwoInfo, #skillThreeInfo {
+
+  #skillOneInfo,
+  #skillTwoInfo,
+  #skillThreeInfo {
     float: right;
     width: 80%;
     height: 110px;
@@ -447,11 +440,12 @@ input[type=password] {
     border-radius: 8px;
     background-color: #f8f8f8;
     resize: none;
-}
-.create-profile-form{
-  margin: auto 1%;
-  height: fit-content;
-}
+  }
+
+  .create-profile-form {
+    margin: auto 1%;
+    height: fit-content;
+  }
 }
 
 @media (max-width: 620px) {
@@ -503,13 +497,13 @@ input[type=password] {
     margin: 3px 2px;
   }
 
-  input[type=text],
+  /* input[type=text],
   input[type=email],
   input[type=password] {
     width: 100%;
     padding: 12px 16px;
     margin: 8px 0;
-  }
+  } */
 
   .signInReDirect,
   .signUpReDirect {
@@ -529,4 +523,4 @@ input[type=password] {
   }
 }
 
-/* @media (max-width: 420px) {} */
+@media (max-width: 420px) {}
