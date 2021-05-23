@@ -49,6 +49,7 @@ function App() {
               </Route>
               <Route path = '/chatRooms'>
                   <ChatRoomsList />
+                  <BottomNavBar />
               </Route>
               <Route path = '/chatRoom/:chatRoomId'>
                   <ChatRoom/>
