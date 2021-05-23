@@ -14,11 +14,15 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 import { skillOptions } from '../dataStores/skills';
 import createPalette from '@material-ui/core/styles/createPalette';
+import InputAdornment from "@material-ui/core/InputAdornment";
+
+// import Theme from '../theme/Theme'
 console.log('SkillOptions', skillOptions);
+
+
 
 async function getCurrentUIDAsync() {
   const curUserID = await getCurrentUserDataAsync();
-
 }
 
 function getCurrentUserDataAsync() {
@@ -31,30 +35,50 @@ function getCurrentUserDataAsync() {
 }
 getCurrentUIDAsync();
 
-
 const useStyles = makeStyles((theme) => ({
+  inputRoot: {
+    width:'95%',
+    backgroundColor:'white',
+    height:'3.5em',
+    marginTop:'1em',
+    color: theme.palette.primary.dark,
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "0px",
+      borderColor: "blue"
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "0px",
+      borderColor: "blue"
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "0px",
+      borderColor: "blue"
+    }
+  },
   searchWrap: {
-    width: '98vw',
+    width: '100vw',
     display: 'flex', 
-    justifyContent:'space-between',
+    justifyContent:'space-around',
     alignItems:'top',
-    margin:'auto',
-    marginTop:'0.5em',
-    height:'3.em',
+    margin:'auto', 
+    position:'fixed',
+    top:'0',
+    height:'5.4em',
+    backgroundColor: theme.palette.primary.dark,
     zIndex:'1000',
   },
   searchBar: {
-    width:'calc(100% - 4.1em)',
+    width:'calc(100%)',
     color:'white',
   },
   searchIcon: {
-    width:'1.4em', 
+    width:'1.5em', 
     height:'auto',
   },
   userContain: {
     width:'98vw',
     margin:'auto',
-    marginTop:'1em',
+    marginTop:'5.5em',
     marginBottom:'4.5em',
     overflowY:'scroll',
   },
@@ -85,32 +109,68 @@ export default function SearchPage() {
   
   return (
   <>
-  <div className={classes.searchWrap}>
-    <Paper elevation={2} className={classes.searchBar}>
+ <div className={classes.searchWrap}>
       <Autocomplete
-        id="tags-standard"
-        onChange={searchedSkillUpdate}
-        options={skillOptions}
-        getOptionLabel={(option) => option}
-        renderInput={(params) => (
+      id="combo-box-demo"
+      className={classes.inputRoot}
+      options={skillOptions}
+      onChange={searchedSkillUpdate}
+      disableClearable
+      defaultValue="Search By Skills"
+      forcePopupIcon={false}
+      getOptionLabel={option => option}
+      renderInput={params => {
+        return (
           <TextField
             {...params}
-            variant="standard"
-            label="Search By Skills"
-            placeholder="Skills"
+            variant="outlined"
+            fullWidth
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <InputAdornment position="end">
+                <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
+                    <SearchIcon color='primary' className={classes.searchIcon}/>
+                </Button>
+                </InputAdornment>
+              )
+            }}
           />
-        )}
-      />
-    </Paper>
-    <Paper elevation={2}
-    style={{
-      height:'100%'
-    }}>
-      <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
-        <SearchIcon color='primary' className={classes.searchIcon}/>
-      </Button>
-    </Paper>
+        );
+      }}
+    />
   </div>
+  {/* <div className={classes.searchWrap}>
+    <Autocomplete
+      id="tags-standard"
+      onChange={searchedSkillUpdate}
+      className={classes.searchBar}
+      options={skillOptions}
+      getOptionLabel={(option) => option}
+      disableClearable
+      forcePopupIcon={false}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="standard"
+          label="Search By Skills"
+          placeholder="Skills"
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <InputAdornment position="end">
+                <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
+                  <SearchIcon color='primary' className={classes.searchIcon}/>
+                </Button>
+              </InputAdornment>
+            )
+          }}
+        />
+      )}
+      />
+  </div> */}
+
+
 
   <Grid container direction="column" 
     spacing={1}
