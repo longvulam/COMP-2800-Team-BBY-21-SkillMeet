@@ -1,4 +1,3 @@
-import { CircularProgress } from "@material-ui/core";
 import { useEffect } from "react";
 import { useState } from "react";
 import LoadingSpinner from "../classes/LoadingSpinner";
@@ -66,23 +65,5 @@ const ChatRooms = () => {
             </div>
     );
 }
-
-// function LoadingSpinner() {
-
-//     /** @type {CSSStyleDeclaration} */
-//     const wrapper = {
-//         height: '100vh',
-//         width: '100vw',
-//         display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//     }
-
-//     return (
-//         <div style={wrapper}>
-//             <CircularProgress />
-//         </div>
-//     )
-// }
 
 export default ChatRooms;
