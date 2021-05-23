@@ -52,7 +52,7 @@ export default function LabelBottomNavigation() {
       <BottomNavigationAction label="Profile" value="/profile" icon={<AccountIcon />} />
       <BottomNavigationAction label="Friends" value="/friends" icon={<LocationOnIcon/>} />
       <BottomNavigationAction label="Search" value="/search" icon={<SearchIcon />} />
-      <BottomNavigationAction disabled label="Chat" value="/chat" icon={<ChatIcon style={{color:'lightgrey'}} />} />
+      <BottomNavigationAction label="Chat" value="/chatrooms" icon={<ChatIcon />} />
     </BottomNavigation>
     </div>
   );
