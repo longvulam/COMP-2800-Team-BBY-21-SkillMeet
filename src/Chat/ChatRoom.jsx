@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'
-import Message from './Message';
+import { useLocation, useParams } from 'react-router-dom'
+import Message from './chatPageComponents/message';
 import { auth, db } from '../firebase';
 import { Button, InputBase, Paper } from '@material-ui/core';
+import LoadingSpinner from '../classes/LoadingSpinner';
 
 let collRef = db.collection('chatrooms')
     .doc()
     .collection('messages');
+let chatroomRef = db.collection('chatrooms')
+    .doc();
 
 async function enableListening(updateMessages) {
     collRef.onSnapshot(querySnapshot => {
@@ -23,11 +26,11 @@ async function enableListening(updateMessages) {
 }
 
 function setDbRef(chatRoomId) {
-    collRef = db.collection('chatrooms')
-        .doc(chatRoomId)
-        .collection('messages');
+    chatroomRef = db.collection('chatrooms').doc(chatRoomId);
+    collRef = chatroomRef.collection('messages');
 }
 
+/** @param {String} newMessage */
 function sendMessageToDB(newMessage) {
     newMessage = newMessage.replace('\n', '\\n');
     collRef.add({
@@ -35,18 +38,22 @@ function sendMessageToDB(newMessage) {
         content: newMessage,
         timeStamp: new Date().getTime()
     });
+    chatroomRef.set({
+        recentMessage: newMessage.slice(0, 40) + "..."
+    })
 }
 
 const ChatRoom = () => {
 
     const { chatRoomId } = useParams();
+    const location = useLocation();
     const [messages, updateMessages] = useState([]);
     const [currentMsg, setCurrentMsg] = useState([]);
-    const [pendingReq, setPendingReqs] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         setDbRef(chatRoomId);
         enableListening(updateMessages);
+        setIsLoading(false);
     }, []);
 
     function handleChange(event) {
@@ -66,7 +73,12 @@ const ChatRoom = () => {
     }
 
     return (
+        isLoading ? <LoadingSpinner /> :
         <div style={styles.pageContainer}>
+            <Paper>
+                <div>{location.state.chatRoomName}</div>
+            </Paper>
+
             <div style={styles.msgContainer}>
                 {messages.map((msg, index) =>
                     <Message
