@@ -99,7 +99,15 @@ const Home = () => {
   };
 
   const handleLogout = () => {
-    firebase.auth().signOut();
+
+    var promise = firebase.auth().signOut();
+    promise.then(function () {
+    window.location.href = '/';
+  });
+
+    // history.push("/").then(()
+
+    // firebase.auth().signOut()
   }
 
   const authListener = () => {

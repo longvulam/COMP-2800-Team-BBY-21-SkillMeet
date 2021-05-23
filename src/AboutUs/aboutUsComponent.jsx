@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
+import HiddenEgg from '../EasterEgg/HiddenEgg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HeroImage from './heroImageComponent';
 import Mission from './missionComponent';
@@ -9,6 +11,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../Navbar';
 library.add(fas);
 
+
 function handleLogout (){
 
 }
@@ -18,6 +21,7 @@ class AboutUs extends Component {
         return (<div>
             <Navbar handleLogout = {handleLogout} />
             <HeroImage />
+            <HiddenEgg />
             <Mission />
             <Team />
             <ContactUs />

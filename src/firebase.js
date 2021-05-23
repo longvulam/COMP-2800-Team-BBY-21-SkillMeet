@@ -31,7 +31,7 @@ async function getProfileDataFromDb(uid) {
     const data = await Promise.all([
         userRef.get().then(doc => {
             const data = doc.data();
-            data.id = doc.id;
+            data.id = uid;
             return data;
         }),
         userRef.collection('Skills')
@@ -52,23 +52,25 @@ async function getProfileDataFromDb(uid) {
     return profileData;
 }
 
-export function getCurrentUserDataAsync() {
-    return new Promise((resolve, reject) =>
-        auth.onAuthStateChanged((user) => {
-            if (!user) return;
-
-            let userData = getProfileDataFromDb(user.uid);
-            resolve(userData);
-        })
-    );
+export function getCurrentUserDataAsync(uid) {
+    return new Promise((resolve, reject) => {
+        if (uid) {
+            const userDataWithSkills = getProfileDataFromDb(uid);
+            resolve(userDataWithSkills);
+            return;
+        }
+        
+        waitForCurrentUser().then(user=> {
+            const userDataWithSkills = getProfileDataFromDb(user.uid);
+            resolve(userDataWithSkills);
+        });
+    });
 }
 
 async function retrieveUserProfileDataExample(){
     const userData = await getCurrentUserDataAsync();
     console.log(userData);
 }
-
-// retrieveUserProfileDataExample();
 
 /**
  * @returns {Promise<firebase.User>}
@@ -86,3 +88,6 @@ async function retrieveUserProfileDataExample(){
         }, 1000);
     })
 }
+
+
+// retrieveUserProfileDataExample();
