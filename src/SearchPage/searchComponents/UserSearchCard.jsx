@@ -129,42 +129,42 @@ export default function UserSearchCard(props) {
   }
   return (
     <>
-      <Paper className={classes.paper}elevation={2} key={id}>
-          <Grid container direction="column" 
-            spacing={1} className={classes.infoGrid}>
+        <Paper className={classes.paper}elevation={2} key={id}>
+            <Grid container direction="column" 
+              spacing={1} className={classes.infoGrid}>
 
-            <Grid item className={classes.firstGridItem}>
-                <div className={classes.avatarNameLocation}>
-                    <Avatar className={classes.avatar}/>
-                    <div className={classes.nameAndLocation}>
-                        <Typography variant="h6">{name}</Typography>
-                        <Typography variant="subtitle1">{city}</Typography>
-                    </div>
-                </div>
-                <Fab 
-                  disabled={requestSent}
-                  className={classes.fab} 
-                  color={requestSent ? "default" : "primary"} 
-                  onClick = { () => handleAddClick()}>
-                    <PersonAddIcon className={classes.addIcon}/>
-                </Fab>
-            </Grid>
+              <Grid item className={classes.firstGridItem}>
+                  <div className={classes.avatarNameLocation}>
+                      <Avatar className={classes.avatar}/>
+                      <div className={classes.nameAndLocation}>
+                          <Typography variant="h6">{name}</Typography>
+                          <Typography variant="subtitle1">{city}</Typography>
+                      </div>
+                  </div>
+                  <Fab 
+                    disabled={requestSent}
+                    className={classes.fab} 
+                    color={requestSent ? "default" : "primary"} 
+                    onClick = { () => handleAddClick()}>
+                      <PersonAddIcon className={classes.addIcon}/>
+                  </Fab>
+              </Grid>
 
-            <Grid item className={classes.skillGridItem}>
-                <Typography variant="h6" display='inline'>{skillName}</Typography>
-                <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
+              <Grid item className={classes.skillGridItem}>
+                  <Typography variant="h6" display='inline'>{skillName}</Typography>
+                  <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
+              </Grid>
             </Grid>
-          </Grid>
-      </Paper>
-      <Snackbar
-        autoHideDuration={1500}
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleSnackbarClose}
-        TransitionComponent={Transition}
-      >
-      <Alert severity="info">Added {name}</Alert>
-      </Snackbar> 
+        </Paper>
+        <Snackbar
+          autoHideDuration={1500}
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleSnackbarClose}
+          TransitionComponent={Transition}
+        >
+        <Alert severity="info">Added {name}</Alert>
+        </Snackbar> 
     </>
   );
 }
