@@ -21,16 +21,15 @@ export default function ProfileBio(props) {
                 justifyContent: 'center',
             }}
         >
-            <InputBase
-                value={bioInfo}
-                onChange={(event) => changeState(event.target.value, "bio")}
-                readOnly={!editable}
-                multiline
-                style={{
-                    textAlign: 'center',
-                    width: '92.5%',
-                }}>
-            </InputBase>
+            <Typography
+            variant="body"
+            style={{
+              width:'95%',
+              marginTop:'0.25em',
+              marginBottom:'0.25em',
+            }}>
+              {bioInfo}
+            </Typography>
         </Paper>
     );
 }
