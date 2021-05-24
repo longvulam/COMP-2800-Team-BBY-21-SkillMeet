@@ -15,8 +15,20 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import { auth, db, getCurrentUserDataAsync } from '../firebase';
+import LoadingSpinner from '../classes/LoadingSpinner';
+import { useHistory } from 'react-router';
 
-async function submitChanges(profile) {
+function validateProfile(profile) {
+    const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
+
+    if (emptySkill) {
+        return false;
+    }
+
+    return true;
+}
+
+async function submitChanges(profile, doneCallBack) {
     const isValid = validateProfile(profile);
     if (!isValid) {
         console.log("Cannot save skills with empty values!");
@@ -49,19 +61,7 @@ async function submitChanges(profile) {
     });
 
     // Commit the batch
-    batch.commit().then(() => {
-        console.log("Profile Saved!")
-    });
-}
-
-function validateProfile(profile) {
-    const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
-
-    if (emptySkill) {
-        return false;
-    }
-
-    return true;
+    batch.commit().then(doneCallBack);
 }
 
 async function addSkill(changeState) {
@@ -79,15 +79,20 @@ async function addSkill(changeState) {
     });
 }
 
-export default function Profile() {
+export default function EditProfile() {
     const classes = useStyles();
+    const history = useHistory();
+    const [isLoadingData, setIsLoadingData] = useState(true);
     const [userProfile, setUserProfile] = useState({
         displayName: "",
-        location: "",
+        city: "",
         bio: "",
         skills: [],
     });
-    useEffect(() => getCurrentUserDataAsync().then(setUserProfile), []);
+
+    useEffect(() => getCurrentUserDataAsync()
+        .then(setUserProfile)
+        .then(() => setIsLoadingData(false)), []);
 
     async function changeState(newValue, fieldName) {
         setUserProfile(previousValues => {
@@ -96,119 +101,126 @@ export default function Profile() {
                 [fieldName]: newValue
             }
         });
+        setIsLoadingData(false);
+    }
+
+    function saveFinished() {
+        console.log("Profile Saved!");
+        history.push('/profile');
     }
 
     return (
-        <div style={{
-            width: '100vw',
-            height: 'calc(100vh - 4em)',
-            overflowY: 'scroll',
-            overflowX: 'hidden',
-        }}>
-            <div className={classes.editWrap}>
-                <CancelButton
-                    style={{
-                        marginRight: '6vw',
-                        marginTop: '2vw',
-                        height: '2.5em',
-                        width: '2.5em',
-                    }}
-                />
-                <SaveButton
-                    onClick={(event) => submitChanges(Object.assign({}, userProfile))}
-                    editable={true}
-                    style={{
-                        marginRight: '4vw',
-                        marginTop: '2vw',
-                        height: '2.5em',
-                        width: '2.5em',
-                    }}
-                />
-            </div>
-
-            <div className={classes.avatarWrap}>
-                <Avatar
-                    alt="C"
-                    src="/static/images/avatar/1.jpg"
-                    className={classes.avatar} />
-            </div>
-
-            <Grid container direction="column" spacing={1}
-                style={{
-                    margin: 'auto',
-                    marginTop: '1vh',
-                    alignItems: 'center',
-                }}>
-                <Grid item xs={12}>
-                    <InputBase
-                        value={userProfile.displayName}
-                        onChange={(event) => changeState(event.target.value, "displayName")}
-                        readOnly={false}
-                        inputProps={{
-                            'aria-label': 'naked',
-                            style: {
-                                textAlign: 'center',
-                                border: 'none',
-                            }
-                        }} />
-                </Grid>
-                <Grid item xs={12}>
-                    <InputBase
-                        readOnly={false}
-                        value={userProfile.city}
-                        onChange={(event) => changeState(event.target.value, "city")}
-                        inputProps={{
-                            'aria-label': 'naked',
-                            style: {
-                                textAlign: 'center',
-                                border: 'none',
-                            }
+        isLoadingData ? <LoadingSpinner /> :
+            <div style={{
+                width: '100vw',
+                height: 'calc(100vh - 4em)',
+                overflowY: 'scroll',
+                overflowX: 'hidden',
+            }}>
+                <div className={classes.editWrap}>
+                    <CancelButton
+                        style={{
+                            marginRight: '6vw',
+                            marginTop: '2vw',
+                            height: '2.5em',
+                            width: '2.5em',
                         }}
                     />
-                </Grid>
-            </Grid>
+                    <SaveButton
+                        onClick={(event) => submitChanges(Object.assign({}, userProfile), saveFinished)}
+                        editable={true}
+                        style={{
+                            marginRight: '4vw',
+                            marginTop: '2vw',
+                            height: '2.5em',
+                            width: '2.5em',
+                        }}
+                    />
+                </div>
 
-            <Grid container direction="column" spacing={1}
-                style={{
-                    margin: 'auto',
-                    marginTop: '2vh',
-                    width: '95vw',
-                    alignItems: 'center',
-                }}>
-                <SkillsList
-                    userSkills={userProfile.skills.filter(skill => !skill.isDeleted)}
-                    setUserProfile={setUserProfile}
-                />
-                <Grid item xs={12}
+                <div className={classes.avatarWrap}>
+                    <Avatar
+                        alt="C"
+                        src="/static/images/avatar/1.jpg"
+                        className={classes.avatar} />
+                </div>
+
+                <Grid container direction="column" spacing={1}
                     style={{
-                        width: '100%',
-                        display: 'flex',
+                        margin: 'auto',
+                        marginTop: '1vh',
                         alignItems: 'center',
-                        justifyContent: 'center',
                     }}>
-                    <IconButton
-                        onClick={addSkill.bind(this, setUserProfile)}>
-                        <AddCircleIcon
-                            style={{
-                                width: '1.5em',
-                                height: '1.5em',
+                    <Grid item xs={12}>
+                        <InputBase
+                            readOnly={false}
+                            value={userProfile.displayName}
+                            onChange={(event) => changeState(event.target.value, "displayName")}
+                            inputProps={{
+                                'aria-label': 'naked',
+                                style: {
+                                    textAlign: 'center',
+                                    border: 'none',
+                                }
+                            }} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputBase
+                            readOnly={false}
+                            value={userProfile.city}
+                            onChange={(event) => changeState(event.target.value, "city")}
+                            inputProps={{
+                                'aria-label': 'naked',
+                                style: {
+                                    textAlign: 'center',
+                                    border: 'none',
+                                }
                             }}
                         />
-                    </IconButton>
-
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}
+
+                <Grid container direction="column" spacing={1}
                     style={{
-                        width: '100%'
+                        margin: 'auto',
+                        marginTop: '2vh',
+                        width: '95vw',
+                        alignItems: 'center',
                     }}>
-                    <ProfileBio
-                        bio={userProfile.bio}
-                        changeState={changeState}
-                        editable={true} />
-                </Grid>
-            </Grid>
+                    <SkillsList
+                        userSkills={userProfile.skills.filter(skill => !skill.isDeleted)}
+                        setUserProfile={setUserProfile}
+                    />
+                    <Grid item xs={12}
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                        <IconButton
+                            onClick={addSkill.bind(this, setUserProfile)}>
+                            <AddCircleIcon
+                                style={{
+                                    width: '1.5em',
+                                    height: '1.5em',
+                                }}
+                            />
+                        </IconButton>
 
-        </div>
+                    </Grid>
+                    <Grid item xs={12}
+                        style={{
+                            width: '100%'
+                        }}>
+                        <ProfileBio
+                            bio={userProfile.bio}
+                            changeState={changeState}
+                            editable={true} />
+                    </Grid>
+                </Grid>
+
+            </div>
     );
 }
 

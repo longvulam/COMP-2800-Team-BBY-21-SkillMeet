@@ -18,7 +18,7 @@ export default function SkillAccordion(props) {
             expanded={expanded}
             onChange={() => setExpanded(!expanded)}
             style={{
-                width: '100%',
+                width: '90vw',
             }}
         >
             <AccordionSummary
@@ -26,12 +26,16 @@ export default function SkillAccordion(props) {
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
                 key={skillName}
+                style={{
+                width: '100%',
+            }}
             >
                 <div
                     style={{
                         display: 'flex',
-                        justifyContent: 'center',
+                        justifyContent: 'start',
                         width: '100%',
+                        flexDirection:'column'
                     }}>
                     <InputBase
                         readOnly={true}
@@ -39,7 +43,7 @@ export default function SkillAccordion(props) {
                         inputProps={{
                             'aria-label': 'naked',
                             style: {
-                                textAlign: 'center',
+                                textAlign: 'left',
                                 border: 'none',
                             }
                         }} />
@@ -49,7 +53,7 @@ export default function SkillAccordion(props) {
                         inputProps={{
                             'aria-label': 'naked',
                             style: {
-                                textAlign: 'center',
+                                textAlign: 'left',
                                 border: 'none',
                             }
                         }}
@@ -67,7 +71,8 @@ export default function SkillAccordion(props) {
                         readOnly={true}
                         multiline
                         style={{
-                            textAlign: 'center'
+                            textAlign: 'center',
+                            width: '95%',
                         }}
                     >
                     </InputBase>

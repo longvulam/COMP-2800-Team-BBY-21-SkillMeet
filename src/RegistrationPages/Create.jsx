@@ -33,8 +33,19 @@ const Create = () => {
   const classes = useStyles();
 
   const history = useHistory();
+  const [displayName, setDisplayName] = useState('');
+  const [bio, setBio] = useState('');
+  const [city, setCity] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [bioError, setBioError] = useState('');
+  const [cityError, setCityError] = useState('');
+
+
+
+
+
   const [skillFields, setSkillFields] = useState([
-    { skillName: "", skillLevel: "", skillDescription: "" },
+    { skillName: "", skillLevel: "Expert", skillDescription: "" },
   ])
 
   let count = 0;
@@ -51,34 +62,53 @@ const Create = () => {
           window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
         });
       }
+    }
+  }
 
+  const validate = () => {
+    let nameError = "";
+    let bioError = "";
+    let cityError = "";
+    
+    
+    if(displayName.length < 3){
+      setNameError("Display Name must be 4 characters or longer");
+      return false
+    } else if (bio.length < 16){
+      setBioError("Bio must be 16 characters or longer");
+      return false
+    } else if (city.length < 1){
+      setCityError("Please fill this field");
+      return false
+    } else {
+      return true;
     }
   }
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (displayName.length == 0 || bio.length == 0 || city.length == 0) return;
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-
-        db.collection('users').doc(user.uid).update({
-          "displayName": displayName,
-          "bio": bio,
-          "city": city
-        }).then(() => {
-          for (let i = 0; i < skillFields.length; i++) {
-            db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
-              "skillName": skillFields[i].skillName,
-              "skillLevel": skillFields[i].skillLevel,
-              "skillDescription": skillFields[i].skillDescription
-            })
-          }
-        }).then(value => history.push("/profile"))
-
-      }
-    })
+    // const isValid = validate();{
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+  
+          db.collection('users').doc(user.uid).update({
+            "displayName": displayName,
+            "bio": bio,
+            "city": city
+          }).then(() => {
+            for (let i = 0; i < skillFields.length; i++) {
+              db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
+                "skillName": skillFields[i].skillName,
+                "skillLevel": skillFields[i].skillLevel,
+                "skillDescription": skillFields[i].skillDescription
+              })
+            }
+          }).then(value => history.push("/profile"))
+  
+        }
+      })
 
   };
 
@@ -92,11 +122,6 @@ const Create = () => {
     values.splice(index, 1);
     setSkillFields(values);
   }
-
-
-  const [displayName, setDisplayName] = useState('');
-  const [bio, setBio] = useState('');
-  const [city, setCity] = useState('');
 
   return (
     <div id="profile-form">
@@ -114,6 +139,9 @@ const Create = () => {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
+          <div style = {{fontSize: '0.8em', color: 'red'}}>
+            {nameError}
+          </div>
 
           <TextField
             multiline
@@ -125,6 +153,10 @@ const Create = () => {
             variant="outlined"
             onChange={(e) => setBio(e.target.value)}
           />
+          <div style = {{fontSize: '0.8em', color: 'red'}}>
+            {bioError}
+          </div>
+
 
           <TextField
             id="city"
@@ -136,6 +168,9 @@ const Create = () => {
             variant="outlined"
             onChange={(e) => setCity(e.target.value)}
           />
+          <div style = {{fontSize: '0.8em', color: 'red'}}>
+            {cityError}
+          </div>
 
 
           {skillFields.map((skillField, index) => (
@@ -170,16 +205,16 @@ const Create = () => {
                   <Select
                     native
                     name="skillLevel"
-                    required
                     label="Skill Level"
                     id="level"
+                    required
                     value={skillField.skillLevel}
                     onChange={event => handleChangeInput(index, event)}
                   >
-                    <option aria-label="None" value="Skill Level" />
                     <option value='Expert'>Expert</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Beginner">Beginner</option>
+                    <option value='Novice'>Novice</option>
                   </Select>
                 </Grid>
                 <Grid xs={12}>
@@ -224,7 +259,6 @@ const Create = () => {
           ))}
 
           <Button
-            onClick={handleSubmit}
             className={classes.button}
             variant="contained"
             color="primary"
