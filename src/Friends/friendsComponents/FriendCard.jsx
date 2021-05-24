@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MessageIcon from '@material-ui/icons/Message';
 
-export default function Friend (props) {
+export default function FriendCard (props) {
     
   return (
     <>
