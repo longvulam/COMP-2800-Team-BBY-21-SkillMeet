@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FriendsPageNav from './friendsComponents/friendsPageNav';
 import Grid from '@material-ui/core/Grid';
 
-import Friend from './friendsComponents/FriendCard';
+import FriendCard from './friendsComponents/FriendCard';
 import LoadingSpinner from '../classes/LoadingSpinner';
 import { db, waitForCurrentUser } from '../firebase';
 import firebase from 'firebase';
@@ -61,7 +61,6 @@ export default function FriendsPage() {
             })
         , []);
 
-    const data = friendData;
     return (
         isLoadingData ? <LoadingSpinner /> :
             <>
@@ -90,7 +89,7 @@ export default function FriendsPage() {
                                     style={{
                                         width: '100%',
                                     }}>
-                                    <Friend name={displayName} />
+                                    <FriendCard name={displayName} />
                                 </Grid>
                             );
                         })}
@@ -100,12 +99,3 @@ export default function FriendsPage() {
     );
 
 }
-
-const friendData = [
-    { Name: 'Carly Orr' },
-    { Name: 'Chrstopher Thompson' },
-    { Name: 'Owen Arando' },
-    { Name: 'Dustin Lott' },
-    { Name: 'Arunab Singh' },
-    { Name: 'Lam Long Vu' },
-];

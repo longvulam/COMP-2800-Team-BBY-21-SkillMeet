@@ -7,32 +7,34 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
     },
-    avatar : {
-        height:'2.5em',
-        width:'2.5em',
-        marginRight:'1em',
-      },
+    avatar: {
+        height: '2.5em',
+        width: '2.5em',
+        marginRight: '1em',
+    },
 }));
-
-async function navigateToProfile(event) {
-    
-}
 
 export default function ChatRoomCard(props) {
     const { room } = props;
 
     const classes = useStyles();
-const location = {
-    pathname: "./chatroom/" + room.roomId,
-    state: { chatRoomName: room.name }
-}
+    
+    const location = generateLocation(room)
+
     return (
         <Link to={location} >
             <Paper className={classes.paper} >
-                <Avatar className={classes.avatar}/>
+                <Avatar className={classes.avatar} />
                 <div>{room.name}</div>
                 <div>{room.recentMessage}</div>
             </Paper>
         </Link>
     )
+}
+
+function generateLocation(room) {
+    return {
+        pathname: "./chatroom/" + room.roomId,
+        state: { chatRoomName: room.name }
+    };
 }
