@@ -89,7 +89,7 @@ export default function FriendsPage() {
                                     style={{
                                         width: '100%',
                                     }}>
-                                    <FriendCard name={displayName} />
+                                    <FriendCard friendId={id} name={displayName} />
                                 </Grid>
                             );
                         })}

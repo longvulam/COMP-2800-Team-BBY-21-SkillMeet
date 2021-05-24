@@ -11,14 +11,16 @@ import EditProfilePage from './EditProfile/EditProfilePage';
 import Search from "./SearchPage/SearchPage";
 import FriendRequests from './Friends/FriendRequests';
 import FriendsPageNav from './Friends/friendsComponents/friendsPageNav'
-import ChatRoomsList from "./Chat/ChatRoomsList";
-import ChatRoom from "./Chat/ChatRoom";
-
+import ChatRoomsList from "./chat/ChatRoomsList";
+import ChatRoom from "./chat/ChatRoom";
+import Theme from './theme/Theme';
+import { ThemeProvider } from '@material-ui/core/styles';
 function App() {
 
   return (
       <div className="App">
         <div className = "content" style={styles.content}>
+        <ThemeProvider theme={Theme}>
           <Router>
             <Switch>
               <Route exact path = "/">
@@ -56,6 +58,7 @@ function App() {
               </Route>
               </Switch>
           </Router>
+        </ThemeProvider>
         </div>
       </div>
   );

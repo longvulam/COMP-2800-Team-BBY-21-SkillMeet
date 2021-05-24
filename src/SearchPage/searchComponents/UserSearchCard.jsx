@@ -10,7 +10,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import React, { useEffect, useState } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -25,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
     height:'2.5em',
     width:'2.5em',
     marginRight:'1em',
+    marginLeft:'0.5em',
+    backgroundColor:theme.palette.primary.main,
   },
   addIcon: {
     width:'0.9em',
@@ -33,18 +34,18 @@ const useStyles = makeStyles((theme) => ({
   fab: {
     width:'2.5em',
     height:'2.5em',
+    marginRight:'0.5em',
   },
   chips : {
     fontSize:'1em',
   },
   infoGrid:{
-    width:'95%',
-    height:'95%',
+    width:'100%%',
+    height:'100%',
     alignItems:'center',
     margin:'auto',
   },
   firstGridItem: {
-    marginTop:'0.5em',
     width:'100%',
     display:'flex',
     justifyContent:'space-between',
@@ -52,7 +53,11 @@ const useStyles = makeStyles((theme) => ({
   },
   skillGridItem: {
     marginTop:'0.5em',
-    width:'95%',
+    width:'100%',
+    backgroundColor:theme.palette.primary.light,
+  },
+  skills: {
+    marginLeft:'0.5em',
   },
   skillLevel: {
       marginLeft:'0.5em',
@@ -129,42 +134,44 @@ export default function UserSearchCard(props) {
   }
   return (
     <>
-      <Paper className={classes.paper}elevation={2} key={id}>
-          <Grid container direction="column" 
-            spacing={1} className={classes.infoGrid}>
+        <Paper className={classes.paper}elevation={4} key={id}>
+            <Grid container direction="column" 
+              spacing={1} className={classes.infoGrid}>
 
-            <Grid item className={classes.firstGridItem}>
-                <div className={classes.avatarNameLocation}>
-                    <Avatar className={classes.avatar}/>
-                    <div className={classes.nameAndLocation}>
-                        <Typography variant="h6">{name}</Typography>
-                        <Typography variant="subtitle1">{city}</Typography>
-                    </div>
+              <Grid item className={classes.firstGridItem}>
+                  <div className={classes.avatarNameLocation}>
+                      <Avatar className={classes.avatar} />
+                      <div className={classes.nameAndLocation}>
+                          <Typography variant="h6">{name}</Typography>
+                          <Typography variant="subtitle1">{city}</Typography>
+                      </div>
+                  </div>
+                  <Fab 
+                    disabled={requestSent}
+                    className={classes.fab} 
+                    color={requestSent ? "default" : "primary"} 
+                    onClick = { () => handleAddClick()}>
+                      <PersonAddIcon className={classes.addIcon}/>
+                  </Fab>
+              </Grid>
+
+              <Grid item className={classes.skillGridItem}>
+                <div className={classes.skills}>
+                  <Typography variant="h6" display='inline'>{skillName}</Typography>
+                  <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
                 </div>
-                <Fab 
-                  disabled={requestSent}
-                  className={classes.fab} 
-                  color={requestSent ? "default" : "primary"} 
-                  onClick = { () => handleAddClick()}>
-                    <PersonAddIcon className={classes.addIcon}/>
-                </Fab>
+              </Grid>
             </Grid>
-
-            <Grid item className={classes.skillGridItem}>
-                <Typography variant="h6" display='inline'>{skillName}</Typography>
-                <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
-            </Grid>
-          </Grid>
-      </Paper>
-      <Snackbar
-        autoHideDuration={1500}
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleSnackbarClose}
-        TransitionComponent={Transition}
-      >
-      <Alert severity="info">Added {name}</Alert>
-      </Snackbar> 
+        </Paper>
+        <Snackbar
+          autoHideDuration={1500}
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleSnackbarClose}
+          TransitionComponent={Transition}
+        >
+        <Alert severity="info">Added {name}</Alert>
+        </Snackbar> 
     </>
   );
 }
