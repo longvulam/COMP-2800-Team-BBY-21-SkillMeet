@@ -43,8 +43,8 @@ function sendMessageToDB(newMessage) {
     });
     const recentMessage = newMessage.length > 40 ? newMessage.slice(0, 40) + "..." : newMessage;
     chatroomRef.set({
-        recentMessage
-    })
+        recentMessage: recentMessage
+    }, { merge: true });
 }
 
 async function getChatRoomName(roomId) {
