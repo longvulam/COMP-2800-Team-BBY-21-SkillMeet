@@ -21,9 +21,7 @@ async function getRecentMessages(uid) {
     });
 };
 
-async function loadData(callBack) {
-    const user = await waitForCurrentUser();
-
+async function loadData(user, callBack) {
     const res = await Promise.all([
         getUserChatRooms(user.uid),
         getRecentMessages(user.uid),
@@ -40,6 +38,12 @@ async function loadData(callBack) {
     callBack(userRooms);
 }
 
+async function removeMessageNotifications(user) {
+    db.doc('users/' + user.uid).set({
+        newMessagesNo: 0
+    }, {merge: true})
+}
+
 const ChatRooms = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [chatRooms, setRooms] = useState([{
@@ -51,7 +55,11 @@ const ChatRooms = () => {
         setIsLoading(false);
     }
 
-    useEffect(() => loadData(updateData), []);
+    useEffect(async () => {
+        const user = await waitForCurrentUser();
+        loadData(user, updateData);
+        removeMessageNotifications(user);
+    }, []);
 
     return (
         isLoading ? <LoadingSpinner /> :

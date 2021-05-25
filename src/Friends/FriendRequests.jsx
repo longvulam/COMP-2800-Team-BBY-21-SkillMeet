@@ -4,11 +4,19 @@ import Grid from '@material-ui/core/Grid';
 import FriendRequest from '../SearchPage/searchComponents//UserSearchCard';
 import UserPendingCard2 from '../PendingRequests/UserPendingCard2.0';
 
-
 import { db, auth } from '../firebase';
+import firebase from 'firebase';
+
 export default function FriendsPage() {
   const [requests, setRequests] = useState([]);
-  useEffect(()=> {getFriendDataFromID(setRequests);},[]);
+  
+  useEffect(async ()=> {
+      const currentUserID = await getCurrentUserID();
+
+      getFriendDataFromID(currentUserID, setRequests);
+      removeRequestNotifications(currentUserID);
+  },[]);
+  
   return (
     <>
       <FriendsPageNav/>
@@ -54,8 +62,8 @@ export default function FriendsPage() {
 
 }
 
-async function getFriendDataFromID(setRequests) {
-    const friendIDs = await getFriendRequestIDs();
+async function getFriendDataFromID(currentUserID, setRequests) {
+    const friendIDs = await getFriendRequestIDs(currentUserID);
     console.log('FriendRequests', friendIDs);
     const friendDocs = await Promise.all(friendIDs.map(friendID => {
         return db.collection('users').doc(friendID).get().then(doc=> {
@@ -68,9 +76,8 @@ async function getFriendDataFromID(setRequests) {
     setRequests(friendDocs);
 }
 
-async function getFriendRequestIDs() {
+async function getFriendRequestIDs(currentUserID) {
     const friendRequests = [];
-    const currentUserID = await getCurrentUserID();
     const requests = 
         await db.collection('users')
         .doc(currentUserID).collection('Friends')
@@ -89,3 +96,8 @@ function getCurrentUserID() {
     );
 }
 
+async function removeRequestNotifications(userId) {
+    db.doc('users/' + userId).set({
+        newRequestsNo: 0
+    }, {merge: true});
+}
