@@ -29,33 +29,37 @@ function App() {
               <Route path = "/aboutUs">
                   <AboutUs/>
               </Route>
-              <Route path={["/profile/:uid", "/profile"]}>
-                  <Profile/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = "/friends">
-                  <Friends/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = "/search">
-                  <Search/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = '/editProfile'>
-                  <EditProfilePage/>
-              </Route>
-              <Route path = '/friendRequests'>
+
+              <Route id="bottomNavbarPages" >
+
+                <Route path={["/profile/:uid", "/profile"]}>
+                    <Profile/>
+                </Route>
+                <Route path = "/friends">
+                    <Friends/>
+                </Route>
+                <Route path = "/search">
+                    <Search/>
+                </Route>
+                <Route path = '/friendRequests'>
                   <FriendsPageNav/>
                   <FriendRequests/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = '/chatRooms'>
+                </Route>
+                <Route path = '/chatRooms'>
                   <ChatRoomsList />
-                  <BottomNavBar />
+                </Route>
+                
+                <BottomNavBar />
+
+              </Route>
+              
+              <Route path = '/editProfile'>
+                  <EditProfilePage/>
               </Route>
               <Route path = '/chatRoom/:chatRoomId'>
                   <ChatRoom/>
               </Route>
+
               </Switch>
           </Router>
         </ThemeProvider>
