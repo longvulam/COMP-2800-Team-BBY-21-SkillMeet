@@ -81,7 +81,7 @@ export default function FriendsPage() {
                             alignItems: 'center',
                         }}>
                         {friendsList.map(friendInfo => {
-                            const { displayName, id } = friendInfo;
+                            const { displayName, id, avatar } = friendInfo;
                             return (
                                 <Grid item
                                     xs={12}
@@ -89,7 +89,7 @@ export default function FriendsPage() {
                                     style={{
                                         width: '100%',
                                     }}>
-                                    <FriendCard friendId={id} name={displayName} />
+                                    <FriendCard friendId={id} name={displayName} avatar={avatar} />
                                 </Grid>
                             );
                         })}

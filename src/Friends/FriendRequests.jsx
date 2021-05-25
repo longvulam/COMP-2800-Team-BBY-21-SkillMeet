@@ -30,7 +30,7 @@ export default function FriendsPage() {
         }}>
 
         {requests.map(request => {
-          const { displayName, city, id, } = request;
+          const { displayName, city, id, avatar} = request;
           return (
             <Grid item xs={12}
             key={id} 
@@ -42,6 +42,7 @@ export default function FriendsPage() {
                 city={city}
                 id={id}
                 setRequests={setRequests}
+                avatar={avatar}
             />
             </Grid>
           );

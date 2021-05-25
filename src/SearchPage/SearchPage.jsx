@@ -178,7 +178,7 @@ export default function SearchPage() {
     >
   {searchedUsers.map(user => {
     console.log('Searchedusers', user);
-    const { name, city, skillName, skillLevel, id  } = user;
+    const { name, city, skillName, skillLevel, id, avatar } = user;
     return (
       <Grid item xs={12} className={classes.cardContain}>
         <UserSearchCard
@@ -187,6 +187,7 @@ export default function SearchPage() {
           skillName={skillName}
           skillLevel={skillLevel}
           id={id}
+          avatar={avatar}
         />
       </Grid>
     );
@@ -217,7 +218,8 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
     let user = {};
     user.name = userInfo.displayName;
     user.city = userInfo.city;
-    user.id = userInfo.id
+    user.id = userInfo.id;
+    user.avatar = userInfo.avatar;
     user.skillName = userSkillDocs[i].skillName;
     user.skillLevel = userSkillDocs[i].skillLevel;
     users.push(user);

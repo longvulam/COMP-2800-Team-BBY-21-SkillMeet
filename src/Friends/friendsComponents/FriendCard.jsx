@@ -7,7 +7,7 @@ import { useHistory } from 'react-router';
 
 export default function FriendCard(props) {
     const history = useHistory();
-    const { friendId, name } = props;
+    const { friendId, name, avatar } = props;
 
     return (
         <>
@@ -21,6 +21,7 @@ export default function FriendCard(props) {
                 }}>
                 <Avatar
                     onClick={()=>history.push('/profile/' + friendId)}
+                    src={avatar}
                     style={{
                         width: '3em',
                         height: '3em',

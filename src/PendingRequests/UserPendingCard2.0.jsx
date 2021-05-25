@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserPendingCard2(props) {
   const classes = useStyles();
-  const { name, city, id, setRequests } = props;
+  const { name, city, id, setRequests, avatar } = props;
   const [snackbarState, setSnackbarState] = React.useState({
     open: false,
     vertical:'bottom',
@@ -167,7 +167,7 @@ export default function UserPendingCard2(props) {
             spacing={1} className={classes.infoGrid}>
             <Grid item className={classes.firstGridItem}>
                 <div className={classes.avatarNameLocation}>
-                    <Avatar className={classes.avatar}/>
+                    <Avatar className={classes.avatar} src={avatar} alt="Profile Pic"/>
                     <div className={classes.nameAndLocation}>
                         <Typography variant="h6">{name}</Typography>
                         <Typography variant="subtitle1">{city}</Typography>
