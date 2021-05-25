@@ -131,7 +131,6 @@ async function sendMessageToDB(newMessage) {
         timeStamp: new Date().getTime()
     });
 
-    // const recentMessage = newMessage.length > 40 ? newMessage.slice(0, 40) + "..." : newMessage;
     chatroomRef.set({
         recentMessage: messageRef
     }, { merge: true });

@@ -63,7 +63,10 @@ async function subscribeToChanges(user, callback) {
                 await Promise.all(changes.map(async chatRoom => {
                     const messageRef = await chatRoom.recentMessage.get();
                     const uRoom = newRooms.find(uRoom => uRoom.roomId === chatRoom.id);
-                    uRoom.recentMessage = messageRef.data().content;
+                    /** @type {String}*/
+                    let content = messageRef.data().content;
+                    content = content.length > 40 ? content.slice(0, 40) : content;
+                    uRoom.recentMessage = content;
                 }));
                 callback(newRooms);
             });
