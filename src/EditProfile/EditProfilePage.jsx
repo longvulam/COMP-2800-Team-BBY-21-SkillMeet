@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
 
 import ProfileBio from '../ProfilePage/profileComponents/ProfileBio';
 
@@ -14,7 +16,7 @@ import EditableSkill from './editProfileComponents/EditableSkill';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-import { auth, db, getCurrentUserDataAsync } from '../firebase';
+import { auth, db, getCurrentUserDataAsync, storage } from '../firebase';
 import LoadingSpinner from '../classes/LoadingSpinner';
 import { useHistory } from 'react-router';
 
@@ -88,6 +90,7 @@ export default function EditProfile() {
         city: "",
         bio: "",
         skills: [],
+        avatar: "",
     });
 
     useEffect(() => getCurrentUserDataAsync()
@@ -107,6 +110,20 @@ export default function EditProfile() {
     function saveFinished() {
         console.log("Profile Saved!");
         history.push('/profile');
+    }
+
+    const handleImageChange = async (event) => {
+        const avatarImage = event.target.files[0];
+        const storageRef = storage.ref();
+        const avatarImageRef = storageRef.child(avatarImage.name);
+        await avatarImageRef.put(avatarImage);
+        const avatarImageUrl = await avatarImageRef.getDownloadURL();
+        changeState(avatarImageUrl, "avatar");
+    }
+
+    const handleEditPicture = () => {
+        const fileInput = document.getElementById('uploadImage');
+        fileInput.click();
     }
 
     return (
@@ -140,9 +157,15 @@ export default function EditProfile() {
 
                 <div className={classes.avatarWrap}>
                     <Avatar
-                        alt="C"
-                        src="/static/images/avatar/1.jpg"
+                        alt="Profile Pic"
+                        src={userProfile.avatar}
                         className={classes.avatar} />
+                </div>
+                <div className={classes.editAvatarWrap}>
+                    <input type="file" id="uploadImage" onChange={handleImageChange} hidden="hidden" />
+                    <Fab size="small" onClick={handleEditPicture} className={classes.editAvatarbtn}>
+                        <EditIcon />
+                    </Fab>
                 </div>
 
                 <Grid container direction="column" spacing={1}
@@ -258,9 +281,19 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    editAvatarWrap: {
+        width: '100vw',
+        height: '4em',
+        marginLeft: '3em',
+        marginTop: '-1em',
+        marginBottom: '-1em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     avatar: {
-        height: '4.5em',
-        width: '4.5em',
+        height: '6.5em',
+        width: '6.5em',
     },
     infoWrap: {
 

@@ -43,7 +43,7 @@ export default function FriendsPage() {
                             alignItems: 'center',
                         }}>
                         {friendsList.map(friendInfo => {
-                            const { displayName, id, chatRoomId } = friendInfo;
+                            const { displayName, id, avatar, chatRoomId } = friendInfo;
                             return (
                                 <Grid item
                                     xs={12}
@@ -55,7 +55,8 @@ export default function FriendsPage() {
                                         setLoading={setLoading}
                                         friendId={id}
                                         chatRoomId={chatRoomId}
-                                        friendName={displayName} />
+                                        friendName={displayName}
+                                        avatar={avatar} />
                                 </Grid>
                             );
                         })}

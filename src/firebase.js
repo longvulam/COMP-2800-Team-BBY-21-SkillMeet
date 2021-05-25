@@ -19,6 +19,7 @@ const fire = firebase.initializeApp(firebaseConfig);
 export default fire;
 export const auth = firebase.auth();
 export const db = firebase.firestore();
+export const storage = firebase.storage();
 
 let isRetrievingData = false;
 async function getProfileDataFromDb(uid) {
