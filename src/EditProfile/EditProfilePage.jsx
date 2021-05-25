@@ -14,11 +14,13 @@ import CancelButton from './editProfileComponents/CancelButton';
 import EditableSkill from './editProfileComponents/EditableSkill';
 
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 
 import { auth, db, getCurrentUserDataAsync, storage } from '../firebase';
 import LoadingSpinner from '../classes/LoadingSpinner';
 import { useHistory } from 'react-router';
+
+import TextField from '@material-ui/core/TextField';
 
 function validateProfile(profile) {
     const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
@@ -147,12 +149,6 @@ export default function EditProfile() {
                     <SaveButton
                         onClick={(event) => submitChanges(Object.assign({}, userProfile), saveFinished)}
                         editable={true}
-                        style={{
-                            marginRight: '4vw',
-                            marginTop: '2vw',
-                            height: '2.5em',
-                            width: '2.5em',
-                        }}
                     />
                 </div>
 
@@ -164,7 +160,7 @@ export default function EditProfile() {
                 </div>
                 <div className={classes.editAvatarWrap}>
                     <input type="file" id="uploadImage" onChange={handleImageChange} hidden="hidden" />
-                    <Fab size="small" onClick={handleEditPicture} className={classes.editAvatarbtn}>
+                    <Fab onClick={handleEditPicture} className={classes.editAvatarbtn}>
                         <EditIcon />
                     </Fab>
                 </div>
@@ -176,7 +172,9 @@ export default function EditProfile() {
                         alignItems: 'center',
                     }}>
                     <Grid item xs={12}>
-                        <InputBase
+                        <TextField
+                            label="UserName"
+                            variant="filled"
                             readOnly={false}
                             value={userProfile.displayName}
                             onChange={(event) => changeState(event.target.value, "displayName")}
@@ -185,11 +183,14 @@ export default function EditProfile() {
                                 style: {
                                     textAlign: 'center',
                                     border: 'none',
+                                    backgroundColor:'#e3f6f5'
                                 }
                             }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <InputBase
+                        <TextField
+                            label="Location"
+                            variant="filled"
                             readOnly={false}
                             value={userProfile.city}
                             onChange={(event) => changeState(event.target.value, "city")}
@@ -198,6 +199,7 @@ export default function EditProfile() {
                                 style: {
                                     textAlign: 'center',
                                     border: 'none',
+                                    backgroundColor:'#e3f6f5'
                                 }
                             }}
                         />
@@ -223,8 +225,9 @@ export default function EditProfile() {
                             justifyContent: 'center',
                         }}>
                         <IconButton
+                            className={classes.addMoreSkillButton}
                             onClick={addSkill.bind(this, setUserProfile)}>
-                            <AddCircleIcon
+                            <AddIcon
                                 style={{
                                     width: '1.5em',
                                     height: '1.5em',
@@ -291,12 +294,22 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        bacgroundColor: 'black',
     },
     avatar: {
         height: '6.5em',
         width: '6.5em',
     },
-    infoWrap: {
-
+    addMoreSkillButton: {
+      backgroundColor:theme.palette.primary.dark,
+      width:'1.5em',
+      height:'1.5em',
+      color:'white',
     },
+    editAvatarbtn: {
+      backgroundColor:theme.palette.secondary.main,
+      color: theme.palette.primary.dark,
+      height:'3em',
+      width:'3em',
+    }
 }));
