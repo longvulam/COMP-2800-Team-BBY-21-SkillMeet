@@ -4,7 +4,7 @@ import LoadingSpinner from "../classes/LoadingSpinner";
 import { db, firestore, waitForCurrentUser } from "../firebase";
 import ChatRoomCard from "./chatPageComponents/chatRoomCard";
 
-export default function ChatRooms (props) {
+export default function ChatRooms(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [chatRooms, setRooms] = useState([]);
 
@@ -19,10 +19,12 @@ export default function ChatRooms (props) {
         removeMessageNotifications(user);
     }, []);
 
+    const sortedRooms = chatRooms.sort((a, b) =>
+        a.recentMessage.timeStamp < b.recentMessage.timeStamp ? 1 : -1);
     return (
         isLoading ? <LoadingSpinner /> :
             <div>
-                {chatRooms.map((room, index) =>
+                {sortedRooms.map((room, index) =>
                     <ChatRoomCard
                         room={room}
                         key={index} />
@@ -63,10 +65,11 @@ async function subscribeToChanges(user, callback) {
                 await Promise.all(changes.map(async chatRoom => {
                     const messageRef = await chatRoom.recentMessage.get();
                     const uRoom = newRooms.find(uRoom => uRoom.roomId === chatRoom.id);
+                    const message = messageRef.data();
                     /** @type {String}*/
-                    let content = messageRef.data().content;
-                    content = content.length > 40 ? content.slice(0, 40) : content;
-                    uRoom.recentMessage = content;
+                    let content = message.content;
+                    message.content = content.length > 40 ? content.slice(0, 40) : content;
+                    uRoom.recentMessage = message;
                 }));
                 callback(newRooms);
             });
