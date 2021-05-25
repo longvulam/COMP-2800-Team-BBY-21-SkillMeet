@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '2vw',
     height: '2.5em',
     width: '2.5em',
-    backgroundColor:theme.palette.primary.dark,
+    backgroundColor:'darkRed',
     color:'white',
 }
 }));
