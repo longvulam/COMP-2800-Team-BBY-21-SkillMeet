@@ -104,9 +104,9 @@ async function matchProfilesToChatRooms(results) {
     const chatRooms = results[1];
     friendsProfile.forEach(profile => {
         const uids = [profile.id, currentUser.uid];
-        const chatroom = chatRooms.find(room => {
-            room.uids.every(uid => uids.includes(uid));
-        });
+        const chatroom = chatRooms.find(room => 
+            room.uids.every(uid => uids.includes(uid))
+        );
         profile.chatRoomId = chatroom ? chatroom.id : undefined;
     });
     console.log(friendsProfile);
