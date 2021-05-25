@@ -23,11 +23,19 @@ function App() {
         <ThemeProvider theme={Theme}>
           <Router>
             <Switch>
+
               <Route exact path = "/">
                   <Home />
               </Route>
               <Route path = "/aboutUs">
                   <AboutUs/>
+              </Route>
+
+              <Route path='/editProfile'>
+                  <EditProfilePage/>
+              </Route>
+              <Route path='/chatRoom/:chatRoomId'>
+                  <ChatRoom/>
               </Route>
 
               <Route id="bottomNavbarPages" >
@@ -52,15 +60,8 @@ function App() {
                 <BottomNavBar />
 
               </Route>
-              
-              <Route path = '/editProfile'>
-                  <EditProfilePage/>
-              </Route>
-              <Route path = '/chatRoom/:chatRoomId'>
-                  <ChatRoom/>
-              </Route>
 
-              </Switch>
+            </Switch>
           </Router>
         </ThemeProvider>
         </div>
