@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
 import Message from './chatPageComponents/message';
-import { auth, db } from '../firebase';
+import { auth, db, waitForCurrentUser } from '../firebase';
 import { Button, InputBase, Paper } from '@material-ui/core';
 import LoadingSpinner from '../classes/LoadingSpinner';
 
@@ -32,27 +32,40 @@ function setDbRef(chatRoomId) {
 
 /** @param {String} newMessage */
 function sendMessageToDB(newMessage) {
+    
+    if(newMessage.length === 0) return;
+
     newMessage = newMessage.replace('\n', '\\n');
     collRef.add({
         from: auth.currentUser.uid,
         content: newMessage,
         timeStamp: new Date().getTime()
     });
+    const recentMessage = newMessage.length > 40 ? newMessage.slice(0, 40) + "..." : newMessage;
     chatroomRef.set({
-        recentMessage: newMessage.slice(0, 40) + "..."
-    })
+        recentMessage: recentMessage
+    }, { merge: true });
+}
+
+async function getChatRoomName(roomId) {
+    const currentUser = await waitForCurrentUser();
+    const userChatRoom = await db.collection('users').doc(currentUser.uid)
+    .collection('chatrooms').where('roomId', '==', roomId).get();
+    return userChatRoom.docs[0].data().name;
 }
 
 const ChatRoom = () => {
-
     const { chatRoomId } = useParams();
-    const location = useLocation();
+    const [isLoading, setIsLoading] = useState(true);
     const [messages, updateMessages] = useState([]);
     const [currentMsg, setCurrentMsg] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    useEffect(() => {
+    const [chatRoomName, setChatRoomName] = useState("");
+
+    useEffect(async () => {
         setDbRef(chatRoomId);
         enableListening(updateMessages);
+        const name = await getChatRoomName(chatRoomId);
+        setChatRoomName(name);
         setIsLoading(false);
     }, []);
 
@@ -76,7 +89,7 @@ const ChatRoom = () => {
         isLoading ? <LoadingSpinner /> :
         <div style={styles.pageContainer}>
             <Paper>
-                <div>{location.state.chatRoomName}</div>
+                <div>{chatRoomName}</div>
             </Paper>
 
             <div style={styles.msgContainer}>

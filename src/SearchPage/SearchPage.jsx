@@ -212,7 +212,14 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
     userRefDocs.push(userSkillDoc.ref.parent.parent)
   });
 
-  const userInfoDocs = await Promise.all(userRefDocs.map(userRef => userRef.get().then(doc => doc.data())));
+  const userInfoDocs = await Promise.all(userRefDocs.map(userRef =>
+    userRef.get().then(doc => {
+        const data = doc.data();
+        data.id = doc.id;
+        return data;
+    }))
+  );
+
   userInfoDocs.map((userInfo, i)=> {
     let user = {};
     user.name = userInfo.displayName;
