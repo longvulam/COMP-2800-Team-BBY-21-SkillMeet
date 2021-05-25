@@ -5,7 +5,6 @@ import FriendRequest from '../SearchPage/searchComponents//UserSearchCard';
 import UserPendingCard2 from '../PendingRequests/UserPendingCard2.0';
 
 import { db, auth } from '../firebase';
-import firebase from 'firebase';
 
 export default function FriendsPage() {
   const [requests, setRequests] = useState([]);

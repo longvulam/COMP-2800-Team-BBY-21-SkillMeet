@@ -4,9 +4,7 @@ import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
 import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
 import LoadingSpinner from '../classes/LoadingSpinner';
 import Message from './chatPageComponents/message';
-import { auth, db, waitForCurrentUser } from '../firebase';
-
-import firebase from 'firebase';
+import { auth, db, waitForCurrentUser, firestore } from '../firebase';
 
 export default function ChatRoom(props) {
     const { chatRoomId } = useParams();
@@ -40,7 +38,7 @@ export default function ChatRoom(props) {
         sendMessageToDB(currentMsg);
         setCurrentMsg("");
         friendRef.set({
-            newMessagesNo: firebase.firestore.FieldValue.increment(1)
+            newMessagesNo: firestore.FieldValue.increment(1)
         }, {merge: true});
     }
 

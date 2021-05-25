@@ -1,3 +1,4 @@
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -5,12 +6,9 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { db, auth } from '../../firebase';
 import Snackbar from '@material-ui/core/Snackbar';
-import React from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
-
-import firebase from 'firebase';
+import { db, auth, firestore } from '../../firebase';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -125,7 +123,7 @@ export default function UserSearchCard(props) {
     const friendRef = db.collection('users').doc(id);
 
     friendRef.set({
-        newRequestsNo: firebase.firestore.FieldValue.increment(1)
+        newRequestsNo: firestore.FieldValue.increment(1)
     }, {merge: true});
 
     friendRef.collection('Friends').doc('received' + currentUserData.uid)

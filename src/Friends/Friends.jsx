@@ -4,8 +4,7 @@ import Grid from '@material-ui/core/Grid';
 
 import FriendCard from './friendsComponents/FriendCard';
 import LoadingSpinner from '../classes/LoadingSpinner';
-import { db, waitForCurrentUser } from '../firebase';
-import firebase from 'firebase';
+import { db, waitForCurrentUser, firestore } from '../firebase';
 
 export default function FriendsPage() {
     const [isLoadingData, setLoading] = useState(true);
@@ -89,7 +88,7 @@ async function getAllFriendsOnUser() {
 async function loadFriendsProfile(friendIds) {
     const res = await Promise.all([
         db.collection('users')
-            .where(firebase.firestore.FieldPath.documentId(), 'in', friendIds)
+            .where(firestore.FieldPath.documentId(), 'in', friendIds)
             .get().then(mapDocsToData),
         db.collection('chatrooms')
             .where('uids', 'array-contains-any', friendIds)
