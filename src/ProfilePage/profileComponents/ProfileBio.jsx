@@ -6,20 +6,27 @@ import InputBase from '@material-ui/core/InputBase';
 
 const defaultBioText = `Bio Loading`;
 
+
+const useStyles = makeStyles((theme) => ({
+ bioTypography: {
+   backgroundColor:theme.palette.primary.main,
+   color:'white',
+   width: '100%',
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
+ },
+}));
+
 export default function ProfileBio(props) {
     const { bio, editable, changeState } = props;
-
+    const classes = useStyles();
     const bioInfo = bio ? bio : defaultBioText;
 
     return (
         <Paper
             elevation={2}
-            style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
+            className={classes.bioTypography}
         >
             <Typography
             variant="body"

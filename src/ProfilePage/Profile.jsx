@@ -32,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         height: '4.5em',
         width: '4.5em',
-    }
+    },
+    name: {
+      color:theme.palette.primary.dark,
+    },
 }));
 
 export default function Profile() {
@@ -128,12 +131,6 @@ function CurrentUserButtons(props) {
     return (
         <div className={classes.buttonsWrap}>
             <LogOutButton
-                style={{
-                    marginRight: '6vw',
-                    marginTop: '2vw',
-                    height: '2.5em',
-                    width: '2.5em',
-                }}
             />
             <EditButton
                 style={{
@@ -149,6 +146,7 @@ function CurrentUserButtons(props) {
 
 function NameAndLocationInfo(props) {
     const { userProfile } = props;
+    const classes = useStyles();
     return (
         <Grid key="userProfile"
             container
@@ -164,6 +162,7 @@ function NameAndLocationInfo(props) {
             >
                 <Typography
                   variant='h6'
+                  className={classes.name}
                 >
                   {userProfile.displayName}
                 </Typography>

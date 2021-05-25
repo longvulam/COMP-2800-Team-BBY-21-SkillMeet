@@ -28,23 +28,29 @@ const useStyles = makeStyles((theme) => ({
       width: '4.5em',
   },
   skillsAndLevels: {
-    // "& .Mui-focused" : {
-    //   backgroundColor: theme.palette.secondary.main,
-    // }
+    color:'white',
   },
-  skillAcordionSummary: {
-    backgroundColor: theme.palette.secondary.main,
+  skillLevels: {
+    color:theme.palette.secondary.main,
+  },
+  skillAccordionDetails: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  expandIcon: {
+    color:'white',
   }
 }));
 
 const AccordionSummary = withStyles((theme) => ({
   root: {
+    backgroundColor: theme.palette.primary.dark,
     "&.Mui-focused": {
       backgroundColor: theme.palette.secondary.main,
     },
     "&.MuiIconButton-root": {
       color: theme.palette.primary.main,
-    }
+    },
+    expanded: {},
   }
 }))(MuiAccordionSummary);
 
@@ -63,10 +69,10 @@ export default function SkillAccordion(props) {
             }}
         >
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon
+                  className={classes.expandIcon} />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
-                className={classes.skillAcordionSummary}
                 key={skillName}
             >
                 <div
@@ -78,29 +84,28 @@ export default function SkillAccordion(props) {
                     }}>
                     <Typography
                     variant='h6'
+                    className={classes.skillsAndLevels}
                     >
                       {skillName}
                     </Typography>
                     <Typography
                     variant='subtitle1'
+                    className={classes.skillLevels}
                     >
                       {skillLevel}
                     </Typography>
                 </div>
             </AccordionSummary>
-            <AccordionDetails>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: '100%',
-                }}>
+            <AccordionDetails
+            className={classes.skillAccordionDetails}>
                  <Typography
+                    className={classes.skillsAndLevels}
                     variant='body1'
                     >
                       {skillDescription}
                     </Typography>
-                </div>
             </AccordionDetails>
         </Accordion>
     );
 }
+
