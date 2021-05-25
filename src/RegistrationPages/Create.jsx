@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
 import { db, auth } from '../firebase';
 import $ from "jquery";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -12,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
+import { skillOptions } from '../dataStores/skills';
 import { Redirect, useHistory } from "react-router-dom";
 
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
@@ -55,8 +57,8 @@ const Create = () => {
     setSkillFields(values);
 
     for (let i = 0; i < skillFields.length; i++) {
-      if (count == 0 && (skillFields[i].skillName == "beekeeping" || skillFields[i].skillName == "Beekeeping") 
-        && skillFields[i].skillLevel == "Expert" && skillFields[i].skillDescription == "" ) {
+      if (count == 0 && (skillFields[i].skillName == "beekeeping" || skillFields[i].skillName == "Beekeeping")
+        && skillFields[i].skillLevel == "Expert" && skillFields[i].skillDescription == "") {
         count++;
         $("#hiddenEasterEgg2").fadeIn(500, function () {
           window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
@@ -65,50 +67,65 @@ const Create = () => {
     }
   }
 
-  const validate = () => {
-    let nameError = "";
-    let bioError = "";
-    let cityError = "";
-    
-    
-    if(displayName.length < 3){
-      setNameError("Display Name must be 4 characters or longer");
-      return false
-    } else if (bio.length < 16){
-      setBioError("Bio must be 16 characters or longer");
-      return false
-    } else if (city.length < 1){
-      setCityError("Please fill this field");
-      return false
-    } else {
-      return true;
-    }
+  // const validate = () => {
+  //   let nameError = "";
+  //   let bioError = "";
+  //   let cityError = "";
+
+  //   if(displayName.length < 3){
+  //     setNameError("Display Name must be 4 characters or longer");
+  //     return false
+  //   } else if (bio.length < 16){
+  //     setBioError("Bio must be 16 characters or longer");
+  //     return false
+  //   } else if (city.length < 1){
+  //     setCityError("Please fill this field");
+  //     return false
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+  async function loadSkillsAsync(setSkillListFromDB, mounted) {
+    const skillOptions = [];
+    db.collection("userSkills").get()
+      .then(querySs => {
+        querySs.forEach(doc => skillOptions.push(doc.data().name))
+        if (mounted) { setSkillListFromDB(skillOptions); }
+        return () => mounted = false
+      });
   }
 
+  const [searchedSkills, setSearchedSkills] = useState([]);
+  function searchedSkillUpdate (event, currentSelectedSkills) {
+    console.log('Onchange', currentSelectedSkills);
+    setSearchedSkills([currentSelectedSkills]);
+    console.log('Skills Searched', searchedSkills);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // const isValid = validate();{
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-  
-          db.collection('users').doc(user.uid).update({
-            "displayName": displayName,
-            "bio": bio,
-            "city": city
-          }).then(() => {
-            for (let i = 0; i < skillFields.length; i++) {
-              db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
-                "skillName": skillFields[i].skillName,
-                "skillLevel": skillFields[i].skillLevel,
-                "skillDescription": skillFields[i].skillDescription
-              })
-            }
-          }).then(value => history.push("/profile"))
-  
-        }
-      })
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+
+        db.collection('users').doc(user.uid).update({
+          "displayName": displayName,
+          "bio": bio,
+          "city": city
+        }).then(() => {
+          for (let i = 0; i < skillFields.length; i++) {
+            db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
+              "skillName": skillFields[i].skillName,
+              "skillLevel": skillFields[i].skillLevel,
+              "skillDescription": skillFields[i].skillDescription
+            })
+          }
+        }).then(value => history.push("/profile"))
+
+      }
+    })
 
   };
 
@@ -139,7 +156,7 @@ const Create = () => {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
-          <div style = {{fontSize: '0.8em', color: 'red'}}>
+          <div style={{ fontSize: '0.8em', color: 'red' }}>
             {nameError}
           </div>
 
@@ -153,7 +170,7 @@ const Create = () => {
             variant="outlined"
             onChange={(e) => setBio(e.target.value)}
           />
-          <div style = {{fontSize: '0.8em', color: 'red'}}>
+          <div style={{ fontSize: '0.8em', color: 'red' }}>
             {bioError}
           </div>
 
@@ -168,7 +185,7 @@ const Create = () => {
             variant="outlined"
             onChange={(e) => setCity(e.target.value)}
           />
-          <div style = {{fontSize: '0.8em', color: 'red'}}>
+          <div style={{ fontSize: '0.8em', color: 'red' }}>
             {cityError}
           </div>
 
@@ -186,7 +203,7 @@ const Create = () => {
                 <p style={{ color: '#1434A4', fontSize: '14px', padding: '5px', textAlign: 'center' }}>Add a skill to your profile:</p>
 
                 <Grid xs={12}>
-                  <TextField
+                  {/* <TextField
                     name="skillName"
                     label="Skill Name"
                     placeholder="Enter the skill :"
@@ -194,6 +211,28 @@ const Create = () => {
                     required
                     value={skillField.skillName}
                     onChange={event => handleChangeInput(index, event)}
+                  /> */}
+                  <Autocomplete
+                    id="combo-box-demo"
+                    className={classes.inputRoot}
+                    options={skillOptions}
+                    onChange={searchedSkillUpdate}
+                    disableClearable
+                    defaultValue="Search By Skills"
+                    forcePopupIcon={false}
+                    getOptionLabel={option => option}
+                    renderInput={params => {
+                      return (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          fullWidth
+                          InputProps={{
+                            ...params.InputProps
+                          }}
+                        />
+                      );
+                    }}
                   />
 
                 </Grid>
