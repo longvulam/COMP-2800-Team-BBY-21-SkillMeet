@@ -12,14 +12,10 @@ import Navbar from '../Navbar';
 library.add(fas);
 
 
-function handleLogout (){
-
-}
-
 class AboutUs extends Component {
     render() { 
         return (<div>
-            <Navbar handleLogout = {handleLogout} />
+            <Navbar />
             <HeroImage />
             <HiddenEgg />
             <Mission />

@@ -3,6 +3,7 @@ import Home from './RegistrationPages/Home';
 import BottomNavBar from './BottomNavbar';
 import Profile from './ProfilePage/Profile';
 import Friends from './Friends/Friends';
+import Create from './RegistrationPages/Create'
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
@@ -26,6 +27,9 @@ function App() {
 
               <Route exact path = "/">
                   <Home />
+              </Route>
+              <Route path = "/create">
+                  <Create />
               </Route>
               <Route path = "/aboutUs">
                   <AboutUs/>
