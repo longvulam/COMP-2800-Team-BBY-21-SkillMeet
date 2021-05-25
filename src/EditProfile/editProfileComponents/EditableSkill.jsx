@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width:'100%',
     color:'white',
     marginTop:'0.5em',
+    marginLeft:'0.35em',
   },
   skillLevelAutocomplete: {
     width:'100%',
@@ -74,7 +75,6 @@ export default function EditableSkill(props) {
                     alignItems: 'center',
                     justifyContent: 'space-around',
                     width: 'calc(100% - 5em)',
-                    marginLeft:'0.5em%',
                 }}>
                     <Autocomplete
                         options={skillOptions}
@@ -128,13 +128,13 @@ export default function EditableSkill(props) {
                     readOnly={false}
                     multiline
                     style={{
-                        width: '90%',
+                        width: '100%',
                         textAlign: 'center',
                         color:'white',
                         marginRight:'1em',
                         marginTop:'1em',
                         marginBottom:'1em',
-                        marginLeft:'1em',
+                        marginLeft:'1.5em',
                     }}
                 >
                 </InputBase>
