@@ -170,8 +170,7 @@ const Create = () => {
             <input type="file" id="uploadImage" onChange={handleImageChange} hidden="hidden"/>
             <Fab size="small" onClick={handleEditPicture} className={classes.editAvatarbtn}>
               <EditIcon />
-            </Fab>
-            
+            </Fab>   
           </div>
 
           <TextField

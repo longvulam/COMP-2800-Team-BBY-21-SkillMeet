@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     avatar: {
-        height: '4.5em',
-        width: '4.5em',
+        height: '6.5em',
+        width: '6.5em',
     }
 }));
 
