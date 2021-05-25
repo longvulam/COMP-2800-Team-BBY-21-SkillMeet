@@ -8,15 +8,21 @@ import { db, getCurrentUserDataAsync } from '../../firebase';
 
 export default function FriendCard(props) {
     const history = useHistory();
-    const { friendId, friendName, chatRoomId } = props;
+    const { friendId, friendName, chatRoomId, setLoading } = props;
 
     async function createChatroomAndRedirect() {
-        let roomId = chatRoomId;
-        if (!roomId) {
-            roomId = await createChatRoomInDB(friendId, friendName);
-        }
+        setLoading(true);
+        try {
+            console.log("chatRoomId: " + chatRoomId);
+            let roomId = chatRoomId;
+            if (!roomId) {
+                roomId = await createChatRoomInDB(friendId, friendName);
+            }
 
-        history.push('/chatRoom/' + roomId);
+            history.push('/chatRoom/' + roomId);
+        } catch (error) {
+            setLoading(false);
+        }
     }
 
     return (
@@ -58,13 +64,14 @@ export default function FriendCard(props) {
 
 async function createChatRoomInDB(friendId, friendName) {
     const currentUser = await getCurrentUserDataAsync();
-    const uid = currentUser.id;
+    const uids = [currentUser.id, friendId];
     const res = await db.collection('chatrooms').add({
         recentMessage: "",
-        uids: [uid, friendId]
-    })
+        uids
+    });
+
     const roomId = res.id;
-    db.collection('users').doc(uid)
+    db.collection('users').doc(currentUser.id)
         .collection('chatrooms').add({
             name: friendName,
             roomId

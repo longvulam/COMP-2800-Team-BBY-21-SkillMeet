@@ -8,19 +8,19 @@ import { db, waitForCurrentUser } from '../firebase';
 import firebase from 'firebase';
 
 export default function FriendsPage() {
-    const [isLoadingData, setIsLoadingData] = useState(true);
+    const [isLoadingData, setLoading] = useState(true);
     const [friendsList, setFriendsList] = useState([]);
 
     useEffect(async () => {
         const friends = await getAllFriendsOnUser();
         if (friends.length == 0) {
-            setIsLoadingData(false);
+            setLoading(false);
             return;
         }
         const friendIds = friends.map(item => item.friendID);
         const profiles = await loadFriendsProfile(friendIds);
         setFriendsList(profiles);
-        setIsLoadingData(false);
+        setLoading(false);
     }, []);
 
     return (
@@ -52,6 +52,7 @@ export default function FriendsPage() {
                                         width: '100%',
                                     }}>
                                     <FriendCard
+                                        setLoading={setLoading}
                                         friendId={id}
                                         chatRoomId={chatRoomId}
                                         friendName={displayName} />
@@ -94,15 +95,20 @@ async function loadFriendsProfile(friendIds) {
             .get().then(mapDocsToData)
     ])
 
-    return matchProfilesToChatRooms(res);
+    return await matchProfilesToChatRooms(res);
 }
 
-function matchProfilesToChatRooms(results) {
+async function matchProfilesToChatRooms(results) {
+    const currentUser = await waitForCurrentUser();
     const friendsProfile = results[0];
     const chatRooms = results[1];
     friendsProfile.forEach(profile => {
-        const chatroom = chatRooms.find(room => room.uids.find(uid => uid === profile.id));
+        const uids = [profile.id, currentUser.uid];
+        const chatroom = chatRooms.find(room => {
+            room.uids.every(uid => uids.includes(uid));
+        });
         profile.chatRoomId = chatroom ? chatroom.id : undefined;
     });
+    console.log(friendsProfile);
     return friendsProfile;
 }
