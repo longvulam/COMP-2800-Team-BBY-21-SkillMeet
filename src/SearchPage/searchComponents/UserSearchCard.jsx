@@ -120,7 +120,13 @@ export default function UserSearchCard(props) {
 		.catch((error) => {
     			console.error("Error writing document: ", error);
 		});
-    db.collection('users').doc(id).collection('Friends').doc('received' + currentUserData.uid)
+    const friendRef = db.collection('users').doc(id);
+
+    friendRef.set({
+        newRequestsNo: firebase.firestore.FieldValue.increment(1)
+    }, {merge: true});
+
+    friendRef.collection('Friends').doc('received' + currentUserData.uid)
 		.set({
     			isPending: true,
           friendID: currentUserData.uid
