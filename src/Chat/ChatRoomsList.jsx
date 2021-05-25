@@ -1,69 +1,30 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import LoadingSpinner from "../classes/LoadingSpinner";
-import { db, waitForCurrentUser } from "../firebase";
+import { db, firestore, waitForCurrentUser } from "../firebase";
 import ChatRoomCard from "./chatPageComponents/chatRoomCard";
 
-async function getUserChatRooms(uid) {
-    const qSnapshot = await db.collection('users').doc(uid)
-        .collection('chatrooms')
-        .get()
-    return qSnapshot.docs.map(doc => doc.data());
-};
-
-async function getRecentMessages(uid) {
-    const qSnapshot = await db.collection('chatrooms')
-        .where('uids', 'array-contains', uid).get();
-    return qSnapshot.docs.map(doc => {
-        const data = doc.data();
-        data.id = doc.id;
-        return data;
-    });
-};
-
-async function loadData(user) {
-    const res = await Promise.all([
-        getUserChatRooms(user.uid),
-        getRecentMessages(user.uid),
-    ]);
-
-    const userRooms = res[0];
-    if (userRooms.length === 0) {
-        return userRooms;
-    }
-
-    const roomsColl = res[1];
-    userRooms.forEach(userRoom => {
-        const room = roomsColl.find(r => r.id === userRoom.roomId);
-        userRoom.recentMessage = room ? room.recentMessage : "";
-    })
-    return userRooms;
-}
-
-async function removeMessageNotifications(user) {
-    db.doc('users/' + user.uid).set({
-        newMessagesNo: 0
-    }, { merge: true })
-}
-
-const ChatRooms = () => {
+export default function ChatRooms(props) {
     const [isLoading, setIsLoading] = useState(true);
-    const [chatRooms, setRooms] = useState([{
-        uids: []
-    }]);
+    const [chatRooms, setRooms] = useState([]);
+
+    async function afterLoaded(newRooms) {
+        setRooms(prevValues => [...prevValues, ...newRooms]);
+        setIsLoading(false);
+    }
 
     useEffect(async () => {
         const user = await waitForCurrentUser();
-        const roomsData = await loadData(user);
-        setRooms(roomsData);
-        setIsLoading(false);
+        subscribeToChanges(user, afterLoaded);
         removeMessageNotifications(user);
     }, []);
 
+    const sortedRooms = chatRooms.sort((a, b) =>
+        a.recentMessage.timeStamp < b.recentMessage.timeStamp ? 1 : -1);
     return (
         isLoading ? <LoadingSpinner /> :
             <div>
-                {chatRooms.map((room, index) =>
+                {sortedRooms.map((room, index) =>
                     <ChatRoomCard
                         room={room}
                         key={index} />
@@ -72,4 +33,51 @@ const ChatRooms = () => {
     );
 }
 
-export default ChatRooms;
+async function subscribeToChanges(user, callback) {
+    db.collection('users/' + user.uid + '/chatrooms')
+        .onSnapshot(updateChatrooms);
+
+    let unsubscribe = () => '';
+    async function updateChatrooms(userRoomsSs) {
+        const newRooms = [];
+        userRoomsSs.docChanges().forEach(change => {
+            if (change.type === "added") {
+                newRooms.push(change.doc.data());
+            }
+        });
+
+        if (newRooms.length === 0) return;
+
+        unsubscribe();
+        const roomIds = newRooms.map(uRoom => uRoom.roomId);
+
+        unsubscribe = db.collection('chatrooms')
+            .where(firestore.FieldPath.documentId(), 'in', roomIds)
+            .onSnapshot(async chatroomsSs => {
+                const changes = [];
+                chatroomsSs.docChanges().forEach(async change => {
+                    if (change.type === "delete") return;
+                    const room = change.doc.data();
+                    room.id = change.doc.id;
+                    changes.push(room);
+                });
+
+                await Promise.all(changes.map(async chatRoom => {
+                    const messageRef = await chatRoom.recentMessage.get();
+                    const uRoom = newRooms.find(uRoom => uRoom.roomId === chatRoom.id);
+                    const message = messageRef.data();
+                    /** @type {String}*/
+                    let content = message.content;
+                    message.content = content.length > 40 ? content.slice(0, 40) : content;
+                    uRoom.recentMessage = message;
+                }));
+                callback(newRooms);
+            });
+    };
+}
+
+async function removeMessageNotifications(user) {
+    db.doc('users/' + user.uid).set({
+        newMessagesNo: 0
+    }, { merge: true })
+}

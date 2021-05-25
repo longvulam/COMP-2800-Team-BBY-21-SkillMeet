@@ -125,15 +125,14 @@ async function sendMessageToDB(newMessage) {
     const uid = auth.currentUser ? auth.currentUser.uid : await waitForCurrentUser();
 
     newMessage = newMessage.replace('\n', '\\n');
-    collRef.add({
+    const messageRef = await collRef.add({
         from: uid,
         content: newMessage,
         timeStamp: new Date().getTime()
     });
 
-    const recentMessage = newMessage.length > 40 ? newMessage.slice(0, 40) + "..." : newMessage;
     chatroomRef.set({
-        recentMessage: recentMessage
+        recentMessage: messageRef
     }, { merge: true });
 }
 
