@@ -4,7 +4,6 @@ import LoadingSpinner from "../classes/LoadingSpinner";
 import { db, waitForCurrentUser } from "../firebase";
 import ChatRoomCard from "./chatPageComponents/chatRoomCard";
 
-
 async function getUserChatRooms(uid) {
     const qSnapshot = await db.collection('users').doc(uid)
         .collection('chatrooms')
@@ -36,7 +35,7 @@ async function loadData(callBack) {
     const roomsColl = res[1];
     userRooms.forEach(userRoom => {
         const room = roomsColl.find(r => r.id === userRoom.roomId);
-        userRoom.recentMessage = room.recentMessage;
+        userRoom.recentMessage = room ? room.recentMessage : "";
     })
     callBack(userRooms);
 }

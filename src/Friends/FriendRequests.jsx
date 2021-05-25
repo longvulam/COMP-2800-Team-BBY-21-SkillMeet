@@ -30,7 +30,7 @@ export default function FriendsPage() {
         }}>
 
         {requests.map(request => {
-          const { displayName, city, id, } = request;
+          const { displayName, city, id, avatar} = request;
           return (
             <Grid item xs={12}
             key={id} 
@@ -42,6 +42,7 @@ export default function FriendsPage() {
                 city={city}
                 id={id}
                 setRequests={setRequests}
+                avatar={avatar}
             />
             </Grid>
           );
@@ -57,7 +58,11 @@ async function getFriendDataFromID(setRequests) {
     const friendIDs = await getFriendRequestIDs();
     console.log('FriendRequests', friendIDs);
     const friendDocs = await Promise.all(friendIDs.map(friendID => {
-        return db.collection('users').doc(friendID).get().then(doc=> doc.data());
+        return db.collection('users').doc(friendID).get().then(doc=> {
+            const data = doc.data();
+            data.id = doc.id;
+            return data;
+        });
     }));
     console.log('FriendData', friendDocs);
     setRequests(friendDocs);
