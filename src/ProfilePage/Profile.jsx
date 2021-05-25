@@ -73,7 +73,7 @@ export default function Profile() {
                 <div className={classes.avatarWrap}>
                     <Avatar
                         alt="Profile Picture"
-                        src="/static/images/avatar/1.jpg"
+                        src={userProfile.avatar}
                         className={classes.avatar} />
                 </div>
 
