@@ -23,40 +23,45 @@ function App() {
         <ThemeProvider theme={Theme}>
           <Router>
             <Switch>
+
               <Route exact path = "/">
                   <Home />
               </Route>
               <Route path = "/aboutUs">
                   <AboutUs/>
               </Route>
-              <Route path={["/profile/:uid", "/profile"]}>
-                  <Profile/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = "/friends">
-                  <Friends/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = "/search">
-                  <Search/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = '/editProfile'>
+
+              <Route path='/editProfile'>
                   <EditProfilePage/>
               </Route>
-              <Route path = '/friendRequests'>
-                  <FriendsPageNav/>
-                  <FriendRequests/>
-                  <BottomNavBar />
-              </Route>
-              <Route path = '/chatRooms'>
-                  <ChatRoomsList />
-                  <BottomNavBar />
-              </Route>
-              <Route path = '/chatRoom/:chatRoomId'>
+              <Route path='/chatRoom/:chatRoomId'>
                   <ChatRoom/>
               </Route>
-              </Switch>
+
+              <Route id="bottomNavbarPages" >
+
+                <Route path={["/profile/:uid", "/profile"]}>
+                    <Profile/>
+                </Route>
+                <Route path = "/friends">
+                    <Friends/>
+                </Route>
+                <Route path = "/search">
+                    <Search/>
+                </Route>
+                <Route path = '/friendRequests'>
+                  <FriendsPageNav/>
+                  <FriendRequests/>
+                </Route>
+                <Route path = '/chatRooms'>
+                  <ChatRoomsList />
+                </Route>
+                
+                <BottomNavBar />
+
+              </Route>
+
+            </Switch>
           </Router>
         </ThemeProvider>
         </div>
