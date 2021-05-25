@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     height:'3.5em',
     marginTop:'1em',
     color: theme.palette.primary.dark,
-    "& .MuiOutlinedInput-notchedOutline": {
+    "&.MuiOutlinedInput-notchedOutline": {
       borderWidth: "0px",
       borderColor: "blue"
     },
