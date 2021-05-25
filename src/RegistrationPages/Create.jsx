@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
-import { db, auth } from '../firebase';
+import { db, auth, storage } from '../firebase';
 import $ from "jquery";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Container from '@material-ui/core/Container';
@@ -8,16 +8,16 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel'
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
 import { skillOptions } from '../dataStores/skills';
+import EditIcon from '@material-ui/icons/Edit';
+import { Avatar, Grid, InputBase, Button, IconButton, Fab } from '@material-ui/core';
 import { Redirect, useHistory } from "react-router-dom";
 
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
-import { Grid } from "@material-ui/core";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +27,21 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(2),
+  },
+  avatarWrap: {
+    width: '100%',
+    height: '12em',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatar: {
+    height: '7.5em',
+    width: '7.5em',
+  },
+  editAvatarbtn: {
+    marginLeft: '12em',
+    marginTop: '-7em',
   }
 }))
 
@@ -41,8 +56,7 @@ const Create = () => {
   const [nameError, setNameError] = useState('');
   const [bioError, setBioError] = useState('');
   const [cityError, setCityError] = useState('');
-
-
+  const [avatarImageUrl, setAvatarImageUrl] = useState('');
 
 
 
@@ -107,25 +121,26 @@ const Create = () => {
     e.preventDefault();
 
     // const isValid = validate();{
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-
-        db.collection('users').doc(user.uid).update({
-          "displayName": displayName,
-          "bio": bio,
-          "city": city
-        }).then(() => {
-          for (let i = 0; i < skillFields.length; i++) {
-            db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
-              "skillName": skillFields[i].skillName,
-              "skillLevel": skillFields[i].skillLevel,
-              "skillDescription": skillFields[i].skillDescription
-            })
-          }
-        }).then(value => history.push("/profile"))
-
-      }
-    })
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+  
+          db.collection('users').doc(user.uid).update({
+            "displayName": displayName,
+            "bio": bio,
+            "city": city,
+            "avatar": avatarImageUrl
+          }).then(() => {
+            for (let i = 0; i < skillFields.length; i++) {
+              db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
+                "skillName": skillFields[i].skillName,
+                "skillLevel": skillFields[i].skillLevel,
+                "skillDescription": skillFields[i].skillDescription
+              })
+            }
+          }).then(value => history.push("/profile"))
+  
+        }
+      })
 
   };
 
@@ -140,11 +155,39 @@ const Create = () => {
     setSkillFields(values);
   }
 
+  const handleImageChange = async (event) => {
+    const avatarImage = event.target.files[0];
+    const storageRef = storage.ref();
+    const avatarImageRef = storageRef.child(avatarImage.name);
+    await avatarImageRef.put(avatarImage);
+    const avatarImageUrl = await avatarImageRef.getDownloadURL();
+    setAvatarImageUrl(avatarImageUrl);
+  }
+
+  const handleEditPicture = () => {
+    const fileInput = document.getElementById('uploadImage');
+    fileInput.click();
+  }
+
   return (
     <div id="profile-form">
       <Container style={{ textAlign: 'center' }}>
         <h6 style={{ color: '#1434A4', padding: '5px', textAlign: 'center' }}>Please fill these details to complete your profile setup</h6>
         <form className={classes.root} onSubmit={handleSubmit}>
+
+          <div className={classes.avatarWrap}>
+            <Avatar
+            id="avatarPic"
+            alt="Profile Picture"
+            src={avatarImageUrl}
+            className={classes.avatar} />
+          </div>
+          <div>
+            <input type="file" id="uploadImage" onChange={handleImageChange} hidden="hidden"/>
+            <Fab size="small" onClick={handleEditPicture} className={classes.editAvatarbtn}>
+              <EditIcon />
+            </Fab>   
+          </div>
 
           <TextField
             autoFocus

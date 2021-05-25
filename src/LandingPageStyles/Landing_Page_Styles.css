@@ -3,6 +3,14 @@
   margin-left: 0;
 }
 
+.MuiInput-underline:before {
+  border-bottom: 1px solid white !important;
+}
+
+/* .MuiSvgIcon-root{
+  color:white;
+} */
+
 .landing-page-background {
   height: 100vh;
   min-height: 900px;

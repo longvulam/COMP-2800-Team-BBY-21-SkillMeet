@@ -4,7 +4,6 @@ import LoadingSpinner from "../classes/LoadingSpinner";
 import { db, waitForCurrentUser } from "../firebase";
 import ChatRoomCard from "./chatPageComponents/chatRoomCard";
 
-
 async function getUserChatRooms(uid) {
     const qSnapshot = await db.collection('users').doc(uid)
         .collection('chatrooms')
@@ -22,23 +21,29 @@ async function getRecentMessages(uid) {
     });
 };
 
-async function loadData(callBack) {
-    const user = await waitForCurrentUser();
-
+async function loadData(user) {
     const res = await Promise.all([
         getUserChatRooms(user.uid),
         getRecentMessages(user.uid),
     ]);
 
     const userRooms = res[0];
-    if (userRooms.length === 0) return;
+    if (userRooms.length === 0) {
+        return userRooms;
+    }
 
     const roomsColl = res[1];
     userRooms.forEach(userRoom => {
         const room = roomsColl.find(r => r.id === userRoom.roomId);
-        userRoom.recentMessage = room.recentMessage;
+        userRoom.recentMessage = room ? room.recentMessage : "";
     })
-    callBack(userRooms);
+    return userRooms;
+}
+
+async function removeMessageNotifications(user) {
+    db.doc('users/' + user.uid).set({
+        newMessagesNo: 0
+    }, { merge: true })
 }
 
 const ChatRooms = () => {
@@ -47,12 +52,13 @@ const ChatRooms = () => {
         uids: []
     }]);
 
-    function updateData(roomsData) {
+    useEffect(async () => {
+        const user = await waitForCurrentUser();
+        const roomsData = await loadData(user);
         setRooms(roomsData);
         setIsLoading(false);
-    }
-
-    useEffect(() => loadData(updateData), []);
+        removeMessageNotifications(user);
+    }, []);
 
     return (
         isLoading ? <LoadingSpinner /> :

@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     avatar: {
-        height: '4.5em',
-        width: '4.5em',
+        height: '6.5em',
+        width: '6.5em',
     }
 }));
 
@@ -73,7 +73,7 @@ export default function Profile() {
                 <div className={classes.avatarWrap}>
                     <Avatar
                         alt="Profile Picture"
-                        src="/static/images/avatar/1.jpg"
+                        src={userProfile.avatar}
                         className={classes.avatar} />
                 </div>
 
