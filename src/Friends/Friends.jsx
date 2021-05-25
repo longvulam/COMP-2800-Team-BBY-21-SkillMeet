@@ -8,58 +8,20 @@ import { db, waitForCurrentUser } from '../firebase';
 import firebase from 'firebase';
 
 export default function FriendsPage() {
-    const [isLoadingData, setIsLoadingData] = useState(true);
+    const [isLoadingData, setLoading] = useState(true);
     const [friendsList, setFriendsList] = useState([]);
 
-    function loadFriendsData(friendIds) {
-        db.collection('users')
-            .where(firebase.firestore.FieldPath.documentId(), 'in', friendIds)
-            .get()
-            .then(querySs => {
-                if (!querySs.empty) {
-                    const friendsData = querySs.docs.map(doc => doc.data());
-                    console.log(friendsData);
-                    setFriendsList(friendsData);
-                }
-                setIsLoadingData(false);
-            });
-    }
-
-    useEffect(
-        () => waitForCurrentUser()
-            .then((currentUser) => {
-                const friendsRef = db.collection('users').doc(currentUser.uid)
-                    .collection('Friends');
-
-                Promise.all([
-                    friendsRef
-                    .where('isPending', '==', false)
-                    .get()
-                    .then(querySs => {
-                        const arr = [];
-                        querySs.forEach(doc => arr.push(doc.data()));
-                        return arr;
-                    }),
-                    friendsRef.where('isConfirmed', '==', true)
-                    .get()
-                    .then(querySs => {
-                        const arr = [];
-                        querySs.forEach(doc => arr.push(doc.data()));
-                        return arr;
-                    })
-                ]).then(res => {
-                    const friends = [...res[0], ...res[1]];
-                    if (friends.length == 0) {
-                        setIsLoadingData(false);
-                        return;
-                    }
-                    const friendIds = friends.map(item => item.friendID);
-                    loadFriendsData(friendIds);
-                });
-            }).catch((err) => {
-                console.log(err);
-            })
-        , []);
+    useEffect(async () => {
+        const friends = await getAllFriendsOnUser();
+        if (friends.length == 0) {
+            setLoading(false);
+            return;
+        }
+        const friendIds = friends.map(item => item.friendID);
+        const profiles = await loadFriendsProfile(friendIds);
+        setFriendsList(profiles);
+        setLoading(false);
+    }, []);
 
     return (
         isLoadingData ? <LoadingSpinner /> :
@@ -81,7 +43,7 @@ export default function FriendsPage() {
                             alignItems: 'center',
                         }}>
                         {friendsList.map(friendInfo => {
-                            const { displayName, id, avatar } = friendInfo;
+                            const { displayName, id, avatar, chatRoomId } = friendInfo;
                             return (
                                 <Grid item
                                     xs={12}
@@ -89,7 +51,12 @@ export default function FriendsPage() {
                                     style={{
                                         width: '100%',
                                     }}>
-                                    <FriendCard friendId={id} name={displayName} avatar={avatar} />
+                                    <FriendCard
+                                        setLoading={setLoading}
+                                        friendId={id}
+                                        chatRoomId={chatRoomId}
+                                        friendName={displayName}
+                                        avatar={avatar} />
                                 </Grid>
                             );
                         })}
@@ -97,5 +64,52 @@ export default function FriendsPage() {
                 </div>
             </>
     );
+}
 
+const mapDocsToData = querySs => querySs.empty ? [] :
+    querySs.docs.map(doc => {
+        const data = doc.data();
+        data.id = doc.id;
+        return data;
+    });
+
+async function getAllFriendsOnUser() {
+    const currentUser = await waitForCurrentUser();
+    const friendsRef = db.collection('users').doc(currentUser.uid)
+        .collection('Friends');
+
+    const res = await Promise.all([
+        friendsRef.where('isPending', '==', false).get().then(mapDocsToData),
+        friendsRef.where('isConfirmed', '==', true).get().then(mapDocsToData)
+    ]);
+    const friends = [...res[0], ...res[1]];
+    return friends;
+}
+
+async function loadFriendsProfile(friendIds) {
+    const res = await Promise.all([
+        db.collection('users')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', friendIds)
+            .get().then(mapDocsToData),
+        db.collection('chatrooms')
+            .where('uids', 'array-contains-any', friendIds)
+            .get().then(mapDocsToData)
+    ])
+
+    return await matchProfilesToChatRooms(res);
+}
+
+async function matchProfilesToChatRooms(results) {
+    const currentUser = await waitForCurrentUser();
+    const friendsProfile = results[0];
+    const chatRooms = results[1];
+    friendsProfile.forEach(profile => {
+        const uids = [profile.id, currentUser.uid];
+        const chatroom = chatRooms.find(room => 
+            room.uids.every(uid => uids.includes(uid))
+        );
+        profile.chatRoomId = chatroom ? chatroom.id : undefined;
+    });
+    console.log(friendsProfile);
+    return friendsProfile;
 }

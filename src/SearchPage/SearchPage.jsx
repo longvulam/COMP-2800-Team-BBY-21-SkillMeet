@@ -220,7 +220,8 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
         return data;
     }))
   );
-    userInfoDocs.map((userInfo, i)=> {
+
+  userInfoDocs.map((userInfo, i)=> {
     let user = {};
     user.name = userInfo.displayName;
     user.city = userInfo.city;
