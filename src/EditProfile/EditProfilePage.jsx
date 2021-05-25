@@ -130,9 +130,10 @@ export default function EditProfile() {
         isLoadingData ? <LoadingSpinner /> :
             <div style={{
                 width: '100vw',
-                height: 'calc(100vh - 4em)',
+                height: '100vh',
                 overflowY: 'scroll',
                 overflowX: 'hidden',
+                paddingBottom:'10em',
             }}>
                 <div className={classes.editWrap}>
                     <CancelButton
