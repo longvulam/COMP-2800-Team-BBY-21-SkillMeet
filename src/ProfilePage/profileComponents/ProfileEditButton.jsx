@@ -15,7 +15,7 @@ class EditButton extends React.Component {
       <Fab style={this.props.style}
         onClick={()=>history.push("/editProfile")}
         aria-label="edit"
-        color={'default'}>
+        color={'primary'}>
         <EditIcon />
       </Fab>
     );
