@@ -46,8 +46,7 @@ const Home = () => {
 
   const handleLogin = () => {
     clearErrors();
-    console.log("A user is logged in!");
-
+    
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
