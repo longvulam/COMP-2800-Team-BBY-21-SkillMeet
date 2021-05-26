@@ -20,6 +20,7 @@ export function PersonalInfo(props) {
                 key="userName"
             >
                 <Typography
+                    id="userNameField"
                     variant='h6'
                     className={classes.name}
                 >
