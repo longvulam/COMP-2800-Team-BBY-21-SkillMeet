@@ -24,8 +24,8 @@ export default function ChatRoomCard(props) {
         <Link to={chatroomLocation} >
             <Paper className={classes.paper} >
                 <Avatar src={room.avatar} alt='Profile Pic' className={classes.avatar} />
-                <div>{room.name}</div>
-                <div>{room.recentMessage.content}</div>
+                <div>{room.name + ": "}</div>
+                <div>{room.recentMessage ? room.recentMessage.content : ""}</div>
             </Paper>
         </Link>
     )
