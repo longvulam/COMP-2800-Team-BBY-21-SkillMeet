@@ -5,7 +5,7 @@ import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
 import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Message from './chatPageComponents/message';
-import { auth, db, waitForCurrentUser, firestore } from '../firebase';
+import { auth, db, waitForCurrentUser, firestore, getCurrentUserDataAsync } from '../firebase';
 
 export default function ChatRoom(props) {
     const { chatRoomId } = useParams();
@@ -15,9 +15,15 @@ export default function ChatRoom(props) {
     const [messages, updateMessages] = useState([]);
     const [currentMsg, setCurrentMsg] = useState("");
     const [chatRoomName, setChatRoomName] = useState("");
+    const [currentUserAvatar, setCurrentUserAvatar] = useState("");
+    const [otherUserAvatar, setOtherUserAvatar] = useState("");
+
 
     useEffect(async () => {
+        
         const currentUser = await waitForCurrentUser();
+        const currentUserDocData = await getCurrentUserDataAsync(currentUser.uid);
+        setCurrentUserAvatar(currentUserDocData.avatar);
         await setDbRefs(currentUser, chatRoomId);
         enableListening(updateMessages);
 
@@ -63,6 +69,7 @@ export default function ChatRoom(props) {
                             content={msg.content}
                             from={msg.from}
                             timeStamp={msg.timeStamp}
+                            avatar={currentUserAvatar}
                         />)}
                 </div>
                 <Paper className={classes.messagePaper}>

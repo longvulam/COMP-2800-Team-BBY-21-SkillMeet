@@ -2,15 +2,16 @@ import { Fragment } from "react";
 import { auth } from "../../firebase";
 import { makeStyles } from '@material-ui/core/styles';
 import { PlayCircleFilledWhiteTwoTone } from "@material-ui/icons";
-import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
+import { Avatar, Button, IconButton, InputBase, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    
+
     currentUserStyle: {
         padding: '10px 7px 10px 7px',
         textAlign: 'right',
-        marginRight: '.5em',
-        marginLeft: '30vw',
+        maxWidth: '70vw',
+        // marginRight: '.5em',
+        // marginLeft: '30vw',
     },
     currentUserDateStyle: {
         textAlign: 'right',
@@ -25,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'left',
         backgroundColor: 'blue',
         color: 'white',
-        width: '70vw',
-        marginLeft: '.5em',
+        maxWidth: '70vw',
+        // marginLeft: '.5em',
     },
     otherUserDateStyle: {
         textAlign: 'left',
@@ -35,6 +36,25 @@ const useStyles = makeStyles((theme) => ({
         color: 'slategrey',
         marginLeft: '.6em',
         marginTop: '-.4em',
+    },
+    currentUserAvatarStyle: {
+        margin: '.5em',
+    },
+    otherUserAvatarStyle: {
+        margin: '.5em',
+    },
+    currentUserMessageWrapper: {
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        justifyContent: 'flex-start',
+        width: '100%',
+        alignItems: 'center',
+    },
+    otherUserMessageWrapper: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        width: '100%',
+        alignItems: 'center',
     },
 }));
 
@@ -46,24 +66,29 @@ function format(date) {
 }
 
 const Message = (props) => {
-    const { content, from, timeStamp } = props;
+    const { content, from, timeStamp, avatar } = props;
     const classes = useStyles();
 
     const dateStr = format(new Date(timeStamp));
     const split = content.split("\\n");
     return (
         <Fragment>
-        <Paper className={from === auth.currentUser.uid ? classes.currentUserStyle : classes.otherUserStyle}>
-            {split.map((value, index) => {
-                return (
-                    <Fragment key={index}>
-                        {value}
-                        <br />
-                    </Fragment>
-                );
-            })}
-        </Paper>
-        <div className={from === auth.currentUser.uid ? classes.currentUserDateStyle : classes.otherUserDateStyle}>{dateStr}</div>
+            <div className={from === auth.currentUser.uid ? classes.currentUserMessageWrapper : classes.otherUserMessageWrapper}>
+                    <Avatar className={from === auth.currentUser.uid ? classes.currentUserAvatarStyle : classes.otherUserAvatarStyle} src={avatar} alt='Pic' />
+                <Paper className={from === auth.currentUser.uid ? classes.currentUserStyle : classes.otherUserStyle}>
+                    {split.map((value, index) => {
+                        return (
+
+                            <Fragment key={index}>
+                                {value}
+                                <br />
+                            </Fragment>
+
+                        );
+                    })}
+                </Paper>
+            </div>
+            <div className={from === auth.currentUser.uid ? classes.currentUserDateStyle : classes.otherUserDateStyle}>{dateStr}</div>
         </Fragment>
     );
 }
