@@ -74,7 +74,8 @@ const Message = (props) => {
     return (
         <Fragment>
             <div className={from === auth.currentUser.uid ? classes.currentUserMessageWrapper : classes.otherUserMessageWrapper}>
-                    <Avatar className={from === auth.currentUser.uid ? classes.currentUserAvatarStyle : classes.otherUserAvatarStyle} src={avatar} alt='Pic' />
+                    <Avatar className={from === auth.currentUser.uid ? classes.currentUserAvatarStyle : classes.otherUserAvatarStyle}
+                    src={avatar} alt='Pic' />
                 <Paper className={from === auth.currentUser.uid ? classes.currentUserStyle : classes.otherUserStyle}>
                     {split.map((value, index) => {
                         return (

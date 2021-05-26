@@ -20,11 +20,12 @@ export default function ChatRoom(props) {
 
 
     useEffect(async () => {
-        
         const currentUser = await waitForCurrentUser();
         const currentUserDocData = await getCurrentUserDataAsync(currentUser.uid);
         setCurrentUserAvatar(currentUserDocData.avatar);
         await setDbRefs(currentUser, chatRoomId);
+        const friendDocData = await friendRef.get();
+        setOtherUserAvatar(friendDocData.data().avatar);
         enableListening(updateMessages);
 
         const name = await getChatRoomName(currentUser, chatRoomId);
@@ -69,7 +70,7 @@ export default function ChatRoom(props) {
                             content={msg.content}
                             from={msg.from}
                             timeStamp={msg.timeStamp}
-                            avatar={currentUserAvatar}
+                            avatar={msg.from === auth.currentUser.uid ? currentUserAvatar : otherUserAvatar}
                         />)}
                 </div>
                 <Paper className={classes.messagePaper}>
