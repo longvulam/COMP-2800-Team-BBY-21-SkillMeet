@@ -1,5 +1,4 @@
 import React from "react";
-
 import Theme from './theme/Theme';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Router } from "./common/Router";

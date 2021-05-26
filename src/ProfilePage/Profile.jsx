@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Avatar, Grid, Snackbar } from '@material-ui/core';
@@ -13,6 +13,7 @@ import { SkillsList } from './SkillsList';
 
 import LoadingSpinner from '../common/LoadingSpinner';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
+
 
 export const useStyles = makeStyles((theme) => ({
     buttonsWrap: {
@@ -37,6 +38,7 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Profile() {
+    const history = useHistory();
     const { uid } = useParams();
     const classes = useStyles();
     const location = useLocation();

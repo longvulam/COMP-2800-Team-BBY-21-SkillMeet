@@ -13,6 +13,7 @@ import FriendsPageNav from '../Friends/friendsComponents/friendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import { ProtectedRoute } from "./ProtectedRoute";
+import SocialMedia from '../socialMedia/twitterFeed';
 
 export function Router() {
 
@@ -29,7 +30,9 @@ export function Router() {
                     <Route path="/aboutUs">
                         <AboutUs />
                     </Route>
-
+                    <Route path = "/socialmedia">
+                        <SocialMedia/>
+                     </Route>
                     <ProtectedRoute path='/editProfile'>
                         <EditProfilePage />
                     </ProtectedRoute>
