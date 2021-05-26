@@ -66,11 +66,6 @@ export function getCurrentUserDataAsync(uid) {
     });
 }
 
-async function retrieveUserProfileDataExample() {
-    const userData = await getCurrentUserDataAsync();
-    console.log(userData);
-}
-
 /**
  * @returns {Promise<firebase.User>}
  */
@@ -79,7 +74,7 @@ export function waitForCurrentUser() {
         let timer = 0;
 
         const intr = setInterval(() => {
-            if (timer == 5 || auth.currentUser) {
+            if (timer === 5 || auth.currentUser) {
                 clearInterval(intr);
                 resolve(auth.currentUser);
             }
@@ -88,5 +83,3 @@ export function waitForCurrentUser() {
     })
 }
 
-
-// retrieveUserProfileDataExample();
