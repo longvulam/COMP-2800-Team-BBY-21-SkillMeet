@@ -19,19 +19,38 @@ export default function ChatRooms(props) {
         subscribeToChanges(user, afterLoaded);
         removeMessageNotifications(user);
     }, []);
-    
-    const newRooms = chatRooms.filter(room=> !room.hasOwnProperty('recentMessage'));
-    const sortedRooms = chatRooms.filter(room => room.recentMessage).sort((a, b) =>
-        a.recentMessage.timeStamp < b.recentMessage.timeStamp ? 1 : -1);
+
+    const newRooms = chatRooms.filter(room => !room.hasOwnProperty('recentMessage'));
+    const sortedRooms = chatRooms.filter(room => room.recentMessage)
+        .sort((a, b) => a.recentMessage.timeStamp < b.recentMessage.timeStamp ? 1 : -1);
+    const rooms = [...newRooms, ...sortedRooms];
     return (
         isLoading ? <LoadingSpinner /> :
             <div>
-                {[...newRooms, ...sortedRooms].map((room, index) =>
-                    <ChatRoomCard
-                        room={room}
-                        key={index} />
-                )}
+                {rooms.length === 0 ? EmptyListMessage() :
+                    rooms.map((room, index) =>
+                        <ChatRoomCard
+                            room={room}
+                            key={index} />
+                    )}
             </div>
+    );
+}
+
+function EmptyListMessage() {
+
+    /** @type {CSSStyleDeclaration} */
+    const emptyChatListStyle = {
+        display: "flex",
+        width: "100vw",
+        height: "100vh",
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+    return (
+        <div style={emptyChatListStyle}>
+            <div>You have no messages</div>
+        </div>
     );
 }
 
@@ -49,7 +68,10 @@ async function subscribeToChanges(user, callback) {
             }
         });
 
-        if (newRooms.length === 0) return;
+        if (newRooms.length === 0) {
+            callback(newRooms);
+            return;
+        }
 
         unsubscribe();
         const roomIds = newRooms.map(uRoom => uRoom.roomId);
