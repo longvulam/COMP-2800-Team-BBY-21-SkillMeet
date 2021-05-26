@@ -217,7 +217,6 @@ const Create = () => {
             {bioError}
           </div>
 
-
           <TextField
             id="city"
             label="City"
@@ -231,7 +230,6 @@ const Create = () => {
           <div style={{ fontSize: '0.8em', color: 'red' }}>
             {cityError}
           </div>
-
 
           {skillFields.map((skillField, index) => (
             <div key={index}>

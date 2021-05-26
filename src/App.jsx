@@ -3,7 +3,8 @@ import Home from './RegistrationPages/Home';
 import BottomNavBar from './BottomNavbar';
 import Profile from './ProfilePage/Profile';
 import Friends from './Friends/Friends';
-import Create from './RegistrationPages/Create'
+import Create from './RegistrationPages/Create';
+import socialMedia from './socialMedia/twitterFeed';
 
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutUs from "./AboutUs/aboutUsComponent";
@@ -11,9 +12,9 @@ import AboutUs from "./AboutUs/aboutUsComponent";
 import EditProfilePage from './EditProfile/EditProfilePage';
 import Search from "./SearchPage/SearchPage";
 import FriendRequests from './Friends/FriendRequests';
-import FriendsPageNav from './Friends/friendsComponents/friendsPageNav'
-import ChatRoomsList from "./Chat/ChatRoomsList";
-import ChatRoom from "./Chat/ChatRoom";
+import FriendsPageNav from './Friends/friendsComponents/friendsPageNav';
+import ChatRoomsList from "./chat/ChatRoomsList";
+import ChatRoom from "./chat/ChatRoom";
 import Theme from './theme/Theme';
 import { ThemeProvider } from '@material-ui/core/styles';
 function App() {
@@ -33,6 +34,9 @@ function App() {
               </Route>
               <Route path = "/aboutUs">
                   <AboutUs/>
+              </Route>
+              <Route path = "/socialmedia">
+                  <socialMedia/>
               </Route>
 
               <Route path='/editProfile'>
@@ -57,9 +61,9 @@ function App() {
                   <FriendsPageNav/>
                   <FriendRequests/>
                 </Route>
-                <Route path = '/chatRooms'>
+                {/* <Route path = '/chatRooms'>
                   <ChatRoomsList />
-                </Route>
+                </Route> */}
                 
                 <BottomNavBar />
 

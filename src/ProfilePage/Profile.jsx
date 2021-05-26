@@ -14,6 +14,8 @@ import MessageIcon from '@material-ui/icons/Message';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
 import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../classes/LoadingSpinner';
+import { useHistory } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     buttonsWrap: {
@@ -35,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Profile() {
+    const history = useHistory();
     const { uid } = useParams();
     const classes = useStyles();
     const [isLoadingData, setIsLoadingData] = useState(true);

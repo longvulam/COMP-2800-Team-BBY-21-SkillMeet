@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 
-
-// Your web app's Firebase configuration
+// Web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
     apiKey: "AIzaSyCbw_obCsHkJLB4ZMMAzzTkqj4K2mH3Rx4",
@@ -12,13 +11,11 @@ var firebaseConfig = {
     appId: "1:383981362110:web:51ec2a385d20db147ab7ef",
     measurementId: "G-NE6BPLMNP9"
 };
-
 const fire = firebase.initializeApp(firebaseConfig);
 
-
 export default fire;
-export const auth = firebase.auth();
 export const db = firebase.firestore();
+export const auth = firebase.auth();
 export const storage = firebase.storage();
 export const firestore = firebase.firestore;
 
@@ -61,15 +58,15 @@ export function getCurrentUserDataAsync(uid) {
             resolve(userDataWithSkills);
             return;
         }
-        
-        waitForCurrentUser().then(user=> {
+
+        waitForCurrentUser().then(user => {
             const userDataWithSkills = getProfileDataFromDb(user.uid);
             resolve(userDataWithSkills);
         });
     });
 }
 
-async function retrieveUserProfileDataExample(){
+async function retrieveUserProfileDataExample() {
     const userData = await getCurrentUserDataAsync();
     console.log(userData);
 }
@@ -77,11 +74,11 @@ async function retrieveUserProfileDataExample(){
 /**
  * @returns {Promise<firebase.User>}
  */
- export function waitForCurrentUser() {
-    return new Promise((resolve, reject) =>{
+export function waitForCurrentUser() {
+    return new Promise((resolve, reject) => {
         let timer = 0;
 
-        const intr = setInterval(()=>{
+        const intr = setInterval(() => {
             if (timer == 5 || auth.currentUser) {
                 clearInterval(intr);
                 resolve(auth.currentUser);
