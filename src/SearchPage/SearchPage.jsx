@@ -145,7 +145,7 @@ export default function SearchPage() {
     className={classes.userContain}
     >
   {searchedUsers.map(user => {
-    console.log('Searchedusers', user);
+    console.log('Searched users', user);
     const { name, city, skillName, skillLevel, id, avatar, isFriending } = user;
     return (
       <Grid item xs={12} className={classes.cardContain}>
@@ -172,12 +172,11 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
 
   const userSkillDocs = [];
   const userRefDocs = [];
-  const users = [];
-  const userFriendsList = [];
-  
+
   const snapshots = await db.collectionGroup('Skills')
-  .where('skillName', 'in', searchedSkills)
-  .get();
+    .where('skillName', 'in', searchedSkills)
+    .get();
+
   snapshots.forEach(userSkillDoc => {
     userSkillDocs.push(userSkillDoc.data());
     userRefDocs.push(userSkillDoc.ref.parent.parent)
@@ -188,27 +187,27 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
         const data = doc.data();
         data.id = doc.id;
         return data;
-    }))
-  );
+    })
+  ));
   
   const currentUID = await getCurrentUIDAsync();
-  const userFriends = await db.collection('users').doc(currentUID).collection('Friends').get();
-  userFriends.forEach(userFriend => {
-    userFriendsList.push(userFriend.data());
+  const userFriendsRef = await db.collection('users').doc(currentUID)
+    .collection('Friends').get();
+
+  const userFriendsList = userFriendsRef.docs.map(userFriend => userFriend.data());
+
+  const users = userInfoDocs.map((userInfo, i)=> {
+      const userFriend = userFriendsList.find(friend => friend.friendID === userInfo.id);
+      return {
+          id: userInfo.id,
+          name: userInfo.displayName,
+          city: userInfo.city,
+          avatar: userInfo.avatar,
+          skillName: userSkillDocs[i].skillName,
+          skillLevel: userSkillDocs[i].skillLevel,
+          isFriending: userFriend ? true : false
+      };
   });
 
-  userInfoDocs.map((userInfo, i)=> {
-    let user = {};
-    user.name = userInfo.displayName;
-    user.city = userInfo.city;
-    user.id = userInfo.id;
-    user.avatar = userInfo.avatar;
-    user.skillName = userSkillDocs[i].skillName;
-    user.skillLevel = userSkillDocs[i].skillLevel;
-    const userFriend = userFriendsList.find(friend => friend.friendID === userInfo.id);
-    user.isFriending = userFriend ? true : false;
-    users.push(user);
-  });
-  console.log('Users', users);
   setSearchedUsers(users);
 }
