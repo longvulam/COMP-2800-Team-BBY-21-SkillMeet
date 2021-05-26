@@ -1,4 +1,3 @@
-import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -6,9 +5,10 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import firebase, { db, auth } from '../../firebase';
 import Snackbar from '@material-ui/core/Snackbar';
+import React, { useEffect, useState } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
-import { db, auth, firestore } from '../../firebase';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserSearchCard(props) {
   const classes = useStyles();
-  const { name, city, skillName, skillLevel, id, avatar } = props;
+  const { name, city, skillName, skillLevel, id, avatar, isFriending } = props;
 
   const [requestSent, setRequestSent] = React.useState(false);
 
@@ -120,13 +120,7 @@ export default function UserSearchCard(props) {
 		.catch((error) => {
     			console.error("Error writing document: ", error);
 		});
-    const friendRef = db.collection('users').doc(id);
-
-    friendRef.set({
-        newRequestsNo: firestore.FieldValue.increment(1)
-    }, {merge: true});
-
-    friendRef.collection('Friends').doc('received' + currentUserData.uid)
+    db.collection('users').doc(id).collection('Friends').doc('received' + currentUserData.uid)
 		.set({
     			isPending: true,
           friendID: currentUserData.uid
@@ -156,7 +150,7 @@ export default function UserSearchCard(props) {
                       </div>
                   </div>
                   <Fab 
-                    disabled={requestSent}
+                    disabled={isFriending}
                     className={classes.fab} 
                     color={requestSent ? "default" : "primary"} 
                     onClick = { () => handleAddClick()}>

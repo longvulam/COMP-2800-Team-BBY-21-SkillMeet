@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Avatar, Grid, InputBase, Button, IconButton } from '@material-ui/core';
-
-import SkillAccordion from './profileComponents/SkillAccordion';
+import { Avatar, Grid, Snackbar } from '@material-ui/core';
 import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
 import LogOutButton from './profileComponents/LogOutButton';
+import { OtherUserButtons } from './profileComponents/OtherUserButtons';
+import { Alert } from './profileComponents/profileAlert';
+import { PersonalInfo } from './profileComponents/PersonalInfo';
+import { SkillsList } from './SkillsList';
 
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import MessageIcon from '@material-ui/icons/Message';
-
-import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
-import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../classes/LoadingSpinner';
-import Typography from '@material-ui/core/Typography';
+import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
     buttonsWrap: {
         width: '100vw',
         display: 'flex',
@@ -34,46 +32,54 @@ const useStyles = makeStyles((theme) => ({
         width: '4.5em',
     },
     name: {
-      color:theme.palette.primary.dark,
+        color: theme.palette.primary.dark,
     },
 }));
 
 export default function Profile() {
     const { uid } = useParams();
     const classes = useStyles();
+    const location = useLocation();
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [isFriend, setIsFriend] = useState(false);
     const [userProfile, setUserProfile] = useState();
 
-    useEffect(() => Promise.all([
-        getCurrentUserDataAsync(uid).then(setUserProfile),
-        waitForCurrentUser()
-    ]).then(res => {
-        const currentUser = res[1];
-        if (!currentUser || !uid) {
-            setIsLoadingData(false);
-            return;
-        }
+    const openSnackbar = !!location.state && !!location.state.saveSuccess;
 
-        db.collection('users').doc(currentUser.uid)
-            .collection('Friends').where('friendID', '==', uid)
-            .get()
-            .then(friendDoc => {
-                setIsFriend(!friendDoc.empty);
-                setIsLoadingData(false);
-            });
-    }), []);
+    const [successOpen, setSuccessOpen] = useState(openSnackbar);
+    const handleClose = (e, reason) => {
+        if (reason === 'clickaway') return;
+        setSuccessOpen(false);
+    };
+
+    async function afterLoaded(userProfile, userFriendDoc) {
+        if (uid) {
+            const userFriend = userFriendDoc.data();
+            const isPendingFriendShip = userFriend.isPending || !userFriend.isConfirmed;
+            userProfile.isPending = isPendingFriendShip;
+            setIsFriend(userFriendDoc.exists && !isPendingFriendShip);
+        }
+        setUserProfile(userProfile);
+        setIsLoadingData(false);
+    }
+
+    useEffect(() => loadProfile(uid, afterLoaded), []);
 
     return (
         isLoadingData ? <LoadingSpinner /> :
-            <div className ={classes.profilePage}
-            style={{
-                width: '100vw',
-                height: 'calc(100vh - 4em)',
-                overflowY: 'scroll',
-                overflowX: 'hidden',
-            }}>
-                {!uid ? <CurrentUserButtons /> : <OtherUserButtons isFriend={isFriend} />}
+            <div className={classes.profilePage}
+                style={{
+                    width: '100vw',
+                    height: 'calc(100vh - 4em)',
+                    overflowY: 'scroll',
+                    overflowX: 'hidden',
+                }}>
+
+                {!uid ? <CurrentUserButtons /> :
+                    <OtherUserButtons
+                        isFriend={isFriend}
+                        isPending={userProfile.isPending}
+                        friendId={uid} />}
 
                 <div className={classes.avatarWrap}>
                     <Avatar
@@ -82,7 +88,7 @@ export default function Profile() {
                         className={classes.avatar} />
                 </div>
 
-                <NameAndLocationInfo userProfile={userProfile} />
+                <PersonalInfo userProfile={userProfile} />
 
                 <Grid container
                     direction="column"
@@ -100,28 +106,32 @@ export default function Profile() {
                         <ProfileBio bio={userProfile.bio} />
                     </Grid>
                 </Grid>
-
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={4000}
+                    onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success">
+                        This is a success message!
+                    </Alert>
+                </Snackbar>
             </div>
     );
 }
 
-function OtherUserButtons(props) {
-    const { isFriend } = props;
+async function loadProfile(uid, callback) {
+    const res = await Promise.all([
+        getCurrentUserDataAsync(uid),
+        waitForCurrentUser()
+    ])
+    const userProfileData = res[0];
+    const currentUser = res[1];
 
-    const classes = useStyles();
 
-    return (
-        <div className={classes.buttonsWrap}>
-            {isFriend ?
-                (<IconButton>
-                    <MessageIcon />
-                </IconButton>
-                ) :
-                (<Button>
-                    <PersonAddIcon />
-                </Button>)
-            }
-        </div>)
+    const friendDoc = await db.collection('users').doc(currentUser.uid)
+        .collection('Friends').where('friendID', '==', uid)
+        .get();
+
+    callback(userProfileData, friendDoc.docs[0]);
 }
 
 function CurrentUserButtons(props) {
@@ -144,55 +154,4 @@ function CurrentUserButtons(props) {
     )
 }
 
-function NameAndLocationInfo(props) {
-    const { userProfile } = props;
-    const classes = useStyles();
-    return (
-        <Grid key="userProfile"
-            container
-            direction="column"
-            spacing={1}
-            style={{
-                margin: 'auto',
-                marginTop: '2vh',
-                alignItems: 'center',
-            }}>
-            <Grid item xs={12}
-              key="userName"
-            >
-                <Typography
-                  variant='h6'
-                  className={classes.name}
-                >
-                  {userProfile.displayName}
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
-               <Typography
-                variant='subtitle1'
-               >
-                 {userProfile.city}
-               </Typography>
-            </Grid>
-        </Grid>)
-}
 
-function SkillsList(props) {
-    const { userSkills } = props;
-    return userSkills.map(accordion => {
-        const { skillName, skillLevel, skillDescription } = accordion;
-        return (
-            <Grid key={skillName} item xs={12}
-            style={{
-              width:'100%',
-              margin:'auto'
-            }}>
-                <SkillAccordion
-                    skillName={skillName}
-                    skillLevel={skillLevel}
-                    skillDescription={skillDescription}
-                />
-            </Grid>
-        );
-    })
-}

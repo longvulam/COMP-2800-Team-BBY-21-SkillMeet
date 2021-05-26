@@ -23,6 +23,7 @@ console.log('SkillOptions', skillOptions);
 
 async function getCurrentUIDAsync() {
   const curUserID = await getCurrentUserDataAsync();
+  return curUserID;
 }
 
 function getCurrentUserDataAsync() {
@@ -178,7 +179,7 @@ export default function SearchPage() {
     >
   {searchedUsers.map(user => {
     console.log('Searchedusers', user);
-    const { name, city, skillName, skillLevel, id, avatar } = user;
+    const { name, city, skillName, skillLevel, id, avatar, isFriending } = user;
     return (
       <Grid item xs={12} className={classes.cardContain}>
         <UserSearchCard
@@ -188,6 +189,7 @@ export default function SearchPage() {
           skillLevel={skillLevel}
           id={id}
           avatar={avatar}
+          isFriending={isFriending}
         />
       </Grid>
     );
@@ -204,6 +206,7 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
   const userSkillDocs = [];
   const userRefDocs = [];
   const users = [];
+  const userFriendsList = [];
   
   const snapshots = await db.collectionGroup('Skills')
   .where('skillName', 'in', searchedSkills)
@@ -220,7 +223,13 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
         return data;
     }))
   );
-
+  const currentUID = await getCurrentUIDAsync();
+  console.log(currentUID);
+  const userFriends = await db.collection('users').doc(currentUID).collection('Friends').get();
+  userFriends.forEach(userFriend => {
+    userFriendsList.push(userFriend.data());
+  });
+  console.log('hi' + userFriendsList);
   userInfoDocs.map((userInfo, i)=> {
     let user = {};
     user.name = userInfo.displayName;
@@ -229,6 +238,8 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
     user.avatar = userInfo.avatar;
     user.skillName = userSkillDocs[i].skillName;
     user.skillLevel = userSkillDocs[i].skillLevel;
+    const userFriend = userFriendsList.find(friend => friend.friendID === userInfo.id);
+    user.isFriending = userFriend ? true : false;
     users.push(user);
   });
   console.log('Users', users);
