@@ -19,6 +19,7 @@ export default function SaveButton(props) {
     const classes = useStyles();
     return (
         <Fab
+            id="saveBtn"
             className={classes.saveButton}
             onClick={onClick}
         >
