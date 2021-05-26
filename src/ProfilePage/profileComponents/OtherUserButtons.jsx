@@ -49,7 +49,6 @@ async function createChatRoomInDB(friendId, friendName) {
     const currentUser = await getCurrentUserDataAsync();
     const uids = [currentUser.id, friendId];
     const res = await db.collection('chatrooms').add({
-        recentMessage: "",
         uids
     });
 
