@@ -17,7 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
 import { auth, db, getCurrentUserDataAsync, storage } from '../firebase';
-import LoadingSpinner from '../classes/LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { useHistory } from 'react-router';
 
 import TextField from '@material-ui/core/TextField';
@@ -140,7 +140,7 @@ export default function EditProfile() {
                 overflowX: 'hidden',
                 paddingBottom:'10em',
             }}>
-                <div className={classes.editWrap}>
+                <div className={classes.editWrap} id="btnWrapper">
                     <CancelButton
                         style={{
                             marginRight: '6vw',
@@ -176,6 +176,7 @@ export default function EditProfile() {
                     }}>
                     <Grid item xs={12}>
                         <TextField
+                            id="userNameTxtField"
                             label="UserName"
                             variant="filled"
                             readOnly={false}

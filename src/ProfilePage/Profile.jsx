@@ -11,7 +11,7 @@ import { Alert } from './profileComponents/profileAlert';
 import { PersonalInfo } from './profileComponents/PersonalInfo';
 import { SkillsList } from './SkillsList';
 
-import LoadingSpinner from '../classes/LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
 
 export const useStyles = makeStyles((theme) => ({

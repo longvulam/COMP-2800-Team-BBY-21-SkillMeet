@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
 import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
-import LoadingSpinner from '../classes/LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 import Message from './chatPageComponents/message';
 import { auth, db, waitForCurrentUser, firestore } from '../firebase';
 

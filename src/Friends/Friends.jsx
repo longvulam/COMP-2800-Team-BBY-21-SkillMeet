@@ -3,7 +3,7 @@ import FriendsPageNav from './friendsComponents/friendsPageNav';
 import Grid from '@material-ui/core/Grid';
 
 import FriendCard from './friendsComponents/FriendCard';
-import LoadingSpinner from '../classes/LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { db, waitForCurrentUser, firestore } from '../firebase';
 
 export default function FriendsPage() {
