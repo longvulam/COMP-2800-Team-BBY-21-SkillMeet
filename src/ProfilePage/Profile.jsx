@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Avatar, Grid, InputBase, Button, IconButton } from '@material-ui/core';
-
+import { Avatar, Grid, InputBase, Button, IconButton, Snackbar } from '@material-ui/core';
 import SkillAccordion from './profileComponents/SkillAccordion';
 import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
 import LogOutButton from './profileComponents/LogOutButton';
 
+import Typography from '@material-ui/core/Typography';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import MessageIcon from '@material-ui/icons/Message';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import LoadingSpinner from '../classes/LoadingSpinner';
-import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     buttonsWrap: {
@@ -34,16 +34,25 @@ const useStyles = makeStyles((theme) => ({
         width: '4.5em',
     },
     name: {
-      color:theme.palette.primary.dark,
+        color: theme.palette.primary.dark,
     },
 }));
 
 export default function Profile() {
     const { uid } = useParams();
     const classes = useStyles();
+    const location = useLocation();
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [isFriend, setIsFriend] = useState(false);
     const [userProfile, setUserProfile] = useState();
+
+    const openSnackbar = !!location.state && !!location.state.saveSuccess;
+    console.log(openSnackbar);
+    const [successOpen, setSuccessOpen] = useState(openSnackbar);
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') return;
+        setSuccessOpen(false);
+    };
 
     useEffect(() => Promise.all([
         getCurrentUserDataAsync(uid).then(setUserProfile),
@@ -66,13 +75,14 @@ export default function Profile() {
 
     return (
         isLoadingData ? <LoadingSpinner /> :
-            <div className ={classes.profilePage}
-            style={{
-                width: '100vw',
-                height: 'calc(100vh - 4em)',
-                overflowY: 'scroll',
-                overflowX: 'hidden',
-            }}>
+            <div className={classes.profilePage}
+                style={{
+                    width: '100vw',
+                    height: 'calc(100vh - 4em)',
+                    overflowY: 'scroll',
+                    overflowX: 'hidden',
+                }}>
+
                 {!uid ? <CurrentUserButtons /> : <OtherUserButtons isFriend={isFriend} />}
 
                 <div className={classes.avatarWrap}>
@@ -100,9 +110,20 @@ export default function Profile() {
                         <ProfileBio bio={userProfile.bio} />
                     </Grid>
                 </Grid>
-
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={4000}
+                    onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success">
+                        This is a success message!
+                    </Alert>
+                </Snackbar>
             </div>
     );
+}
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 function OtherUserButtons(props) {
@@ -158,21 +179,21 @@ function NameAndLocationInfo(props) {
                 alignItems: 'center',
             }}>
             <Grid item xs={12}
-              key="userName"
+                key="userName"
             >
                 <Typography
-                  variant='h6'
-                  className={classes.name}
+                    variant='h6'
+                    className={classes.name}
                 >
-                  {userProfile.displayName}
+                    {userProfile.displayName}
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-               <Typography
-                variant='subtitle1'
-               >
-                 {userProfile.city}
-               </Typography>
+                <Typography
+                    variant='subtitle1'
+                >
+                    {userProfile.city}
+                </Typography>
             </Grid>
         </Grid>)
 }
@@ -183,10 +204,10 @@ function SkillsList(props) {
         const { skillName, skillLevel, skillDescription } = accordion;
         return (
             <Grid key={skillName} item xs={12}
-            style={{
-              width:'100%',
-              margin:'auto'
-            }}>
+                style={{
+                    width: '100%',
+                    margin: 'auto'
+                }}>
                 <SkillAccordion
                     skillName={skillName}
                     skillLevel={skillLevel}

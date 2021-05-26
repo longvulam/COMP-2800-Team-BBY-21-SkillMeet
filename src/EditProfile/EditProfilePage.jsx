@@ -32,7 +32,7 @@ function validateProfile(profile) {
     return true;
 }
 
-async function submitChanges(profile, doneCallBack) {
+async function submitChanges(profile, afterSave) {
     const isValid = validateProfile(profile);
     if (!isValid) {
         console.log("Cannot save skills with empty values!");
@@ -65,7 +65,7 @@ async function submitChanges(profile, doneCallBack) {
     });
 
     // Commit the batch
-    batch.commit().then(doneCallBack);
+    batch.commit().then(afterSave);
 }
 
 async function addSkill(changeState) {
@@ -111,7 +111,10 @@ export default function EditProfile() {
 
     function saveFinished() {
         console.log("Profile Saved!");
-        history.push('/profile');
+        history.push({
+            pathname: '/profile',
+            state: { saveSuccess: true }
+        });
     }
 
     const handleImageChange = async (event) => {
