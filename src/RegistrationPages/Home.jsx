@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
 import { db } from '../firebase';
 import Login from './Login';
-import Create from './Create';
 import Navbar from '../Navbar';
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
-  const history = useHistory();
   const appName = "SkillMeet";
   const appDescription = "Discover people interested in the same skills as yours, connect and make friends with them, find companions to practice skills together, join groups to expand your friendship circle.";
   const appHook = "Building Connections Based On Skills";
 
+  const history = useHistory();
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -47,8 +46,7 @@ const Home = () => {
 
   const handleLogin = () => {
     clearErrors();
-    console.log("A user is logged in!");
-
+    
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -73,14 +71,14 @@ const Home = () => {
       return db.collection('users').doc(cred.user.uid).set({
         email: email,
         displayName: firstName + " " + lastName
-      }).then(() => {
-        console.log("A user is signed up!");
       })
+    }).then(() => {
+      history.push("/create");
     }).catch((error) => {
-      if(firstName.length == 0){
+      if (firstName.trim().length == 0) {
         setFirstNameError("PLease fill your first name.");
-      } 
-      if (lastName.length == 0){
+      }
+      if (lastName.trim().length == 0) {
         setLastNameError("PLease fill your last name.");
       }
 
@@ -94,20 +92,14 @@ const Home = () => {
           break;
       }
     })
-
-
   };
 
   const handleLogout = () => {
 
     var promise = firebase.auth().signOut();
     promise.then(function () {
-    window.location.href = '/';
-  });
-
-    // history.push("/").then(()
-
-    // firebase.auth().signOut()
+      window.location.href = '/';
+    });
   }
 
   const authListener = () => {
@@ -127,43 +119,41 @@ const Home = () => {
 
 
   return (
+
     <div className="landingPage">
-      <Navbar handleLogout={handleLogout} />
+      <Navbar 
+        handleLogout={handleLogout}
+      />
+      <div className="landing-page-background">
 
-      {user ? (
-        <Create />
-      ) : (
-        <div className="landing-page-background">
-
-          <div className="white-background">
-            <div className="app-name">{appName}</div>
-            <div className="app-hook">{appHook}</div>
-            <div className="app-description">{appDescription}</div>
-          </div>
-          <Login
-            email={email}
-            setEmail={setEmail}
-            firstName={firstName}
-            setFirstName={setFirstName}
-            lastName={lastName}
-            setLastName={setLastName}
-            password={password}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-            handleSignup={handleSignup}
-            clearInputsLogin={clearInputsLogin}
-            clearInputsSignUp={clearInputsSignUp}
-            clearErrors={clearErrors}
-            hasAccount={hasAccount}
-            setHasAccount={setHasAccount}
-            emailError={emailError}
-            passwordError={passwordError}
-            firstNameError={firstNameError}
-            lastNameError={lastNameError}
-          />
-
+        <div className="white-background">
+          <div className="app-name">{appName}</div>
+          <div className="app-hook">{appHook}</div>
+          <div className="app-description">{appDescription}</div>
         </div>
-      )}
+        <Login
+          email={email}
+          setEmail={setEmail}
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          password={password}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+          handleSignup={handleSignup}
+          clearInputsLogin={clearInputsLogin}
+          clearInputsSignUp={clearInputsSignUp}
+          clearErrors={clearErrors}
+          hasAccount={hasAccount}
+          setHasAccount={setHasAccount}
+          emailError={emailError}
+          passwordError={passwordError}
+          firstNameError={firstNameError}
+          lastNameError={lastNameError}
+        />
+
+      </div>
     </div>
   );
 }

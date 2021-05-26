@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserSearchCard(props) {
   const classes = useStyles();
-  const { name, city, skillName, skillLevel, id } = props;
+  const { name, city, skillName, skillLevel, id, avatar, isFriending } = props;
 
   const [requestSent, setRequestSent] = React.useState(false);
 
@@ -140,14 +140,17 @@ export default function UserSearchCard(props) {
 
               <Grid item className={classes.firstGridItem}>
                   <div className={classes.avatarNameLocation}>
-                      <Avatar className={classes.avatar} />
+                      <Avatar className={classes.avatar} 
+                      alt="Profile Pic"
+                      src={avatar}
+                      />
                       <div className={classes.nameAndLocation}>
                           <Typography variant="h6">{name}</Typography>
                           <Typography variant="subtitle1">{city}</Typography>
                       </div>
                   </div>
                   <Fab 
-                    disabled={requestSent}
+                    disabled={isFriending}
                     className={classes.fab} 
                     color={requestSent ? "default" : "primary"} 
                     onClick = { () => handleAddClick()}>

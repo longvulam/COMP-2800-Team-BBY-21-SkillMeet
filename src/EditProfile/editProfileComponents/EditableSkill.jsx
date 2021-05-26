@@ -6,11 +6,38 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import { makeStyles } from '@material-ui/core/styles';
 import { skillLevelOptions, skillOptions } from '../../dataStores/skills';
+
+
+const useStyles = makeStyles((theme) => ({
+  skillAutocomplete: {
+    width:'100%',
+    color:'white',
+    marginTop:'0.5em',
+    marginLeft:'0.35em',
+  },
+  skillLevelAutocomplete: {
+    width:'100%',
+    "&.MuiInput-underline:before": {
+      borderBottom:'none',
+    },
+  },
+  skillLevel: {
+    marginTop:'0.5em',
+    width:'calc(100% - 5em)',
+    marginLeft:'1em',
+  },
+  paper: {
+    backgroundColor:theme.palette.primary.dark,
+    width:'100%',
+  },
+  
+}));
 
 export default function EditableSkill(props) {
     const { data, skillsList, changeState } = props;
+    const classes = useStyles();
 
     async function updateSkillsList(newValue, fieldName) {
         const thisSkill = skillsList.find(skill => skill.skillName === data.skillName);
@@ -35,9 +62,9 @@ export default function EditableSkill(props) {
     }
 
     return (
-        <Paper style={{
-            width: '100%',
-        }}>
+        <Paper 
+        elevation={3}
+        className={classes.paper}>
             <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -53,31 +80,43 @@ export default function EditableSkill(props) {
                         options={skillOptions}
                         value={data.skillName}
                         onChange={(event, newValue) => updateSkillsList(newValue, "skillName")}
-                        style={{ width: '55%', }}
+                        className={classes.skillAutocomplete}
+                        forcePopupIcon={false}
                         renderInput={(params) =>
                             <TextField {...params}
-                                style={{
-                                    border: 'none',
+                                inputProps={{
+                                  ...params.inputProps,
+                                  style: {color:'white',},
                                 }}
-                                variant="standard" />}
-                    />
-                    <Autocomplete
-                        options={skillLevelOptions}
-                        value={data.skillLevel}
-                        onChange={(event, newValue) => updateSkillsList(newValue, "skillLevel")}
-                        style={{ width: '35%', }}
-                        renderInput={(params) =>
-                            <TextField {...params}
-                                style={{
-                                    border: 'none',
-                                }}
+                                className={classes.skillAutocomplete}
                                 variant="standard" />}
                     />
                 </div>
-                <IconButton onClick={deleteSkill}>
+                <IconButton style={{
+                  color:'white',
+                  backgroundColor:'crimson',
+                  width:'1.5em',
+                  height:'1.5em',
+                }}
+                  onClick={deleteSkill}>
                     <DeleteIcon />
                 </IconButton>
             </div>
+            <Autocomplete
+              options={skillLevelOptions}
+              value={data.skillLevel}
+              forcePopupIcon={false}
+              onChange={(event, newValue) => updateSkillsList(newValue, "skillLevel")}
+              className={classes.skillLevel}
+              renderInput={(params) =>
+                <TextField {...params}
+                inputProps={{
+                  ...params.inputProps,
+                  style: {color:'white',},
+                }}
+                className={classes.skillAutocomplete}
+                variant="standard" />}
+                />
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -89,8 +128,13 @@ export default function EditableSkill(props) {
                     readOnly={false}
                     multiline
                     style={{
-                        width: '95%',
+                        width: '100%',
                         textAlign: 'center',
+                        color:'white',
+                        marginRight:'1em',
+                        marginTop:'1em',
+                        marginBottom:'1em',
+                        marginLeft:'1.5em',
                     }}
                 >
                 </InputBase>

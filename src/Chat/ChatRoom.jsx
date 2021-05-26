@@ -4,7 +4,7 @@ import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
 import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
 import LoadingSpinner from '../classes/LoadingSpinner';
 import Message from './chatPageComponents/message';
-import { auth, db, waitForCurrentUser } from '../firebase';
+import { auth, db, waitForCurrentUser, firestore } from '../firebase';
 
 export default function ChatRoom(props) {
     const { chatRoomId } = useParams();
@@ -15,9 +15,11 @@ export default function ChatRoom(props) {
     const [chatRoomName, setChatRoomName] = useState("");
 
     useEffect(async () => {
-        setDbRef(chatRoomId);
+        const currentUser = await waitForCurrentUser();
+        await setDbRefs(currentUser, chatRoomId);
         enableListening(updateMessages);
-        const name = await getChatRoomName(chatRoomId);
+
+        const name = await getChatRoomName(currentUser, chatRoomId);
         setChatRoomName(name);
         setIsLoading(false);
     }, []);
@@ -29,20 +31,22 @@ export default function ChatRoom(props) {
 
     function submitOnCtrlEnter(event) {
         if (!event.ctrlKey || !event.key === 'Enter') return;
-        sendMessageToDB(currentMsg);
-        setCurrentMsg("");
+        sendMessage(event);
     }
 
     function sendMessage(event) {
         sendMessageToDB(currentMsg);
         setCurrentMsg("");
+        friendRef.set({
+            newMessagesNo: firestore.FieldValue.increment(1)
+        }, {merge: true});
     }
 
     return (
         isLoading ? <LoadingSpinner /> :
             <div style={styles.pageContainer}>
                 <IconButton onClick={(event) => history.goBack()}>
-                    <ArrowBackSharpIcon/>
+                    <ArrowBackSharpIcon />
                 </IconButton>
                 <Paper>
                     <div>{chatRoomName}</div>
@@ -89,6 +93,8 @@ let collRef = db.collection('chatrooms')
 let chatroomRef = db.collection('chatrooms')
     .doc();
 
+let friendRef = db.collection('users');
+
 async function enableListening(updateMessages) {
     collRef.onSnapshot(querySnapshot => {
         const arr = [];
@@ -104,30 +110,33 @@ async function enableListening(updateMessages) {
     });
 }
 
-function setDbRef(chatRoomId) {
+async function setDbRefs(currentUser, chatRoomId) {
     chatroomRef = db.collection('chatrooms').doc(chatRoomId);
     collRef = chatroomRef.collection('messages');
+    const chatroom = await chatroomRef.get().then(doc => doc.data());
+    const friendId = chatroom.uids.find(id => id !== currentUser.uid);
+    friendRef = friendRef.doc(friendId);
 }
 
 /** @param {String} newMessage */
-function sendMessageToDB(newMessage) {
-
+async function sendMessageToDB(newMessage) {
     if (newMessage.length === 0) return;
 
+    const uid = auth.currentUser ? auth.currentUser.uid : await waitForCurrentUser();
+
     newMessage = newMessage.replace('\n', '\\n');
-    collRef.add({
-        from: auth.currentUser.uid,
+    const messageRef = await collRef.add({
+        from: uid,
         content: newMessage,
         timeStamp: new Date().getTime()
     });
-    const recentMessage = newMessage.length > 40 ? newMessage.slice(0, 40) + "..." : newMessage;
+
     chatroomRef.set({
-        recentMessage: recentMessage
+        recentMessage: messageRef
     }, { merge: true });
 }
 
-async function getChatRoomName(roomId) {
-    const currentUser = await waitForCurrentUser();
+async function getChatRoomName(currentUser, roomId) {
     const userChatRoom = await db.collection('users').doc(currentUser.uid)
         .collection('chatrooms').where('roomId', '==', roomId).get();
     return userChatRoom.docs[0].data().name;

@@ -8,7 +8,7 @@ import { db, getCurrentUserDataAsync } from '../../firebase';
 
 export default function FriendCard(props) {
     const history = useHistory();
-    const { friendId, friendName, chatRoomId, setLoading } = props;
+    const { friendId, friendName, chatRoomId, setLoading, avatar } = props;
 
     async function createChatroomAndRedirect() {
         setLoading(true);
@@ -35,7 +35,8 @@ export default function FriendCard(props) {
                 margin: 'auto',
             }}>
                 <Avatar
-                    onClick={() => history.push('/profile/' + friendId)}
+                    onClick={()=>history.push('/profile/' + friendId)}
+                    src={avatar}
                     style={{
                         width: '3em',
                         height: '3em',

@@ -1,42 +1,27 @@
+import $ from 'jquery';
+import firebase from './firebase';
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
 const Navbar = (props) => {
 
     const {
-        handleLogout
+        handleLogout,
     } = props;
 
     return ( 
         <nav className="navbar">
         <Link className="brand-title" to="/">SkillMeet</Link>
-        <a href = "#" className="toggle-button">
-            <span className="bar"></span>
-            <span className="bar"></span>
-            <span className="bar"></span>
-        </a>
         <div className="navbar-links">
             <ul>
-                {/* <li className="logged-in">
-                    <i className="fa fa-user" aria-hidden="true"></i>
-                    <a className="navbar-active" href="profile.html">USER PROFILE</a>
-                </li>
-                <li className="logged-in">
-                    <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                    <a className="navbar-active" href="main.html">SEARCH</a>
-                </li>
-                <li className="logged-in">
-                    <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                    <a className="navbar-active" href="main.html">FRIENDS</a>
-                </li> */}
                 <li>
                     <i className="fa fa-question-circle" aria-hidden="true"></i>
                     <Link className="navbar-active" to="/aboutUs">ABOUT US</Link>
                 </li>
-
-                <li>
+                {/* <li id = "logout-btn">
                     <i className="fa fa-question-circle" aria-hidden="true"></i>
                     <a className="navbar-active" onClick = {() => handleLogout()}> LOGOUT</a>
-                </li>
+                </li> */}
             </ul>
         </div>
     </nav>

@@ -14,6 +14,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
 import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../classes/LoadingSpinner';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     buttonsWrap: {
@@ -31,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         height: '4.5em',
         width: '4.5em',
-    }
+    },
+    name: {
+      color:theme.palette.primary.dark,
+    },
 }));
 
 export default function Profile() {
@@ -62,7 +66,8 @@ export default function Profile() {
 
     return (
         isLoadingData ? <LoadingSpinner /> :
-            <div style={{
+            <div className ={classes.profilePage}
+            style={{
                 width: '100vw',
                 height: 'calc(100vh - 4em)',
                 overflowY: 'scroll',
@@ -73,7 +78,7 @@ export default function Profile() {
                 <div className={classes.avatarWrap}>
                     <Avatar
                         alt="Profile Picture"
-                        src="/static/images/avatar/1.jpg"
+                        src={userProfile.avatar}
                         className={classes.avatar} />
                 </div>
 
@@ -84,7 +89,6 @@ export default function Profile() {
                     spacing={1}
                     style={{
                         margin: 'auto',
-                        marginTop: '2vh',
                         width: '95vw',
                         alignItems: 'center',
                     }}>
@@ -127,12 +131,6 @@ function CurrentUserButtons(props) {
     return (
         <div className={classes.buttonsWrap}>
             <LogOutButton
-                style={{
-                    marginRight: '6vw',
-                    marginTop: '2vw',
-                    height: '2.5em',
-                    width: '2.5em',
-                }}
             />
             <EditButton
                 style={{
@@ -148,6 +146,7 @@ function CurrentUserButtons(props) {
 
 function NameAndLocationInfo(props) {
     const { userProfile } = props;
+    const classes = useStyles();
     return (
         <Grid key="userProfile"
             container
@@ -158,32 +157,22 @@ function NameAndLocationInfo(props) {
                 marginTop: '2vh',
                 alignItems: 'center',
             }}>
-            <Grid item xs={12}>
-                <InputBase
-                    key="userName"
-                    value={userProfile.displayName}
-                    readOnly={true}
-                    inputProps={{
-                        'aria-label': 'naked',
-                        style: {
-                            textAlign: 'center',
-                            border: 'none',
-                        }
-                    }}
-                />
+            <Grid item xs={12}
+              key="userName"
+            >
+                <Typography
+                  variant='h6'
+                  className={classes.name}
+                >
+                  {userProfile.displayName}
+                </Typography>
             </Grid>
             <Grid item xs={12}>
-                <InputBase
-                    readOnly={true}
-                    value={userProfile.city}
-                    inputProps={{
-                        'aria-label': 'naked',
-                        style: {
-                            textAlign: 'center',
-                            border: 'none',
-                        }
-                    }}
-                />
+               <Typography
+                variant='subtitle1'
+               >
+                 {userProfile.city}
+               </Typography>
             </Grid>
         </Grid>)
 }
@@ -193,7 +182,11 @@ function SkillsList(props) {
     return userSkills.map(accordion => {
         const { skillName, skillLevel, skillDescription } = accordion;
         return (
-            <Grid key={skillName} item xs={12}>
+            <Grid key={skillName} item xs={12}
+            style={{
+              width:'100%',
+              margin:'auto'
+            }}>
                 <SkillAccordion
                     skillName={skillName}
                     skillLevel={skillLevel}
