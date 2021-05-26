@@ -23,7 +23,7 @@ export default function ChatRoomCard(props) {
     return (
         <Link to={chatroomLocation} >
             <Paper className={classes.paper} >
-                <Avatar className={classes.avatar} />
+                <Avatar src={room.avatar} alt='Profile Pic' className={classes.avatar} />
                 <div>{room.name}</div>
                 <div>{room.recentMessage}</div>
             </Paper>
