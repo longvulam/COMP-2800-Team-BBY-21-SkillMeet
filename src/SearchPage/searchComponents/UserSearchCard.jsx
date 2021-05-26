@@ -5,10 +5,11 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import firebase, { db, auth } from '../../firebase';
+import { db, auth } from '../../firebase';
 import Snackbar from '@material-ui/core/Snackbar';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useHistory } from 'react-router';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -74,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserSearchCard(props) {
   const classes = useStyles();
+  const history = useHistory();
   const { name, city, skillName, skillLevel, id, avatar, isFriending } = props;
 
   const [requestSent, setRequestSent] = React.useState(false);
@@ -140,9 +142,11 @@ export default function UserSearchCard(props) {
 
               <Grid item className={classes.firstGridItem}>
                   <div className={classes.avatarNameLocation}>
-                      <Avatar className={classes.avatar} 
-                      alt="Profile Pic"
-                      src={avatar}
+                      <Avatar 
+                        className={classes.avatar}
+                        alt="Profile Pic"
+                        src={avatar}
+                        onClick={()=> history.push('/profile/' + id)}
                       />
                       <div className={classes.nameAndLocation}>
                           <Typography variant="h6">{name}</Typography>
@@ -187,56 +191,3 @@ function getCurrentUserDataAsync() {
         })
     );
 }
-
-
-//////////////////////////////////////////////////////////////////
-// addFriend(e.target.id){
-// 		const CurUserID = firebase.auth().currentUser.uid;
-// 		const OtherUserID = e.target.id;
-
-// 		db.collection('users').doc(CurUserID).collection('Friends')
-// 		.add({
-//           isConfirmed: "false",
-//           friendID: OtherUserID,
-// 		})
-// 		.then(() => {
-//     			console.log("Document successfully written!");
-// 		})
-// 		.catch((error) => {
-//     			console.error("Error writing document: ", error);
-// 		});
-// //3. User B Set() User A.ID in "pending".//
-// 		db.collection('users').doc(OtherUserID).collection('Friends').doc("received" + CurUserID)
-// 		.add({
-//     			isPending: "false",
-// 		})
-// 		.then(() => {
-//     			console.log("Document successfully written!");
-// 		})
-// 		.catch((error) => {
-//     			console.error("Error writing document: ", error);
-// 		});
-
-// //4. When User B Accepts, both User's documents boolean fields are set to opposite.//
-// 		db.collection('users').doc(CurUserID).collection('Friends').doc("sent" + CurUserID)
-// 		.update({
-//     			isConfirmed: "true",
-// 		})
-// 		.then(() => {
-//     			console.log("Document successfully written!");
-// 		})
-// 		.catch((error) => {
-//     			console.error("Error writing document: ", error);
-// 		});
-
-// 		db.collection('users').doc(OtherUserID).collection('Friends').doc("received" + CurUserID)
-// 		.update({
-//     			isPending: "false",
-// 		})
-// 		.then(() => {
-//     			console.log("Document successfully written!");
-// 		})
-// 		.catch((error) => {
-//     			console.error("Error writing document: ", error);
-// 		});
-// 	}
