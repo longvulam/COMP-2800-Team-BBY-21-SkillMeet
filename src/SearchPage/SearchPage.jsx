@@ -1,25 +1,16 @@
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
-import IconButton from '@material-ui/core/IconButton';
+import { useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper'
 import UserSearchCard from './searchComponents/UserSearchCard';
 import Grid from '@material-ui/core/Grid';
 
-import firebase, { db, auth } from '../firebase';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, auth } from '../firebase';
 
 import { skillOptions } from '../dataStores/skills';
-import createPalette from '@material-ui/core/styles/createPalette';
 import InputAdornment from "@material-ui/core/InputAdornment";
-
-// import Theme from '../theme/Theme'
-console.log('SkillOptions', skillOptions);
-
-
 
 async function getCurrentUIDAsync() {
   const curUserID = await getCurrentUserDataAsync();
@@ -141,37 +132,6 @@ export default function SearchPage() {
       }}
     />
   </div>
-  {/* <div className={classes.searchWrap}>
-    <Autocomplete
-      id="tags-standard"
-      onChange={searchedSkillUpdate}
-      className={classes.searchBar}
-      options={skillOptions}
-      getOptionLabel={(option) => option}
-      disableClearable
-      forcePopupIcon={false}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          variant="standard"
-          label="Search By Skills"
-          placeholder="Skills"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <InputAdornment position="end">
-                <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
-                  <SearchIcon color='primary' className={classes.searchIcon}/>
-                </Button>
-              </InputAdornment>
-            )
-          }}
-        />
-      )}
-      />
-  </div> */}
-
-
 
   <Grid container direction="column" 
     spacing={1}
@@ -223,13 +183,13 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
         return data;
     }))
   );
+  
   const currentUID = await getCurrentUIDAsync();
-  console.log(currentUID);
   const userFriends = await db.collection('users').doc(currentUID).collection('Friends').get();
   userFriends.forEach(userFriend => {
     userFriendsList.push(userFriend.data());
   });
-  console.log('hi' + userFriendsList);
+
   userInfoDocs.map((userInfo, i)=> {
     let user = {};
     user.name = userInfo.displayName;
@@ -245,7 +205,3 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
   console.log('Users', users);
   setSearchedUsers(users);
 }
-
-
-
-
