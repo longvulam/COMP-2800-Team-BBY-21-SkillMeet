@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import LoadingSpinner from "../classes/LoadingSpinner";
+import LoadingSpinner from "../common/LoadingSpinner";
 import { db, firestore, waitForCurrentUser } from "../firebase";
 import ChatRoomCard from "./chatPageComponents/chatRoomCard";
 import firebase from 'firebase';
