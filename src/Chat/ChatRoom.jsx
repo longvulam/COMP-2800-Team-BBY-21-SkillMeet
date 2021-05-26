@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core/styles';
 import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
 import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -9,6 +10,7 @@ import { auth, db, waitForCurrentUser, firestore } from '../firebase';
 export default function ChatRoom(props) {
     const { chatRoomId } = useParams();
     const history = useHistory();
+    const classes = useStyles();
     const [isLoading, setIsLoading] = useState(true);
     const [messages, updateMessages] = useState([]);
     const [currentMsg, setCurrentMsg] = useState("");
@@ -44,15 +46,17 @@ export default function ChatRoom(props) {
 
     return (
         isLoading ? <LoadingSpinner /> :
-            <div style={styles.pageContainer}>
-                <IconButton onClick={(event) => history.goBack()}>
-                    <ArrowBackSharpIcon />
-                </IconButton>
-                <Paper>
-                    <div>{chatRoomName}</div>
+            <div className={classes.pageContainer}>
+
+                <Paper style={{ marginBottom: '1em', display:'flex', justifyContent:'space-between' }}>
+                    <div style={{ fontSize: '32pt', backgroundColor: 'cyan', width: '100%' }}>{chatRoomName}
+                    </div>
+                    <Button size='small'  style={{ backgroundColor: 'cyan' }} onClick={(event) => history.goBack()}>
+                            <ArrowBackSharpIcon />
+                        </Button>
                 </Paper>
 
-                <div style={styles.msgContainer}>
+                <div className={classes.msgContainer}>
                     {messages.map((msg, index) =>
                         <Message
                             key={index}
@@ -61,19 +65,21 @@ export default function ChatRoom(props) {
                             timeStamp={msg.timeStamp}
                         />)}
                 </div>
-                <Paper>
+                <Paper className={classes.messagePaper}>
                     <InputBase value={currentMsg}
                         multiline
+                        className={classes.inputMessage}
+                        placeholder='type message. . .'
                         onChange={handleChange}
                         onKeyPress={submitOnCtrlEnter}
                     />
-                    <Button onClick={sendMessage}>Send message</Button>
+                    <Button className={classes.sendButton} onClick={sendMessage}>Send message</Button>
                 </Paper>
             </div>
     );
 }
 
-const styles = {
+const useStyles = makeStyles((theme) => ({
     msgContainer: {
         overflowY: 'scroll',
         overflowX: 'hidden',
@@ -84,8 +90,24 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'flex-end',
         height: '100vh',
+    },
+    inputMessage: {
+        width: '60vw',
+        backgroundColor: theme.palette.primary.light,
+        borderRadius: '.5em',
+        margin: '1em',
+        padding: '.5em',
+    },
+    sendButton: {
+        color: 'goldenRod',
+        marginLeft: '5vw',
+        marginRight: '1vw',
+    },
+    messagePaper: {
+        display: 'flex',
+        alignItems: 'center',
     }
-}
+}));
 
 let collRef = db.collection('chatrooms')
     .doc()
