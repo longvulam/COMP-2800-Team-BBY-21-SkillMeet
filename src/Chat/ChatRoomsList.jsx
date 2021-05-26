@@ -3,6 +3,58 @@ import { useState } from "react";
 import LoadingSpinner from "../classes/LoadingSpinner";
 import { db, firestore, waitForCurrentUser } from "../firebase";
 import ChatRoomCard from "./chatPageComponents/chatRoomCard";
+import firebase from 'firebase';
+
+async function getUserChatRooms(uid) {
+    const qSnapshot = await db.collection('users').doc(uid)
+        .collection('chatrooms')
+        .get()
+    return qSnapshot.docs.map(doc => doc.data());
+};
+
+async function getRecentMessages(uid) {
+    const qSnapshot = await db.collection('chatrooms')
+        .where('uids', 'array-contains', uid).get();
+    return qSnapshot.docs.map(doc => {
+        const data = doc.data();
+        data.id = doc.id;
+        return data;
+    });
+};
+
+async function loadData(callBack) {
+    const user = await waitForCurrentUser();
+
+    const res = await Promise.all([
+        getUserChatRooms(user.uid),
+        getRecentMessages(user.uid),
+    ]);
+
+    const userRooms = res[0];
+    if (userRooms.length === 0) return;
+    
+    const roomsColl = res[1];
+    const friendIds = roomsColl.map(room => room.uids.find(uid => uid !== user.uid));
+    console.log(friendIds);
+    const friendsRef = db.collection('users').where(firebase.firestore.FieldPath.documentId(), 'in', friendIds);
+    const friendsData = await friendsRef.get()
+        .then(querySs => querySs.docs.map(doc => {
+            const data = doc.data();
+            data.id = doc.id;
+            return data;
+        }));
+        console.log(friendsData);
+    userRooms.forEach(userRoom => {
+        const room = roomsColl.find(ur => ur.id === userRoom.roomId);
+        const friendId = room.uids.find(uid => uid !== user.uid);
+        const friend = friendsData.find(fr => fr.id === friendId);
+        userRoom.recentMessage = room ? room.recentMessage : "";
+        userRoom.avatar = friend ? friend.avatar : "";
+    })
+    console.log(userRooms);
+    callBack(userRooms);
+}
+
 
 export default function ChatRooms(props) {
     const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +92,7 @@ async function subscribeToChanges(user, callback) {
     let unsubscribe = () => '';
     async function updateChatrooms(userRoomsSs) {
         const newRooms = [];
+        
         userRoomsSs.docChanges().forEach(change => {
             if (change.type === "added") {
                 newRooms.push(change.doc.data());
@@ -61,16 +114,29 @@ async function subscribeToChanges(user, callback) {
                     room.id = change.doc.id;
                     changes.push(room);
                 });
-
+                console.log("hi");
+                const friendIds = changes.map(change => change.uids.find(uid => uid !== user.uid))
+                const friendsRef = db.collection('users').where(firebase.firestore.FieldPath.documentId(), 'in', friendIds);
+                const friendsData = await friendsRef.get()
+                .then(snapshot => snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    return data;
+                }));
                 await Promise.all(changes.map(async chatRoom => {
                     const messageRef = await chatRoom.recentMessage.get();
-                    const uRoom = newRooms.find(uRoom => uRoom.roomId === chatRoom.id);
+                    const uRoom = await newRooms.find(uRoom => uRoom.roomId === chatRoom.id);
+                    const friendId = chatRoom.uids.find(uid => uid !== user.uid);
+                    const friend = friendsData.find(fr => fr.id === friendId);
                     const message = messageRef.data();
                     /** @type {String}*/
                     let content = message.content;
                     message.content = content.length > 40 ? content.slice(0, 40) : content;
                     uRoom.recentMessage = message;
+                    uRoom.avatar = friend ? friend.avatar : "";
+                    console.log('hi2' + uRoom);
                 }));
+                
                 callback(newRooms);
             });
     };

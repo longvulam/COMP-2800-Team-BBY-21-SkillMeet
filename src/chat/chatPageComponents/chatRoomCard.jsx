@@ -19,11 +19,11 @@ export default function ChatRoomCard(props) {
 
     const classes = useStyles();
     const chatroomLocation = generateLocation(room);
-
+    console.log(room.avatar);
     return (
         <Link to={chatroomLocation} >
             <Paper className={classes.paper} >
-                <Avatar className={classes.avatar} />
+                <Avatar src={room.avatar} alt='Profile Pic' className={classes.avatar} />
                 <div>{room.name}</div>
                 <div>{room.recentMessage.content}</div>
             </Paper>
