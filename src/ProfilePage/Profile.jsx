@@ -42,7 +42,7 @@ export default function Profile() {
     const location = useLocation();
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [isFriend, setIsFriend] = useState(false);
-    const [userProfile, setUserProfile] = useState();
+    const [profileData, setProfileData] = useState();
 
     const openSnackbar = !!location.state && !!location.state.saveSuccess;
 
@@ -55,11 +55,19 @@ export default function Profile() {
     async function afterLoaded(userProfile, userFriendDoc) {
         if (uid) {
             const userFriend = userFriendDoc.data();
-            const isPendingFriendShip = userFriend.isPending || !userFriend.isConfirmed;
+            let isPendingFriendShip = false;
+            
+            if (userFriend.hasOwnProperty("isConfirmed")) {
+                isPendingFriendShip = userFriend.isConfirmed === false;
+            }
+
+            if (userFriend.hasOwnProperty("isPending")) {
+                isPendingFriendShip = userFriend.isPending === true;
+            }
             userProfile.isPending = isPendingFriendShip;
             setIsFriend(userFriendDoc.exists && !isPendingFriendShip);
         }
-        setUserProfile(userProfile);
+        setProfileData(userProfile);
         setIsLoadingData(false);
     }
 
@@ -78,17 +86,17 @@ export default function Profile() {
                 {!uid ? <CurrentUserButtons /> :
                     <OtherUserButtons
                         isFriend={isFriend}
-                        isPending={userProfile.isPending}
-                        friendId={uid} />}
+                        setLoading={setIsLoadingData}
+                        profileData={profileData} />}
 
                 <div className={classes.avatarWrap}>
                     <Avatar
                         alt="Profile Picture"
-                        src={userProfile.avatar}
+                        src={profileData.avatar}
                         className={classes.avatar} />
                 </div>
 
-                <PersonalInfo userProfile={userProfile} />
+                <PersonalInfo userProfile={profileData} />
 
                 <Grid container
                     direction="column"
@@ -98,12 +106,12 @@ export default function Profile() {
                         width: '95vw',
                         alignItems: 'center',
                     }}>
-                    <SkillsList userSkills={userProfile.skills} />
+                    <SkillsList userSkills={profileData.skills} />
                     <Grid item xs={12}
                         style={{
                             width: '100%'
                         }}>
-                        <ProfileBio bio={userProfile.bio} />
+                        <ProfileBio bio={profileData.bio} />
                     </Grid>
                 </Grid>
                 <Snackbar
@@ -119,19 +127,43 @@ export default function Profile() {
 }
 
 async function loadProfile(uid, callback) {
+    const currentUser = await waitForCurrentUser();
+
     const res = await Promise.all([
         getCurrentUserDataAsync(uid),
-        waitForCurrentUser()
-    ])
+        uid ? getChatRoom(currentUser.uid, uid) : async () => false
+    ]);
+
     const userProfileData = res[0];
-    const currentUser = res[1];
+    if (!uid) {
+        callback(userProfileData, undefined);
+        return;
+    }
 
-
+    const chatRooms = res[1];
+    if (chatRooms.length === 1) {
+        userProfileData.chatRoomId = chatRooms[0].id;
+    }
     const friendDoc = await db.collection('users').doc(currentUser.uid)
         .collection('Friends').where('friendID', '==', uid)
         .get();
 
     callback(userProfileData, friendDoc.docs[0]);
+}
+
+/**
+ * @return {Array}
+ */
+async function getChatRoom(currentUserId, uid) {
+    if (!uid) return undefined;
+
+    const roomsSnapshot = await db.collection('chatrooms')
+        .where('uids', 'array-contains', currentUserId)
+        .get();
+
+    const roomsData = roomsSnapshot.docs.map(doc => { return { ...doc.data(), id: doc.id }});
+    const bothUids = [currentUserId, uid];
+    return roomsData.filter(room => room.uids.every(id => bothUids.includes(id)));
 }
 
 function CurrentUserButtons(props) {
