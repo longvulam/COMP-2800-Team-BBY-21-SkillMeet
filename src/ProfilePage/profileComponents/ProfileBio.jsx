@@ -29,7 +29,7 @@ export default function ProfileBio(props) {
             className={classes.bioTypography}
         >
             <Typography
-            variant="body"
+            variant="body1"
             style={{
               width:'95%',
               marginTop:'0.25em',
