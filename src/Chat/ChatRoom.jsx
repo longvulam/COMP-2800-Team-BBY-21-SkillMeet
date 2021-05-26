@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, IconButton, InputBase, Paper, Fab } from '@material-ui/core';
+import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
 import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Message from './chatPageComponents/message';
-import { auth, db, waitForCurrentUser } from '../firebase';
-import { GolfCourseRounded } from '@material-ui/icons';
+import { auth, db, waitForCurrentUser, firestore } from '../firebase';
 
 export default function ChatRoom(props) {
     const { chatRoomId } = useParams();
@@ -18,9 +17,11 @@ export default function ChatRoom(props) {
     const [chatRoomName, setChatRoomName] = useState("");
 
     useEffect(async () => {
-        setDbRef(chatRoomId);
+        const currentUser = await waitForCurrentUser();
+        await setDbRefs(currentUser, chatRoomId);
         enableListening(updateMessages);
-        const name = await getChatRoomName(chatRoomId);
+
+        const name = await getChatRoomName(currentUser, chatRoomId);
         setChatRoomName(name);
         setIsLoading(false);
     }, []);
@@ -32,13 +33,15 @@ export default function ChatRoom(props) {
 
     function submitOnCtrlEnter(event) {
         if (!event.ctrlKey || !event.key === 'Enter') return;
-        sendMessageToDB(currentMsg);
-        setCurrentMsg("");
+        sendMessage(event);
     }
 
     function sendMessage(event) {
         sendMessageToDB(currentMsg);
         setCurrentMsg("");
+        friendRef.set({
+            newMessagesNo: firestore.FieldValue.increment(1)
+        }, {merge: true});
     }
 
     return (
@@ -47,7 +50,6 @@ export default function ChatRoom(props) {
 
                 <Paper style={{ marginBottom: '1em', display:'flex', justifyContent:'space-between' }}>
                     <div style={{ fontSize: '32pt', backgroundColor: 'cyan', width: '100%' }}>{chatRoomName}
-                        
                     </div>
                     <Button size='small'  style={{ backgroundColor: 'cyan' }} onClick={(event) => history.goBack()}>
                             <ArrowBackSharpIcon />
@@ -107,12 +109,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 let collRef = db.collection('chatrooms')
     .doc()
     .collection('messages');
 let chatroomRef = db.collection('chatrooms')
     .doc();
+
+let friendRef = db.collection('users');
 
 async function enableListening(updateMessages) {
     collRef.onSnapshot(querySnapshot => {
@@ -129,30 +132,33 @@ async function enableListening(updateMessages) {
     });
 }
 
-function setDbRef(chatRoomId) {
+async function setDbRefs(currentUser, chatRoomId) {
     chatroomRef = db.collection('chatrooms').doc(chatRoomId);
     collRef = chatroomRef.collection('messages');
+    const chatroom = await chatroomRef.get().then(doc => doc.data());
+    const friendId = chatroom.uids.find(id => id !== currentUser.uid);
+    friendRef = friendRef.doc(friendId);
 }
 
 /** @param {String} newMessage */
-function sendMessageToDB(newMessage) {
-
+async function sendMessageToDB(newMessage) {
     if (newMessage.length === 0) return;
 
+    const uid = auth.currentUser ? auth.currentUser.uid : await waitForCurrentUser();
+
     newMessage = newMessage.replace('\n', '\\n');
-    collRef.add({
-        from: auth.currentUser.uid,
+    const messageRef = await collRef.add({
+        from: uid,
         content: newMessage,
         timeStamp: new Date().getTime()
     });
-    const recentMessage = newMessage.length > 40 ? newMessage.slice(0, 40) + "..." : newMessage;
+
     chatroomRef.set({
-        recentMessage: recentMessage
+        recentMessage: messageRef
     }, { merge: true });
 }
 
-async function getChatRoomName(roomId) {
-    const currentUser = await waitForCurrentUser();
+async function getChatRoomName(currentUser, roomId) {
     const userChatRoom = await db.collection('users').doc(currentUser.uid)
         .collection('chatrooms').where('roomId', '==', roomId).get();
     return userChatRoom.docs[0].data().name;
