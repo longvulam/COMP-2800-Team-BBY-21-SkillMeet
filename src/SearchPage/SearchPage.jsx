@@ -1,7 +1,7 @@
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import UserSearchCard from './searchComponents/UserSearchCard';
@@ -11,6 +11,11 @@ import { db, auth } from '../firebase';
 
 import { skillOptions } from '../dataStores/skills';
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { SearchSettingsContext } from './searchComponents/SearchSettingsContext';
+
+import debugPackage from 'debug';
+const debug = debugPackage('dev');
+debug.enabled = true;
 
 async function getCurrentUIDAsync() {
   const curUserID = await getCurrentUserDataAsync();
@@ -79,23 +84,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-async function loadSkillsAsync(setSkillListFromDB, mounted) {
-  const skillOptions = [];
-  db.collection("userSkills").get()
-  .then(querySs => {
-    querySs.forEach(doc => skillOptions.push(doc.data().name))
-    if (mounted) {setSkillListFromDB(skillOptions);}
-    return () => mounted = false
-  });
-}
-
 export default function SearchPage() {
   const classes = useStyles();
-  const [searchedSkills, setSearchedSkills] = useState([]);
+  const searchSettings = useContext(SearchSettingsContext);
+  const havePrevSettings = !!searchSettings.skills;
+  const initialState = havePrevSettings ? searchSettings.skills : [];
+  const [searchedSkills, setSearchedSkills] = useState(initialState);
+
+  useEffect(() => {
+    if(havePrevSettings) {
+        getUsersFromSkillSearch(searchedSkills, setSearchedUsers)
+    }
+  }, []);
+
   function searchedSkillUpdate (event, currentSelectedSkills) {
     console.log('Onchange', currentSelectedSkills);
-    setSearchedSkills([currentSelectedSkills]);
-    console.log('Skills Searched', searchedSkills);
+    const skills = [currentSelectedSkills];
+    setSearchedSkills(skills);
+    console.log('Skills Searched', skills);
+    searchSettings.skills = skills;
   }
   const [searchedUsers, setSearchedUsers] = useState([]);
   
@@ -108,7 +115,7 @@ export default function SearchPage() {
       options={skillOptions}
       onChange={searchedSkillUpdate}
       disableClearable
-      defaultValue="Search By Skills"
+      defaultValue={initialState.length === 0 ? "Search By Skills" : initialState[0]}
       forcePopupIcon={false}
       getOptionLabel={option => option}
       renderInput={params => {
