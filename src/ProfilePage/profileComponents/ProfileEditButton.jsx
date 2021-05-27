@@ -12,7 +12,9 @@ class EditButton extends React.Component {
     const { match, location, history } = this.props;
     
     return (
-      <Fab style={this.props.style}
+      <Fab 
+        id="editBtn"
+        style={this.props.style}
         onClick={()=>history.push("/editProfile")}
         aria-label="edit"
         color={'primary'}>
