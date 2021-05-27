@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
-import InputBase from '@material-ui/core/InputBase';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -16,7 +15,7 @@ import EditableSkill from './editProfileComponents/EditableSkill';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
-import { auth, db, getCurrentUserDataAsync, storage } from '../firebase';
+import { auth, db, firestore, getCurrentUserDataAsync, storage } from '../firebase';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { useHistory } from 'react-router';
 
@@ -62,7 +61,9 @@ async function submitChanges(profile, afterSave, onInvalid) {
         batch.set(skillRef, skill);
     });
 
-    skills.filter(skill => skill.isDeleted).forEach(skill => {
+    const deletedSkills = skills.filter(skill => skill.id && skill.isDeleted);
+
+    deletedSkills.forEach(skill => {
         const skillRef = userRef.collection("Skills").doc(skill.id);
         batch.delete(skillRef);
     });
@@ -74,7 +75,6 @@ async function submitChanges(profile, afterSave, onInvalid) {
 async function addSkill(changeState) {
     changeState(previousState => {
         previousState.skills.push({
-            id: "skill" + (previousState.skills.length + 1),
             skillName: "",
             skillLevel: "",
             skillDescription: "",
@@ -232,7 +232,7 @@ export default function EditProfile() {
                         alignItems: 'center',
                     }}>
                     <SkillsList
-                        userSkills={userProfile.skills.filter(skill => !skill.isDeleted)}
+                        userSkills={userProfile.skills}
                         setUserProfile={setUserProfile}
                     />
                     <Grid item xs={12}
@@ -279,17 +279,16 @@ export default function EditProfile() {
 
 function SkillsList(props) {
     const { userSkills, setUserProfile } = props;
-    return userSkills.map((skill, index) =>
-        <Grid key={index} item xs={12} style={{
-            width: '100%',
-        }}>
+    return userSkills.filter(skill => !skill.isDeleted)
+        .map((skill, index) =>
             <EditableSkill
+                key={index}
+                index={index}
                 data={skill}
                 skillsList={userSkills}
                 changeState={setUserProfile}
             />
-        </Grid>
-    );
+        );
 }
 
 const useStyles = makeStyles((theme) => ({
