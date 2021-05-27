@@ -1,0 +1,72 @@
+{
+  "id": "28b482b6-fa9b-471e-a59a-2bb03677caa1",
+  "version": "2.0",
+  "name": "project",
+  "url": "http://localhost:3000",
+  "tests": [{
+    "id": "b5df1aee-5744-405f-a2c1-b1492957adff",
+    "name": "Editing display name - positive",
+    "commands": [{
+      "id": "cad26f2d-f6da-45e3-a633-504926724f8e",
+      "comment": "",
+      "command": "open",
+      "target": "/editProfile",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2b90cff8-ad2b-4a11-a0d2-76bf9cb3ec7b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "530x674",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b8445ecc-cb4f-4ee3-a0c5-88b6e8cb1f24",
+      "comment": "",
+      "command": "click",
+      "target": "id=userNameTxtField",
+      "targets": [
+        ["css=.makeStyles-expandIcon-14 > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "e613511d-3ee9-4bff-ad76-2a54a8e2cbef",
+      "comment": "",
+      "command": "type",
+      "target": "id=userNameTxtField",
+      "targets": [],
+      "value": "New User name"
+    }, {
+      "id": "f6b6f0db-7431-423c-86eb-03ba3d78d92f",
+      "comment": "",
+      "command": "click",
+      "target": "css=#saveBtn path",
+      "targets": [
+        ["css=#saveBtn path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "93681999-ec96-4146-ae0c-f6424953c9fc",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=userNameField",
+      "targets": [
+        ["css=.MuiAccordionDetails-root > .MuiTypography-root", "css:finder"],
+        ["xpath=//div[@id='panel1bh-content']/div/p", "xpath:idRelative"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'test')]", "xpath:innerText"]
+      ],
+      "value": "New User name"
+    }]
+  }],
+  "suites": [{
+    "id": "8336ff45-9b35-4bea-9409-49e4e01b27b4",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["b5df1aee-5744-405f-a2c1-b1492957adff"]
+  }],
+  "urls": ["http://localhost:3000/"],
+  "plugins": []
+}
