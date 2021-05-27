@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import firebase from '../firebase';
 import { db, auth, storage } from '../firebase';
 import $ from "jquery";
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -13,8 +12,8 @@ import AddIcon from '@material-ui/icons/Add';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
 import { skillOptions } from '../dataStores/skills';
 import EditIcon from '@material-ui/icons/Edit';
-import { Avatar, Grid, InputBase, Button, IconButton, Fab } from '@material-ui/core';
-import { Redirect, useHistory } from "react-router-dom";
+import { Avatar, Grid, Button, IconButton, Fab } from '@material-ui/core';
+import { useHistory } from "react-router-dom";
 
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
 
@@ -50,15 +49,29 @@ const Create = () => {
   const classes = useStyles();
 
   const history = useHistory();
-  const [displayName, setDisplayName] = useState('');
-  const [bio, setBio] = useState('');
-  const [city, setCity] = useState('');
+  const [user, setUser] = useState({
+    uid:"",
+    displayName:"",
+    bio:"",
+    city:"",
+    avatarImageUrl: "",
+  });
   const [nameError, setNameError] = useState('');
   const [bioError, setBioError] = useState('');
   const [cityError, setCityError] = useState('');
-  const [avatarImageUrl, setAvatarImageUrl] = useState('');
 
-
+  useEffect(()=>{
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            setUser(prev => {
+                return {
+                    ...prev,
+                    uid: user.uid,
+                }
+            })
+        }
+      });
+  }, []);
 
   const [skillFields, setSkillFields] = useState([
     { skillName: "", skillLevel: "Expert", skillDescription: "" },
@@ -81,35 +94,6 @@ const Create = () => {
     }
   }
 
-  // const validate = () => {
-  //   let nameError = "";
-  //   let bioError = "";
-  //   let cityError = "";
-
-  //   if(displayName.length < 3){
-  //     setNameError("Display Name must be 4 characters or longer");
-  //     return false
-  //   } else if (bio.length < 16){
-  //     setBioError("Bio must be 16 characters or longer");
-  //     return false
-  //   } else if (city.length < 1){
-  //     setCityError("Please fill this field");
-  //     return false
-  //   } else {
-  //     return true;
-  //   }
-  // }
-
-  async function loadSkillsAsync(setSkillListFromDB, mounted) {
-    const skillOptions = [];
-    db.collection("userSkills").get()
-      .then(querySs => {
-        querySs.forEach(doc => skillOptions.push(doc.data().name))
-        if (mounted) { setSkillListFromDB(skillOptions); }
-        return () => mounted = false
-      });
-  }
-
   const [searchedSkills, setSearchedSkills] = useState([]);
   function searchedSkillUpdate (event, currentSelectedSkills) {
     console.log('Onchange', currentSelectedSkills);
@@ -117,31 +101,26 @@ const Create = () => {
     console.log('Skills Searched', searchedSkills);
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const isValid = validate();{
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-  
-          db.collection('users').doc(user.uid).update({
-            "displayName": displayName,
-            "bio": bio,
-            "city": city,
-            "avatar": avatarImageUrl
-          }).then(() => {
-            for (let i = 0; i < skillFields.length; i++) {
-              db.collection('users').doc(user.uid).collection("Skills").doc("Skill" + (i + 1)).set({
-                "skillName": skillFields[i].skillName,
-                "skillLevel": skillFields[i].skillLevel,
-                "skillDescription": skillFields[i].skillDescription
-              })
-            }
-          }).then(value => history.push("/profile"))
-  
-        }
-      })
+    const userRef = db.collection('users').doc(user.uid);
+    await userRef.update({
+      displayName: user.displayName,
+      bio: user.bio,
+      city: user.city,
+      avatar: user.avatarImageUrl
+    })
+    
+    await Promise.all(skillFields.map((skill, i) => {
+        userRef.collection("Skills").doc("Skill" + (i + 1)).set({
+            "skillName": skill.skillName,
+            "skillLevel": skill.skillLevel,
+            "skillDescription": skill.skillDescription
+        })
+    }));
 
+    history.push("/profile");
   };
 
   const handleAddFields = () => {
@@ -161,7 +140,16 @@ const Create = () => {
     const avatarImageRef = storageRef.child(avatarImage.name);
     await avatarImageRef.put(avatarImage);
     const avatarImageUrl = await avatarImageRef.getDownloadURL();
-    setAvatarImageUrl(avatarImageUrl);
+    updateField(avatarImageUrl, 'avatarImageUrl');
+  }
+
+  function updateField(value, fieldName) {
+    setUser(prev => {
+        return { 
+            ...prev,
+            [fieldName]: value,
+        } 
+    });
   }
 
   const handleEditPicture = () => {
@@ -179,7 +167,7 @@ const Create = () => {
             <Avatar
             id="avatarPic"
             alt="Profile Picture"
-            src={avatarImageUrl}
+            src={user.avatarImageUrl}
             className={classes.avatar} />
           </div>
           <div>
@@ -196,8 +184,7 @@ const Create = () => {
             variant="outlined"
             name="displayName"
             className="otherInputs"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
+            onChange={(e) => updateField(e.target.value, 'displayName')}
           />
           <div style={{ fontSize: '0.8em', color: 'red' }}>
             {nameError}
@@ -209,9 +196,9 @@ const Create = () => {
             className="otherInputs"
             label="Bio"
             required
-            value={bio}
+            value={user.bio}
             variant="outlined"
-            onChange={(e) => setBio(e.target.value)}
+            onChange={(e) => updateField(e.target.value, 'bio')}
           />
           <div style={{ fontSize: '0.8em', color: 'red' }}>
             {bioError}
@@ -223,9 +210,9 @@ const Create = () => {
             className="otherInputs"
             name="city"
             required
-            value={city}
+            value={user.city}
             variant="outlined"
-            onChange={(e) => setCity(e.target.value)}
+            onChange={(e) => updateField(e.target.value, 'city')}
           />
           <div style={{ fontSize: '0.8em', color: 'red' }}>
             {cityError}
@@ -243,23 +230,14 @@ const Create = () => {
               }}>
                 <p style={{ color: '#1434A4', fontSize: '14px', padding: '5px', textAlign: 'center' }}>Add a skill to your profile:</p>
 
-                <Grid xs={12}>
-                  {/* <TextField
-                    name="skillName"
-                    label="Skill Name"
-                    placeholder="Enter the skill :"
-                    variant="outlined"
-                    required
-                    value={skillField.skillName}
-                    onChange={event => handleChangeInput(index, event)}
-                  /> */}
+                <Grid item xs={12}>
                   <Autocomplete
                     id="combo-box-demo"
                     className={classes.inputRoot}
                     options={skillOptions}
                     onChange={searchedSkillUpdate}
                     disableClearable
-                    defaultValue="Search By Skills"
+                    placeholder="Search By Skills"
                     forcePopupIcon={false}
                     getOptionLabel={option => option}
                     renderInput={params => {
@@ -277,7 +255,7 @@ const Create = () => {
                   />
 
                 </Grid>
-                <Grid xs={12} style={{
+                <Grid item xs={12} style={{
                   marginLeft: "2vw"
                 }}>
 
@@ -297,7 +275,7 @@ const Create = () => {
                     <option value='Novice'>Novice</option>
                   </Select>
                 </Grid>
-                <Grid xs={12}>
+                <Grid item xs={12}>
                   <TextField
                     multiline
                     rows={3}
@@ -310,7 +288,7 @@ const Create = () => {
                     onChange={event => handleChangeInput(index, event)}
                   />
                 </Grid>
-                <Grid xs={12}>
+                <Grid item xs={12}>
 
                   <IconButton
                     style={{
