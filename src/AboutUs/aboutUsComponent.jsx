@@ -12,7 +12,7 @@ import Navbar from '../Navbar';
 library.add(fas);
 
 
-class AboutUs extends Component {
+class AboutUsdead extends Component {
     render() { 
         return (<div>
             <Navbar />
@@ -25,4 +25,4 @@ class AboutUs extends Component {
     }
 }
  
-export default AboutUs;
+export default AboutUsdead;

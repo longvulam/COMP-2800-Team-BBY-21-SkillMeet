@@ -21,22 +21,40 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileBio(props) {
     const { bio, editable, changeState } = props;
     const classes = useStyles();
-    const bioInfo = bio ? bio : defaultBioText;
+    const bioInfo = bio;
+
+    function handleChange(event) {
+        const newValue = event.target.value;
+        changeState(newValue, 'bio');
+    }
 
     return (
         <Paper
             elevation={2}
             className={classes.bioTypography}
         >
-            <Typography
-            variant="body1"
-            style={{
-              width:'95%',
-              marginTop:'0.25em',
-              marginBottom:'0.25em',
-            }}>
+            {editable ? 
+            <InputBase
+                id="bioEditField"
+                value={bioInfo}
+                multiline
+                onChange={handleChange}
+                style={{
+                    width:'95%',
+                    marginTop:'0.25em',
+                    marginBottom:'0.25em',
+                    color: 'white'
+                }} /> 
+            : <Typography
+                id="bioField"
+                variant="body1"
+                style={{
+                    width:'95%',
+                    marginTop:'0.25em',
+                    marginBottom:'0.25em',
+                }}>
               {bioInfo}
-            </Typography>
+            </Typography>}
         </Paper>
     );
 }

@@ -4,6 +4,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import GroupIcon from '@material-ui/icons/Group';
 import Pending from '@material-ui/icons/PersonAdd';
+import Paper from '@material-ui/core/Paper';
 
 import { useHistory } from 'react-router-dom';
 import { db, waitForCurrentUser } from '../../firebase';
@@ -42,7 +43,9 @@ export default function LabelBottomNavigation() {
   }
 
   return (
-    <div className = {classes.navbarWrap}>
+    <Paper 
+    elevation={2}
+    className = {classes.navbarWrap}>
       <BottomNavigation value={value} onChange={twoCallbacks} className={classes.root}>
         <BottomNavigationAction label="Friends" value="/friends" 
           icon={
@@ -52,7 +55,7 @@ export default function LabelBottomNavigation() {
         />
         <BottomNavigationAction label="Requests" value="/friendRequests" icon={<Pending/>} />
       </BottomNavigation>
-    </div>
+    </Paper>
   );
 }
 
