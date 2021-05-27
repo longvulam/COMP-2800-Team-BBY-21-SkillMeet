@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import SkillAccordion from './profileComponents/SkillAccordion';
+import SkillAccordion from './SkillAccordion';
 
 export function SkillsList(props) {
     const { userSkills } = props;

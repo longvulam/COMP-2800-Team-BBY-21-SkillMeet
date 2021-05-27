@@ -6,11 +6,12 @@ import { Avatar, Grid, Snackbar } from '@material-ui/core';
 import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
 import FacebookBtn from './profileComponents/ProfileFacebookButton';
+import TwitterBtn from './profileComponents/ProfileTwitterButton';
 import LogOutButton from './profileComponents/LogOutButton';
 import { OtherUserButtons } from './profileComponents/OtherUserButtons';
 import { ProfileAlert } from './profileComponents/ProfileAlert';
 import { PersonalInfo } from './profileComponents/PersonalInfo';
-import { SkillsList } from './SkillsList';
+import { SkillsList } from './profileComponents/SkillsList';
 
 import LoadingSpinner from '../common/LoadingSpinner';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
@@ -58,7 +59,7 @@ export default function Profile() {
         if (uid) {
             const userFriend = userFriendDoc.data();
             let isPendingFriendShip = false;
-            
+
             if (userFriend.hasOwnProperty("isConfirmed")) {
                 isPendingFriendShip = userFriend.isConfirmed === false;
             }
@@ -113,7 +114,7 @@ export default function Profile() {
                         style={{
                             width: '100%'
                         }}>
-                        <ProfileBio 
+                        <ProfileBio
                             editable={false}
                             bio={profileData.bio} />
                     </Grid>
@@ -165,7 +166,7 @@ async function getChatRoom(currentUserId, uid) {
         .where('uids', 'array-contains', currentUserId)
         .get();
 
-    const roomsData = roomsSnapshot.docs.map(doc => { return { ...doc.data(), id: doc.id }});
+    const roomsData = roomsSnapshot.docs.map(doc => { return { ...doc.data(), id: doc.id } });
     const bothUids = [currentUserId, uid];
     return roomsData.filter(room => room.uids.every(id => bothUids.includes(id)));
 }
@@ -176,13 +177,19 @@ function CurrentUserButtons(props) {
 
     return (
         <div className={classes.buttonsWrap}>
-            <FacebookBtn 
+            <TwitterBtn style = {{
+                height: '2.5em',
+                width: '2.5em',
+                marginTop: '2vw',
+                marginRight: '3vw'
+            }}/>
+            <FacebookBtn
                 style={{
-                    marginRight: '60vw',
+                    marginRight: '50vw',
                     marginTop: '2vw',
                     height: '2.5em',
                     width: '2.5em',
-                }}/>
+                }} />
             <LogOutButton />
             <EditButton
                 style={{

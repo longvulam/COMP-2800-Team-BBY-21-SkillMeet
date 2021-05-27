@@ -136,7 +136,7 @@ export default function UserSearchCard(props) {
   }
   return (
     <>
-        <Paper className={classes.paper}elevation={4} key={id}>
+        <Paper className={classes.paper} elevation={4} key={id}>
             <Grid container direction="column" 
               spacing={1} className={classes.infoGrid}>
 
@@ -155,6 +155,7 @@ export default function UserSearchCard(props) {
                   </div>
                   <Fab 
                     disabled={isFriending}
+                    id={id + "_btn"}
                     className={classes.fab} 
                     color={requestSent ? "default" : "primary"} 
                     onClick = { () => handleAddClick()}>

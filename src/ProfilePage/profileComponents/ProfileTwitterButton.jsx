@@ -1,9 +1,9 @@
 import React from 'react';
 import Fab from '@material-ui/core/Fab';
-import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import { withRouter } from "react-router";
 
-class FacebookBtn extends React.Component {
+class TwitterBtn extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -13,15 +13,15 @@ class FacebookBtn extends React.Component {
     
     return (
       <Fab 
-        id="facebookBtn"
+        id="editBtn"
         style={this.props.style}
-        onClick={()=>history.push("/facebook")}
+        onClick={()=>history.push("/twitter")}
         aria-label="edit"
         color={'primary'}>
-        <FacebookIcon />
+        <TwitterIcon />
       </Fab>
     );
   }
 }
 
-export default withRouter(FacebookBtn);
+export default withRouter(TwitterBtn);

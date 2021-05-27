@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FriendsPageNav from './friendsComponents/friendsPageNav';
+import FriendsPageNav from './friendsComponents/FriendsPageNav';
 import Grid from '@material-ui/core/Grid';
 import FriendRequest from '../SearchPage/searchComponents//UserSearchCard';
 import UserPendingCard2 from '../PendingRequests/UserPendingCard2.0';
@@ -36,10 +36,10 @@ export default function FriendsPage() {
 
         }}>
 
-        {requests.map(request => {
+        {requests.map((request, index) => {
           const { displayName, city, id, avatar} = request;
           return (
-            <Grid item xs={12}
+            <Grid id={"pendingUser_" + index} item xs={12}
             key={id} 
             style={{
               width:'100%',

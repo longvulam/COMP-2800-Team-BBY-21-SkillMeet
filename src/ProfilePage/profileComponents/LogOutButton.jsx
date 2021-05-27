@@ -49,6 +49,7 @@ export default function LogoutButton (props) {
       id="logoutBtn"
       className={classes.LogoutButton}
       onClick={handleClickOpen}
+      id="logoutBtn"
       >
       <LogoutIcon/>
     </Fab>

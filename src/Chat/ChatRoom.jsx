@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LoadingSpinner from '../common/LoadingSpinner';
-import Message from './chatPageComponents/message';
+import Message from './chatPageComponents/Message';
 import { auth, db, waitForCurrentUser, firestore, getCurrentUserDataAsync } from '../firebase';
 import Typography from '@material-ui/core/Typography';
 import SendIcon from '@material-ui/icons/Send';
