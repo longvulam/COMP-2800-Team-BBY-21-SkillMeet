@@ -14,6 +14,7 @@ import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import { ProtectedRoute } from "./ProtectedRoute";
 import Social from '../SocialMedia/Socials';
+import Twitter from '../SocialMedia/TwitterPage';
 import Navbar from '../Navbar';
 import { PublicRoute } from "./PublicRoute";
 
@@ -39,9 +40,14 @@ export function Router() {
                 <AboutUs />
             </PublicRoute>
 
-            <ProtectedRoute path="/socialmedia">
+            <ProtectedRoute path="/facebook">
                 <Navbar />
                 <Social />
+            </ProtectedRoute>
+
+            <ProtectedRoute path="/twitter">
+                <Navbar />
+                <Twitter />
             </ProtectedRoute>
 
             <ProtectedRoute exact path="/create">

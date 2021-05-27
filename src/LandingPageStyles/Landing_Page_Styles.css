@@ -82,7 +82,14 @@
   cursor: pointer;
 }
 
-.otherInputs,
+#nameInput, #city{
+  display: block;
+  padding: 1vh 2vw;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: blue;
+}
+
 .userEmailID,
 .userPassword {
   width: 95%;
@@ -151,6 +158,11 @@
   text-align: center;
   background-color: whitesmoke;
   padding: 15px;
+}
+
+#tweet-content{
+  text-align: center;
+  background-color: whitesmoke;
 }
 
 /* sets layout and style for the top navbar */
