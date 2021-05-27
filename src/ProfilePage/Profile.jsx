@@ -7,7 +7,7 @@ import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
 import LogOutButton from './profileComponents/LogOutButton';
 import { OtherUserButtons } from './profileComponents/OtherUserButtons';
-import { Alert } from './profileComponents/profileAlert';
+import { ProfileAlert } from './profileComponents/ProfileAlert';
 import { PersonalInfo } from './profileComponents/PersonalInfo';
 import { SkillsList } from './SkillsList';
 
@@ -113,16 +113,18 @@ export default function Profile() {
                         style={{
                             width: '100%'
                         }}>
-                        <ProfileBio bio={profileData.bio} />
+                        <ProfileBio 
+                            editable={false}
+                            bio={profileData.bio} />
                     </Grid>
                 </Grid>
                 <Snackbar
                     open={successOpen}
                     autoHideDuration={4000}
                     onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="success">
-                        This is a success message!
-                    </Alert>
+                    <ProfileAlert onClose={handleClose} severity="success">
+                        Saves successfully!
+                    </ProfileAlert>
                 </Snackbar>
             </div>
     );

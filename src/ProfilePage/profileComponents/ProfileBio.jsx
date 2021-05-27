@@ -23,20 +23,37 @@ export default function ProfileBio(props) {
     const classes = useStyles();
     const bioInfo = bio ? bio : defaultBioText;
 
+    function handleChange(event) {
+        const newValue = event.target.value;
+        changeState(newValue, 'bio');
+    }
+
     return (
         <Paper
             elevation={2}
             className={classes.bioTypography}
         >
-            <Typography
-            variant="body1"
-            style={{
-              width:'95%',
-              marginTop:'0.25em',
-              marginBottom:'0.25em',
-            }}>
+            {editable ? 
+            <InputBase
+                id="profileBio"
+                value={bioInfo}
+                onChange={handleChange}
+                style={{
+                    width:'95%',
+                    marginTop:'0.25em',
+                    marginBottom:'0.25em',
+                    color: 'white'
+                }} /> 
+            : <Typography
+                id="profileBio"
+                variant="body1"
+                style={{
+                    width:'95%',
+                    marginTop:'0.25em',
+                    marginBottom:'0.25em',
+                }}>
               {bioInfo}
-            </Typography>
+            </Typography>}
         </Paper>
     );
 }
