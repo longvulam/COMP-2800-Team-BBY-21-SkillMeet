@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileBio(props) {
     const { bio, editable, changeState } = props;
     const classes = useStyles();
-    const bioInfo = bio ? bio : defaultBioText;
+    const bioInfo = bio;
 
     function handleChange(event) {
         const newValue = event.target.value;
@@ -35,8 +35,9 @@ export default function ProfileBio(props) {
         >
             {editable ? 
             <InputBase
-                id="profileBio"
+                id="bioEditField"
                 value={bioInfo}
+                multiline
                 onChange={handleChange}
                 style={{
                     width:'95%',
@@ -45,7 +46,7 @@ export default function ProfileBio(props) {
                     color: 'white'
                 }} /> 
             : <Typography
-                id="profileBio"
+                id="bioField"
                 variant="body1"
                 style={{
                     width:'95%',
