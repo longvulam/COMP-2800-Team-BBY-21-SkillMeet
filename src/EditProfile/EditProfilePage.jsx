@@ -21,32 +21,35 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import { useHistory } from 'react-router';
 
 import TextField from '@material-ui/core/TextField';
+import { Snackbar } from '@material-ui/core';
+import { EditProfileAlert } from './editProfileComponents/EditProfileAlert';
 
 function validateProfile(profile) {
     const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
 
-    if (emptySkill) {
-        return false;
-    }
+    if (!!emptySkill) return false;
+    if (!profile.displayName) return false;
+    if (!profile.city) return false;
 
     return true;
 }
 
-async function submitChanges(profile, afterSave) {
+async function submitChanges(profile, afterSave, onInvalid) {
     const isValid = validateProfile(profile);
     if (!isValid) {
         console.log("Cannot save skills with empty values!");
+        onInvalid();
         return;
     }
-
-    const skills = profile.skills;
-    delete profile.skills;
+    const cloneProfile = Object.assign({}, profile);
+    const skills = cloneProfile.skills;
+    delete cloneProfile.skills;
 
     // Get a new write batch
     const batch = db.batch();
 
     const userRef = db.collection('users').doc(auth.currentUser.uid);
-    batch.update(userRef, profile);
+    batch.update(userRef, cloneProfile);
 
     const nonDeletedSkills = skills.filter(skill => !skill.isDeleted);
     nonDeletedSkills.filter(skill => !skill.isNew).forEach(skill => {
@@ -86,6 +89,7 @@ async function addSkill(changeState) {
 export default function EditProfile() {
     const classes = useStyles();
     const history = useHistory();
+    const [errorOpen, setErrorOpen] = useState(false);
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [userProfile, setUserProfile] = useState({
         displayName: "",
@@ -117,6 +121,10 @@ export default function EditProfile() {
         });
     }
 
+    function onInvalid() {
+        setErrorOpen(true);
+    }
+
     const handleImageChange = async (event) => {
         const avatarImage = event.target.files[0];
         const storageRef = storage.ref();
@@ -131,6 +139,11 @@ export default function EditProfile() {
         fileInput.click();
     }
 
+    const handleClose = (e, reason) => {
+        if (reason === 'clickaway') return;
+        setErrorOpen(false);
+    };
+
     return (
         isLoadingData ? <LoadingSpinner /> :
             <div style={{
@@ -138,7 +151,7 @@ export default function EditProfile() {
                 height: '100vh',
                 overflowY: 'scroll',
                 overflowX: 'hidden',
-                paddingBottom:'10em',
+                paddingBottom: '10em',
             }}>
                 <div className={classes.editWrap} id="btnWrapper">
                     <CancelButton
@@ -150,7 +163,7 @@ export default function EditProfile() {
                         }}
                     />
                     <SaveButton
-                        onClick={(event) => submitChanges(Object.assign({}, userProfile), saveFinished)}
+                        onClick={(event) => submitChanges(userProfile, saveFinished, onInvalid)}
                         editable={true}
                     />
                 </div>
@@ -176,7 +189,7 @@ export default function EditProfile() {
                     }}>
                     <Grid item xs={12}>
                         <TextField
-                            id="userNameTxtField"
+                            id="userNameField"
                             label="UserName"
                             variant="filled"
                             readOnly={false}
@@ -187,12 +200,13 @@ export default function EditProfile() {
                                 style: {
                                     textAlign: 'center',
                                     border: 'none',
-                                    backgroundColor:'#e3f6f5'
+                                    backgroundColor: '#e3f6f5'
                                 }
                             }} />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            id="cityField"
                             label="Location"
                             variant="filled"
                             readOnly={false}
@@ -203,7 +217,7 @@ export default function EditProfile() {
                                 style: {
                                     textAlign: 'center',
                                     border: 'none',
-                                    backgroundColor:'#e3f6f5'
+                                    backgroundColor: '#e3f6f5'
                                 }
                             }}
                         />
@@ -250,7 +264,15 @@ export default function EditProfile() {
                             editable={true} />
                     </Grid>
                 </Grid>
-
+                <Snackbar
+                    id="errorSnackbar"
+                    open={errorOpen}
+                    autoHideDuration={4000}
+                    onClose={handleClose}>
+                    <EditProfileAlert onClose={handleClose} severity="error">
+                        Values must not be empty
+                    </EditProfileAlert>
+                </Snackbar>
             </div>
     );
 }
@@ -305,15 +327,15 @@ const useStyles = makeStyles((theme) => ({
         width: '6.5em',
     },
     addMoreSkillButton: {
-      backgroundColor:theme.palette.primary.dark,
-      width:'1.5em',
-      height:'1.5em',
-      color:'white',
+        backgroundColor: theme.palette.primary.dark,
+        width: '1.5em',
+        height: '1.5em',
+        color: 'white',
     },
     editAvatarbtn: {
-      backgroundColor:theme.palette.secondary.main,
-      color: theme.palette.primary.dark,
-      height:'3em',
-      width:'3em',
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.primary.dark,
+        height: '3em',
+        width: '3em',
     }
 }));
