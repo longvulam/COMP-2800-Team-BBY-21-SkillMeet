@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Create = () => {
   const classes = useStyles();
-
   const history = useHistory();
+
   const [user, setUser] = useState({
     uid:"",
     displayName:"",
@@ -56,6 +56,7 @@ const Create = () => {
     city:"",
     avatarImageUrl: "",
   });
+
   const [nameError, setNameError] = useState('');
   const [bioError, setBioError] = useState('');
   const [cityError, setCityError] = useState('');
@@ -94,11 +95,12 @@ const Create = () => {
     }
   }
 
-  const [searchedSkills, setSearchedSkills] = useState([]);
-  function searchedSkillUpdate (event, currentSelectedSkills) {
-    console.log('Onchange', currentSelectedSkills);
-    setSearchedSkills([currentSelectedSkills]);
-    console.log('Skills Searched', searchedSkills);
+  function searchedSkillUpdate (fieldName, newValue, index) {
+    const currSkill = skillFields[index];
+    currSkill[fieldName] = newValue;
+    console.log('Onchange', skillFields);
+    setSkillFields([...skillFields]);
+    console.log('Skills Searched', skillFields);
   }
 
   const handleSubmit = async (e) => {
@@ -124,7 +126,10 @@ const Create = () => {
   };
 
   const handleAddFields = () => {
-    setSkillFields([...skillFields, { skillName: "", skillLevel: "", skillDescription: "" }])
+    setSkillFields(prevValues => [
+        ...prevValues, 
+        { skillName: "", skillLevel: "", skillDescription: "" 
+    }])
   }
 
   const handleRemoveFields = (index) => {
@@ -233,13 +238,14 @@ const Create = () => {
                 <Grid item xs={12}>
                   <Autocomplete
                     id="combo-box-demo"
+                    name="skillName"
                     className={classes.inputRoot}
                     options={skillOptions}
-                    onChange={searchedSkillUpdate}
+                    value={skillField.skillName}
+                    onChange={(e, newVal) => searchedSkillUpdate('skillName', newVal, index)}
                     disableClearable
                     placeholder="Search By Skills"
                     forcePopupIcon={false}
-                    getOptionLabel={option => option}
                     renderInput={params => {
                       return (
                         <TextField

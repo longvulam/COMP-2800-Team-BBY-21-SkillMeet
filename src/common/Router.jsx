@@ -13,7 +13,8 @@ import FriendsPageNav from '../Friends/friendsComponents/friendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import { ProtectedRoute } from "./ProtectedRoute";
-import SocialMedia from '../socialMedia/twitterFeed';
+import Social from '../SocialMedia/Socials';
+import Navbar from '../Navbar';
 import { PublicRoute } from "./PublicRoute";
 
 
@@ -38,9 +39,10 @@ export function Router() {
                 <AboutUs />
             </PublicRoute>
 
-            <Route path="/socialmedia">
-                <SocialMedia />
-            </Route>
+            <ProtectedRoute path="/socialmedia">
+                <Navbar />
+                <Social />
+            </ProtectedRoute>
 
             <ProtectedRoute exact path="/create">
                 <Create />
