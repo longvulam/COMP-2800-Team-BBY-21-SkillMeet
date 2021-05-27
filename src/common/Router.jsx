@@ -1,22 +1,22 @@
 import React from "react";
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
+import BottomNavBar from './BottomNavbar';
+import PublicNavbar from './PublicNavbar';
 import Home from '../RegistrationPages/Home';
-import BottomNavBar from '../BottomNavbar';
 import Profile from '../ProfilePage/Profile';
 import Friends from '../Friends/Friends';
 import Create from '../RegistrationPages/Create';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import AboutUs from "../AboutUs/aboutUs2.0Component";
+import AboutUs from "../AboutUs/AboutUs";
 import EditProfilePage from '../EditProfile/EditProfilePage';
 import Search from "../SearchPage/SearchPage";
 import FriendRequests from '../Friends/FriendRequests';
-import FriendsPageNav from '../Friends/friendsComponents/friendsPageNav';
+import FriendsPageNav from '../Friends/friendsComponents/FriendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
-import { ProtectedRoute } from "./ProtectedRoute";
-import Social from '../SocialMedia/Socials';
 import Twitter from '../SocialMedia/TwitterPage';
-import Navbar from '../Navbar';
-import { PublicRoute } from "./PublicRoute";
+import Social from '../SocialMedia/Socials';
 
 
 const bottomNavbarRoutes = [
@@ -41,12 +41,12 @@ export function Router() {
             </PublicRoute>
 
             <ProtectedRoute path="/facebook">
-                <Navbar />
+                <PublicNavbar />
                 <Social />
             </ProtectedRoute>
 
             <ProtectedRoute path="/twitter">
-                <Navbar />
+                <PublicNavbar />
                 <Twitter />
             </ProtectedRoute>
 

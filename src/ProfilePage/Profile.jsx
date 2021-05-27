@@ -9,9 +9,9 @@ import FacebookBtn from './profileComponents/ProfileFacebookButton';
 import TwitterBtn from './profileComponents/ProfileTwitterButton';
 import LogOutButton from './profileComponents/LogOutButton';
 import { OtherUserButtons } from './profileComponents/OtherUserButtons';
-import { ProfileAlert } from './profileComponents/profileAlert';
+import { ProfileAlert } from './profileComponents/ProfileAlert';
 import { PersonalInfo } from './profileComponents/PersonalInfo';
-import { SkillsList } from './SkillsList';
+import { SkillsList } from './profileComponents/SkillsList';
 
 import LoadingSpinner from '../common/LoadingSpinner';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';

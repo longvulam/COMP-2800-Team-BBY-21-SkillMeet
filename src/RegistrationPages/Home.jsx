@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
 import Login from './Login';
-import Navbar from '../Navbar';
+import PublicNavbar from '../common/PublicNavbar';
 import $ from 'jquery';
 import { useHistory } from "react-router-dom";
 
@@ -38,7 +38,7 @@ export default function Home(props) {
   return (
 
     <div style={{margin: '-.5em'}} className="landingPage">
-      <Navbar />
+      <PublicNavbar />
       <div className="landing-page-background">
 
         <div className="white-background">
