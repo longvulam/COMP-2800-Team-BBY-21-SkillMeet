@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import PublicRoute from '../common/PublicRoute';
 import HeroImage from './aboutUsComponents/HeroImage';
 import Mission from './aboutUsComponents/Mission';
 import Team2 from './aboutUsComponents/OurTeam';
 import ContactUs from './aboutUsComponents/ContactUs';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import Navbar from '../Navbar';
 import DustinPic from '../img/dustinPic.jpg';
 import LamPic from '../img/lamPic.jpg';
 import ArunabPic from '../img/arunabPic.jpg';
@@ -24,7 +24,7 @@ class AboutUs extends Component {
     render() {
         const data = teamData;
         return (<div style={{marginTop: '-.5em', width: '100vw'}}>
-            <Navbar handleLogout={handleLogout} />
+            <PublicRoute handleLogout={handleLogout} />
             <HeroImage />
             <Mission />
             <div style={{ textAlign: 'center', border: '1px solid black', backgroundColor: 'black', marginBottom: '3rem' }}>

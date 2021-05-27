@@ -3,7 +3,7 @@ import { Route, useHistory } from 'react-router-dom';
 import { auth } from "../firebase";
 import LoadingSpinner from "./LoadingSpinner";
 
-export function PublicRoute(props) {
+export default function PublicRoute(props) {
     const history = useHistory();
     const { children, ...rest } = props;
     const [isAuthenticating, setIsAuthenticating] = React.useState(true);

@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { useHistory } from 'react-router-dom';
 import { Badge } from '@material-ui/core';
-import { db, waitForCurrentUser } from './firebase';
+import { db, waitForCurrentUser } from '../firebase';
 
 const useStyles = makeStyles({
   root: {

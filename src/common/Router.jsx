@@ -1,10 +1,13 @@
 import React from "react";
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
+import BottomNavBar from './BottomNavbar';
+import PublicNavbar from './PublicNavbar';
 import Home from '../RegistrationPages/Home';
-import BottomNavBar from '../BottomNavbar';
 import Profile from '../ProfilePage/Profile';
 import Friends from '../Friends/Friends';
 import Create from '../RegistrationPages/Create';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AboutUs from "../AboutUs/AboutUs";
 import EditProfilePage from '../EditProfile/EditProfilePage';
 import Search from "../SearchPage/SearchPage";
@@ -12,10 +15,7 @@ import FriendRequests from '../Friends/FriendRequests';
 import FriendsPageNav from '../Friends/friendsComponents/FriendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
-import { ProtectedRoute } from "./ProtectedRoute";
 import Social from '../SocialMedia/Socials';
-import Navbar from '../Navbar';
-import { PublicRoute } from "./PublicRoute";
 
 
 const bottomNavbarRoutes = [
@@ -40,7 +40,7 @@ export function Router() {
             </PublicRoute>
 
             <ProtectedRoute path="/socialmedia">
-                <Navbar />
+                <PublicNavbar />
                 <Social />
             </ProtectedRoute>
 
