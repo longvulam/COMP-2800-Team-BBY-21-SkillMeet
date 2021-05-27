@@ -70,13 +70,13 @@ const teamData = [
     {
         memberPic: ArunabPic,
         memberName: 'Arunab Singh',
-        memberBio: `Arunab is a great asset to our team, and we are happy to have him on.
+        memberBio: `Arunab is a great asset to our team, and we are happy to have him.
         He brings skills and tenacity to the team.`,
     },
     {
         memberPic: OwenPic,
         memberName: 'Owen Arando',
-        memberBio: `Owen is a smart hardworking developer, who were glad had joined our
+        memberBio: `Owen is a smart hardworking developer, and were glad he's joined our
        team.  He is driven and passionate.`,
     },
 ]

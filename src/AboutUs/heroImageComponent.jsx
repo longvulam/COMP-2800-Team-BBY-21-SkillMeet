@@ -25,7 +25,7 @@ function HeroImage () {
     backgroundRepeat: 'no-repeat',
     height: '47vh',
     width: '100%'
-    }}><Typography className={classes.aboutUs} variant="h3">About Us</Typography></Paper>
+    }}></Paper>
     </>);
 }
  

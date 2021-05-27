@@ -8,7 +8,7 @@ import EditButton from './profileComponents/ProfileEditButton';
 import FacebookBtn from './profileComponents/ProfileFacebookButton';
 import LogOutButton from './profileComponents/LogOutButton';
 import { OtherUserButtons } from './profileComponents/OtherUserButtons';
-import { ProfileAlert } from './profileComponents/ProfileAlert';
+import { ProfileAlert } from './profileComponents/profileAlert';
 import { PersonalInfo } from './profileComponents/PersonalInfo';
 import { SkillsList } from './SkillsList';
 
