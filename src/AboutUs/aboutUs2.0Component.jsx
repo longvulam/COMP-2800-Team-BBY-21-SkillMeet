@@ -23,7 +23,7 @@ function handleLogout() {
 class AboutUs extends Component {
     render() {
         const data = teamData;
-        return (<div>
+        return (<div style={{margin: '-.5em'}}>
             <Navbar handleLogout={handleLogout} />
             <HeroImage />
             <Mission />
