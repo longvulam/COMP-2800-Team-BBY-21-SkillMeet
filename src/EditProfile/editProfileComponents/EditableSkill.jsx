@@ -37,10 +37,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditableSkill(props) {
-    const { data, skillsList, changeState } = props;
+    const { data, index, skillsList, changeState } = props;
     const classes = useStyles();
 
     async function updateSkillsList(newValue, fieldName) {
+
         const thisSkill = await getThisSkill();
 
         if (!thisSkill) return;
@@ -102,6 +103,7 @@ export default function EditableSkill(props) {
                         width: 'calc(100% - 5em)',
                     }}>
                         <Autocomplete
+                            id={"skillName_" + index}
                             options={filteredOptions}
                             value={data.skillName}
                             onChange={(event, newValue) => updateSkillsList(newValue, "skillName")}
@@ -128,6 +130,7 @@ export default function EditableSkill(props) {
                     </IconButton>
                 </div>
                 <Autocomplete
+                    id={"skillLevel_" + index}
                     options={skillLevelOptions}
                     value={data.skillLevel}
                     forcePopupIcon={false}
@@ -148,6 +151,7 @@ export default function EditableSkill(props) {
                     width: '100%',
                 }}>
                     <InputBase
+                        id={"skillDescription_" + index}
                         value={data.skillDescription}
                         onChange={(event) => updateSkillsList(event.target.value, "skillDescription")}
                         readOnly={false}

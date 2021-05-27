@@ -4,7 +4,7 @@ import SkillAccordion from './profileComponents/SkillAccordion';
 
 export function SkillsList(props) {
     const { userSkills } = props;
-    return userSkills.map(accordion => {
+    return userSkills.map((accordion, index)=> {
         const { skillName, skillLevel, skillDescription } = accordion;
         return (
             <Grid key={skillName} item xs={12}
@@ -13,6 +13,7 @@ export function SkillsList(props) {
                     margin: 'auto'
                 }}>
                 <SkillAccordion
+                    index={index}
                     skillName={skillName}
                     skillLevel={skillLevel}
                     skillDescription={skillDescription} />
