@@ -80,7 +80,7 @@
       "id": "d4928925-4e33-4853-a045-d1ffdbbc88d6",
       "comment": "",
       "command": "type",
-      "target": "id=userNameField",
+      "target": "id=userNameEditField",
       "targets": [],
       "value": "${newName}"
     }, {
@@ -90,13 +90,6 @@
       "target": "id=saveBtn",
       "targets": [],
       "value": ""
-    }, {
-      "id": "942d16cf-05d4-43bf-b957-adf9ec9b4a27",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=userNameField",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "482272f0-6c79-4494-93eb-aef8ef2716a8",
       "comment": "",
@@ -115,7 +108,7 @@
       "id": "fba3fb16-73ab-4829-bac7-ab260e1085ea",
       "comment": "",
       "command": "type",
-      "target": "id=userNameField",
+      "target": "id=userNameEditField",
       "targets": [],
       "value": "${oldName}"
     }, {
@@ -125,13 +118,6 @@
       "target": "id=saveBtn",
       "targets": [],
       "value": ""
-    }, {
-      "id": "dda0fbf6-9ddd-49e7-b584-5a3efcb70ffc",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=userNameField",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "c009ee1e-db98-4a1a-92ad-3fd3241f754d",
       "comment": "",
@@ -224,7 +210,7 @@
       "id": "f6a230e2-24d6-40ed-b51e-9dc49d0b8c00",
       "comment": "",
       "command": "type",
-      "target": "id=userNameField",
+      "target": "id=userNameEditField",
       "targets": [],
       "value": ""
     }, {
@@ -245,7 +231,7 @@
       "id": "d415f83e-93db-4989-9712-27043555c48d",
       "comment": "",
       "command": "type",
-      "target": "id=userNameField",
+      "target": "id=userNameEditField",
       "targets": [],
       "value": "${oldName}"
     }, {
@@ -255,13 +241,6 @@
       "target": "id=saveBtn",
       "targets": [],
       "value": ""
-    }, {
-      "id": "d5677321-6c34-41bf-bbc9-546d90317c1e",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=userNameField",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "6eee4eea-7d64-4704-89bb-015b4c128757",
       "comment": "",
@@ -354,7 +333,7 @@
       "id": "965843b8-078c-4435-99bb-f9e86dfcdc84",
       "comment": "",
       "command": "type",
-      "target": "id=cityField",
+      "target": "id=cityEditField",
       "targets": [],
       "value": ""
     }, {
@@ -375,7 +354,7 @@
       "id": "e2d1cd0b-f1f1-4a38-9951-4d4e9ff09ae8",
       "comment": "",
       "command": "type",
-      "target": "id=cityField",
+      "target": "id=cityEditField",
       "targets": [],
       "value": "${oldCity}"
     }, {
@@ -385,13 +364,6 @@
       "target": "id=saveBtn",
       "targets": [],
       "value": ""
-    }, {
-      "id": "4770f83a-81a0-4459-b21a-d50b4cd16bec",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=cityField",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "6ed8dba4-7c4d-4119-a9db-f0ec587353a5",
       "comment": "",
@@ -491,7 +463,7 @@
       "id": "7e3ee0d9-b769-453f-a96b-af58137eb375",
       "comment": "",
       "command": "type",
-      "target": "id=cityField",
+      "target": "id=cityEditField",
       "targets": [],
       "value": "${cityNew}"
     }, {
@@ -501,13 +473,6 @@
       "target": "id=saveBtn",
       "targets": [],
       "value": ""
-    }, {
-      "id": "35297d6a-393c-4cbb-b224-b0520811acc7",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=cityField",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "98034268-33a3-4d8c-9621-91c7434e88f9",
       "comment": "",
@@ -526,7 +491,7 @@
       "id": "0daf65ac-297f-4435-9473-2ca5338a5fff",
       "comment": "",
       "command": "type",
-      "target": "id=cityField",
+      "target": "id=cityEditField",
       "targets": [],
       "value": "${cityOld}"
     }, {
@@ -536,13 +501,6 @@
       "target": "id=saveBtn",
       "targets": [],
       "value": ""
-    }, {
-      "id": "d8c989ad-2861-4e05-af1d-1e775787e30e",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=cityField",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "bfb618a2-bd5a-485a-86e9-3b4d937d9dba",
       "comment": "",
@@ -642,7 +600,7 @@
       "id": "6e5393f2-36ad-4813-a46e-237fda0399f8",
       "comment": "",
       "command": "type",
-      "target": "id=profileBio",
+      "target": "id=bioEditField",
       "targets": [],
       "value": "${newBio}"
     }, {
@@ -653,17 +611,10 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "eaf21960-eaed-4fac-9569-ecfeb192f689",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=profileBio",
-      "targets": [],
-      "value": "30000"
-    }, {
       "id": "d8b09098-30f7-4ea5-a4e4-960aaf7356aa",
       "comment": "",
       "command": "type",
-      "target": "id=profileBio",
+      "target": "id=bioField",
       "targets": [],
       "value": "${newBio}"
     }, {
@@ -677,7 +628,7 @@
       "id": "620701df-1a57-497b-acd1-37254b64aee8",
       "comment": "",
       "command": "type",
-      "target": "id=profileBio",
+      "target": "id=bioEditField",
       "targets": [],
       "value": "${oldBio}"
     }, {
@@ -688,17 +639,10 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "95fa48bd-e900-46bd-a50d-f2d09ab17462",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=profileBio",
-      "targets": [],
-      "value": "30000"
-    }, {
       "id": "13db8df5-bd72-459e-bb8f-8d42865507bd",
       "comment": "",
       "command": "verifyText",
-      "target": "id=profileBio",
+      "target": "id=bioField",
       "targets": [],
       "value": "${oldBio}"
     }, {
@@ -779,7 +723,7 @@
       "id": "2cc1f05d-735d-49bd-a321-9679eea76b37",
       "comment": "",
       "command": "type",
-      "target": "id=skillName_0",
+      "target": "id=skillName_edit-0",
       "targets": [],
       "value": ""
     }, {
@@ -800,21 +744,21 @@
       "id": "b39e4fd7-ab1b-448b-aa81-441967eb3775",
       "comment": "",
       "command": "store",
-      "target": "C#",
+      "target": "Algorithms",
       "targets": [],
-      "value": "oldSkillName"
+      "value": "skillname"
     }, {
       "id": "e94852c5-f4eb-485e-b61f-ff84dc97a1ae",
       "comment": "",
       "command": "type",
-      "target": "id=skillName_0",
+      "target": "id=skillName_edit-0",
       "targets": [],
-      "value": "${oldSkillName}"
+      "value": "${skillname}"
     }, {
       "id": "1c706aa3-4c48-4132-b7f8-8f183593443f",
       "comment": "",
       "command": "click",
-      "target": "//*[text()=\"C#\"]",
+      "target": "//*[text()=\"${skillname}\"]",
       "targets": [],
       "value": ""
     }, {
@@ -825,19 +769,12 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "01e4a870-cb84-4d61-ae32-368ac724a237",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=skillName_0",
-      "targets": [],
-      "value": "30000"
-    }, {
       "id": "9335090d-e910-42d6-9e9f-6a9376416fc9",
       "comment": "",
       "command": "verifyText",
       "target": "id=skillName_0",
       "targets": [],
-      "value": "${oldSkillName}"
+      "value": "${skillname}"
     }, {
       "id": "e02609aa-9764-4b3b-9d70-f402a75a0b63",
       "comment": "",
@@ -916,21 +853,14 @@
       "id": "5581efc7-e23e-46d9-9556-15b2a96ecfb6",
       "comment": "",
       "command": "store",
-      "target": "React",
+      "target": "Big Data",
       "targets": [],
       "value": "newName"
-    }, {
-      "id": "84e1a2ea-6af7-4360-8e6a-ee3636ba7238",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=skillName_0",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "e9c9546f-8def-4d2d-8979-dfe1b7febd12",
       "comment": "",
       "command": "type",
-      "target": "id=skillName_0",
+      "target": "id=skillName_edit-0",
       "targets": [],
       "value": "${newName}"
     }, {
@@ -972,7 +902,7 @@
       "id": "514229d7-bfb3-490c-a3e6-76d020e8b16f",
       "comment": "",
       "command": "type",
-      "target": "id=skillName_0",
+      "target": "id=skillName_edit-0",
       "targets": [],
       "value": "${oldName}"
     }, {
@@ -989,13 +919,6 @@
       "target": "id=saveBtn",
       "targets": [],
       "value": ""
-    }, {
-      "id": "37161f06-e40a-4ad6-8352-fd0bfb8b989c",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=skillName_0",
-      "targets": [],
-      "value": "30000"
     }, {
       "id": "ab50500d-c579-48ec-946c-2ddf5f51a872",
       "comment": "",
@@ -1018,6 +941,603 @@
       "targets": [],
       "value": ""
     }]
+  }, {
+    "id": "edbbb673-6384-47e1-b12d-95a7bb48af22",
+    "name": "Edit bio on Edit Profile page - negative",
+    "commands": [{
+      "id": "eb7fb4a1-8ce7-4124-90e3-c922e93aff54",
+      "comment": "",
+      "command": "store",
+      "target": "longvulam91@gmail.com",
+      "targets": [],
+      "value": "userName"
+    }, {
+      "id": "07595eb5-51f6-484c-90bd-e56a710c3675",
+      "comment": "",
+      "command": "store",
+      "target": "testpassword",
+      "targets": [],
+      "value": "pw"
+    }, {
+      "id": "3a82b669-3610-4323-aefb-491901c8d0a0",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "efd413b8-f5c3-45df-b000-6db16bdc3884",
+      "comment": "",
+      "command": "click",
+      "target": "id=toLoginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f1947acd-9b20-4b2b-bdba-1bbb5e8b6252",
+      "comment": "",
+      "command": "type",
+      "target": "id=userEmailField",
+      "targets": [],
+      "value": "${userName}"
+    }, {
+      "id": "eea45bf5-4a3f-4303-b486-38dfeaafd952",
+      "comment": "",
+      "command": "type",
+      "target": "id=passwordField",
+      "targets": [],
+      "value": "${pw}"
+    }, {
+      "id": "c1b29be8-70ea-40d5-9f44-66a95ac09af3",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "48569e13-4b3b-4ed8-82fb-ab2e82bae0ec",
+      "comment": "",
+      "command": "click",
+      "target": "id=editBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c05a1e46-34b3-4f1e-9792-cabcf0e7f4f4",
+      "comment": "",
+      "command": "type",
+      "target": "id=bioEditField",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d941edea-660c-4f55-a20a-27b307f1c2a0",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0b8c778e-0ba7-4e9f-8759-c899b535cc75",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=errorSnackbar",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "648c7fb9-09b0-473e-8d28-7681cb3c7f91",
+      "comment": "",
+      "command": "store",
+      "target": "Hi this is a bio!",
+      "targets": [],
+      "value": "bio"
+    }, {
+      "id": "2a3ca195-2170-4102-aa67-d84826f1a44f",
+      "comment": "",
+      "command": "type",
+      "target": "id=bioEditField",
+      "targets": [],
+      "value": "${bio}"
+    }, {
+      "id": "d9fc10bd-bf31-43e0-a92e-5cfe719668bb",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4e01c6bf-1b91-4251-a4da-2139b1209586",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=bioField",
+      "targets": [],
+      "value": "${bio}"
+    }, {
+      "id": "af1202b9-ce0e-4757-b3dc-3c3f10d5c48f",
+      "comment": "",
+      "command": "click",
+      "target": "id=logoutBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "af07d2f3-30fa-4976-9b72-93c380ae6838",
+      "comment": "",
+      "command": "click",
+      "target": "id=yesConfirmBtn",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "530b7115-cc21-47a9-8e56-e3f19c96e4ed",
+    "name": "Edit skill level on Edit Profile page - negative",
+    "commands": [{
+      "id": "32e8574c-3b43-4169-b0da-8e267c585cc4",
+      "comment": "",
+      "command": "store",
+      "target": "longvulam91@gmail.com",
+      "targets": [],
+      "value": "userName"
+    }, {
+      "id": "4238ab9c-9f18-4a61-a7f9-b5e4a53d8da3",
+      "comment": "",
+      "command": "store",
+      "target": "testpassword",
+      "targets": [],
+      "value": "pw"
+    }, {
+      "id": "641b2153-2741-46e5-b86c-2133e5f4161d",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3ddeee10-80e1-4b05-9c11-8b4b413d8a58",
+      "comment": "",
+      "command": "click",
+      "target": "id=toLoginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ffb40caa-8cfa-4771-84fd-f58d204a82bb",
+      "comment": "",
+      "command": "type",
+      "target": "id=userEmailField",
+      "targets": [],
+      "value": "${userName}"
+    }, {
+      "id": "0d61a6a6-64d1-46e6-8407-580230e352d1",
+      "comment": "",
+      "command": "type",
+      "target": "id=passwordField",
+      "targets": [],
+      "value": "${pw}"
+    }, {
+      "id": "7d89478d-b23d-4551-9598-d7b3a3bac544",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "03b37808-b324-4330-9533-35831785906f",
+      "comment": "",
+      "command": "click",
+      "target": "id=editBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "858326d9-3e96-46c0-ab34-24399d69870d",
+      "comment": "",
+      "command": "store",
+      "target": "skillLevel_edit-0",
+      "targets": [],
+      "value": "editField"
+    }, {
+      "id": "ecda4fc3-4e3e-4a91-8492-30e643cf2aa1",
+      "comment": "",
+      "command": "type",
+      "target": "id=${editField}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f5dabde7-c012-499c-8758-eb68c00b875a",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "90646fe7-ea4e-483d-a5da-63dc5a10935e",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=errorSnackbar",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d7b3f8b6-012d-46b9-9fc3-5a4b525061eb",
+      "comment": "",
+      "command": "store",
+      "target": "Expert",
+      "targets": [],
+      "value": "skillname"
+    }, {
+      "id": "a917ccff-005e-42d0-a332-f522a9614aa8",
+      "comment": "",
+      "command": "type",
+      "target": "id=${editField}",
+      "targets": [],
+      "value": "${skillname}"
+    }, {
+      "id": "03665af2-6c1d-4a92-9347-d2e7d6507848",
+      "comment": "",
+      "command": "click",
+      "target": "//*[text()=\"${skillname}\"]",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a56f292d-72e9-4933-907e-ec3b0664faaa",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5c12a340-125e-424b-803d-ac8c8225dcdd",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=skillLevel_0",
+      "targets": [],
+      "value": "${skillname}"
+    }, {
+      "id": "22f1c439-f4c6-480c-9368-17917f3115da",
+      "comment": "",
+      "command": "click",
+      "target": "id=logoutBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d783b5b7-de67-45f2-9b20-6ce04926dc5f",
+      "comment": "",
+      "command": "click",
+      "target": "id=yesConfirmBtn",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "9219322e-d670-4f43-b13f-f1e6494469cf",
+    "name": "Edit skill level on Edit Profile page - positive",
+    "commands": [{
+      "id": "7b010d4e-04ec-4b2f-a077-c695e8f2ecb5",
+      "comment": "",
+      "command": "store",
+      "target": "longvulam91@gmail.com",
+      "targets": [],
+      "value": "userName"
+    }, {
+      "id": "da49a03e-b1f4-4130-899d-51cfcdfadb83",
+      "comment": "",
+      "command": "store",
+      "target": "testpassword",
+      "targets": [],
+      "value": "pw"
+    }, {
+      "id": "8abe3b9a-8903-418b-b368-88f23806d87b",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a33b4f1e-ece9-4a7c-9d67-0fdef6a153b7",
+      "comment": "",
+      "command": "click",
+      "target": "id=toLoginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "59ec69a7-f989-481a-be52-9783ce8363ad",
+      "comment": "",
+      "command": "type",
+      "target": "id=userEmailField",
+      "targets": [],
+      "value": "${userName}"
+    }, {
+      "id": "d5da8ae8-4147-4c18-b7c6-1cd2dd8ea450",
+      "comment": "",
+      "command": "type",
+      "target": "id=passwordField",
+      "targets": [],
+      "value": "${pw}"
+    }, {
+      "id": "04c4b50f-c371-41b4-b5fe-7aa4cb4169b4",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "af267408-fe50-464b-9b65-7be230d03c1b",
+      "comment": "",
+      "command": "click",
+      "target": "id=editBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "51416724-a79a-4b22-8555-d4f0f77dbeae",
+      "comment": "",
+      "command": "store",
+      "target": "Expert",
+      "targets": [],
+      "value": "newName"
+    }, {
+      "id": "f20a90e9-293e-4771-aa24-c64711220b7e",
+      "comment": "",
+      "command": "store",
+      "target": "skillLevel_edit-0",
+      "targets": [],
+      "value": "editField"
+    }, {
+      "id": "73ae2237-06e0-416e-9c63-41298b5e2a04",
+      "comment": "",
+      "command": "store",
+      "target": "skillLevel_0",
+      "targets": [],
+      "value": "field"
+    }, {
+      "id": "444257f7-a24f-4d21-ae99-5c9ce708432c",
+      "comment": "",
+      "command": "type",
+      "target": "id=${editField}",
+      "targets": [],
+      "value": "${newName}"
+    }, {
+      "id": "624cde05-2ec9-4f16-859b-c9c3b269943c",
+      "comment": "",
+      "command": "click",
+      "target": "//*[text()=\"${newName}\"]",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "86583342-bbb8-4775-b5df-a32defa2ade1",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c3a7c9a4-fedf-4384-ad5a-a16bea954bf5",
+      "comment": "",
+      "command": "store",
+      "target": "Novice",
+      "targets": [],
+      "value": "oldName"
+    }, {
+      "id": "0c34291d-faf0-42db-9b87-fbbe04a1add7",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=${field}",
+      "targets": [],
+      "value": "${newName}"
+    }, {
+      "id": "40b57e21-7312-4e2b-8875-021a809e4ca7",
+      "comment": "",
+      "command": "click",
+      "target": "id=editBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "75f66eb9-82bc-4509-86cb-8431b8ac3d91",
+      "comment": "",
+      "command": "type",
+      "target": "id=${editField}",
+      "targets": [],
+      "value": "${oldName}"
+    }, {
+      "id": "7059aa4c-979c-46a7-8e18-6dc502bac3fd",
+      "comment": "",
+      "command": "click",
+      "target": "//*[text()=\"${oldName}\"]",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "378e216f-1eba-4e77-95d3-956cced86afb",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "00956fcb-2061-4df7-9191-1f441531affc",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=${field}",
+      "targets": [],
+      "value": "${oldName}"
+    }, {
+      "id": "fb65796a-116d-4ca3-83ee-d1aace20f4aa",
+      "comment": "",
+      "command": "click",
+      "target": "id=logoutBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5a390240-b020-4f48-a7f5-b650cf809c71",
+      "comment": "",
+      "command": "click",
+      "target": "id=yesConfirmBtn",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "4a381d36-602c-4dec-baf2-af1481f3c0c5",
+    "name": "Edit skill description on Edit Profile page - positive",
+    "commands": [{
+      "id": "1309851a-72e2-4fc4-b6a1-ef890c14d336",
+      "comment": "",
+      "command": "store",
+      "target": "longvulam91@gmail.com",
+      "targets": [],
+      "value": "userName"
+    }, {
+      "id": "33b71d30-fbdb-4fa1-b803-f2ae2be01229",
+      "comment": "",
+      "command": "store",
+      "target": "testpassword",
+      "targets": [],
+      "value": "pw"
+    }, {
+      "id": "55659758-27c0-4ab4-ad62-681424ab311d",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "92d69a62-1cd2-419d-b955-2a672c4f4edb",
+      "comment": "",
+      "command": "click",
+      "target": "id=toLoginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c1bdb677-677c-49bc-a901-55e42a9517e1",
+      "comment": "",
+      "command": "type",
+      "target": "id=userEmailField",
+      "targets": [],
+      "value": "${userName}"
+    }, {
+      "id": "627cec12-c284-4eb9-9827-feb7bdb97f80",
+      "comment": "",
+      "command": "type",
+      "target": "id=passwordField",
+      "targets": [],
+      "value": "${pw}"
+    }, {
+      "id": "134a8b1d-e179-4fa1-8785-d5fb385b9be2",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8f67910b-c86b-458b-af1d-674c4eaec8b8",
+      "comment": "",
+      "command": "click",
+      "target": "id=editBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "87301295-cf2d-479c-a3f3-9177df54f524",
+      "comment": "",
+      "command": "store",
+      "target": "Just started working with it 2 months ago.",
+      "targets": [],
+      "value": "newValue"
+    }, {
+      "id": "818242dc-0830-4dda-8e3b-b34955956684",
+      "comment": "",
+      "command": "store",
+      "target": "skillDescription_edit-0",
+      "targets": [],
+      "value": "editField"
+    }, {
+      "id": "9c912a3c-6baf-43a2-bbaf-5ed2dca58559",
+      "comment": "",
+      "command": "store",
+      "target": "skillDescription_0",
+      "targets": [],
+      "value": "field"
+    }, {
+      "id": "aa2476a0-059e-4202-b699-0916ff13e750",
+      "comment": "",
+      "command": "type",
+      "target": "id=${editField}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5e70f125-6bdc-4b14-86c8-4274f450dfa9",
+      "comment": "",
+      "command": "type",
+      "target": "id=${editField}",
+      "targets": [],
+      "value": "${newValue}"
+    }, {
+      "id": "074f36e1-5005-4432-8e87-d55330719855",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "70d057db-1cb7-46b6-af60-7454e6e03768",
+      "comment": "",
+      "command": "store",
+      "target": "This is a skill description.",
+      "targets": [],
+      "value": "oldName"
+    }, {
+      "id": "64698f45-9ced-4ba2-a214-591707c34afe",
+      "comment": "",
+      "command": "click",
+      "target": "id=skillName_0",
+      "targets": [],
+      "value": "${oldName}"
+    }, {
+      "id": "10585f3d-1260-4eb6-b529-3c19572cae75",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=${field}",
+      "targets": [],
+      "value": "${newValue}"
+    }, {
+      "id": "c1be2b5d-ae24-4a6a-9b07-280bcb244542",
+      "comment": "",
+      "command": "click",
+      "target": "id=editBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "936e11ad-ca2f-4633-9f4d-bec03089ddd6",
+      "comment": "",
+      "command": "type",
+      "target": "id=${editField}",
+      "targets": [],
+      "value": "${oldName}"
+    }, {
+      "id": "4bb232fd-863f-4530-b49b-6d56d17fe862",
+      "comment": "",
+      "command": "click",
+      "target": "id=saveBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "de7a995b-00d0-417f-aec6-c09a62006697",
+      "comment": "",
+      "command": "click",
+      "target": "id=skillName_0",
+      "targets": [],
+      "value": "${oldName}"
+    }, {
+      "id": "88c07d12-f45b-481b-bc61-7a36f540aacb",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=${field}",
+      "targets": [],
+      "value": "${oldName}"
+    }, {
+      "id": "513ef670-5185-4afb-9d49-5942bbf001f0",
+      "comment": "",
+      "command": "click",
+      "target": "id=logoutBtn",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2877b835-0e69-49d4-bedd-5896b0cf67ee",
+      "comment": "",
+      "command": "click",
+      "target": "id=yesConfirmBtn",
+      "targets": [],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "2f690613-620b-4db4-b353-5991e327768d",
@@ -1025,7 +1545,7 @@
     "persistSession": false,
     "parallel": false,
     "timeout": 300,
-    "tests": ["6cf07669-9b8e-46ca-8cbe-ff036c1a4890"]
+    "tests": []
   }],
   "urls": ["http://localhost:3000/"],
   "plugins": []
