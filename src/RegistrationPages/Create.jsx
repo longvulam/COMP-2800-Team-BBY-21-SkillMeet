@@ -97,9 +97,9 @@ const Create = () => {
 
   function searchedSkillUpdate (fieldName, newValue, index) {
     const currSkill = skillFields[index];
-    currSkill[fieldName] = newValue
-    console.log('Onchange', currSkill);
-    setSkillFields([currSkill]);
+    currSkill[fieldName] = newValue;
+    console.log('Onchange', skillFields);
+    setSkillFields([...skillFields]);
     console.log('Skills Searched', skillFields);
   }
 
@@ -126,7 +126,10 @@ const Create = () => {
   };
 
   const handleAddFields = () => {
-    setSkillFields([...skillFields, { skillName: "", skillLevel: "", skillDescription: "" }])
+    setSkillFields(prevValues => [
+        ...prevValues, 
+        { skillName: "", skillLevel: "", skillDescription: "" 
+    }])
   }
 
   const handleRemoveFields = (index) => {
