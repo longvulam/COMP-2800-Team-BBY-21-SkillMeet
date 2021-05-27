@@ -128,7 +128,7 @@ export default function SearchPage() {
               ...params.InputProps,
               endAdornment: (
                 <InputAdornment position="end">
-                <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
+                <Button id="searchBtn" onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
                     <SearchIcon color='primary' className={classes.searchIcon}/>
                 </Button>
                 </InputAdornment>
