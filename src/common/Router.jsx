@@ -14,54 +14,72 @@ import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import { ProtectedRoute } from "./ProtectedRoute";
 import SocialMedia from '../socialMedia/twitterFeed';
+import { PublicRoute } from "./PublicRoute";
 
+
+const bottomNavbarRoutes = [
+    "/profile/:uid",
+    "/profile",
+    "/friends",
+    "/search",
+    "/friendRequests",
+    "/chatRooms",
+];
 export function Router() {
 
-    return (
-            <BrowserRouter>
-                <Switch>
+    return (<BrowserRouter>
+        <Switch>
 
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-                    <Route path="/create">
-                        <Create />
-                    </Route>
-                    <Route path="/aboutUs">
-                        <AboutUs />
-                    </Route>
-                    <Route path = "/socialmedia">
-                        <SocialMedia/>
-                     </Route>
-                    <ProtectedRoute path='/editProfile'>
-                        <EditProfilePage />
-                    </ProtectedRoute>
-                    <ProtectedRoute path='/chatRoom/:chatRoomId'>
-                        <ChatRoom />
-                    </ProtectedRoute>
+            <PublicRoute exact path="/">
+                <Home />
+            </PublicRoute>
+            <PublicRoute path="/create">
+                <Create />
+            </PublicRoute>
+            <PublicRoute path="/aboutUs">
+                <AboutUs />
+            </PublicRoute>
 
-                    <ProtectedRoute id="bottomNavbarPages">
+            <Route path="/socialmedia">
+                <SocialMedia />
+            </Route>
 
-                        <Route path={["/profile/:uid", "/profile"]}>
-                            <Profile />
-                        </Route>
-                        <Route path="/friends">
-                            <Friends />
-                        </Route>
-                        <Route path="/search">
-                            <Search />
-                        </Route>
-                        <Route path='/friendRequests'>
-                            <FriendsPageNav />
-                            <FriendRequests />
-                        </Route>
-                        <Route path='/chatRooms'>
-                            <ChatRoomsList />
-                        </Route>
+            <ProtectedRoute path='/editProfile'>
+                <EditProfilePage />
+            </ProtectedRoute>
+            <ProtectedRoute path='/chatRoom/:chatRoomId'>
+                <ChatRoom />
+            </ProtectedRoute>
 
-                        <BottomNavBar />
+            <ProtectedRoute path={bottomNavbarRoutes} id="bottomNavbarPages">
 
-                    </ProtectedRoute>
-                </Switch>
-            </BrowserRouter>);
+                <Route path={["/profile/:uid", "/profile"]}>
+                    <Profile />
+                </Route>
+                <Route path="/friends">
+                    <Friends />
+                </Route>
+                <Route path="/search">
+                    <Search />
+                </Route>
+                <Route path='/friendRequests'>
+                    <FriendsPageNav />
+                    <FriendRequests />
+                </Route>
+                <Route path='/chatRooms'>
+                    <ChatRoomsList />
+                </Route>
+
+                <BottomNavBar />
+
+
+            </ProtectedRoute>
+
+            <Route path="/*">
+                <div>404</div>
+            </Route>
+
+        </Switch>
+    </BrowserRouter>);
 }
+
