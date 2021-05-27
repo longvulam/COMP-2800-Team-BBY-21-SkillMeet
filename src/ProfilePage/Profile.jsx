@@ -123,7 +123,7 @@ export default function Profile() {
                     autoHideDuration={4000}
                     onClose={handleClose}>
                     <ProfileAlert onClose={handleClose} severity="success">
-                        Saves successfully!
+                        Saved Successfully!
                     </ProfileAlert>
                 </Snackbar>
             </div>
