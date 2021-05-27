@@ -27,8 +27,9 @@ function validateProfile(profile) {
     const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
 
     if (!!emptySkill) return false;
-    if (!profile.displayName) return false;
-    if (!profile.city) return false;
+    if (!profile.hasOwnProperty('displayName') || profile.displayName === "") return false;
+    if (!profile.hasOwnProperty('city') || profile.city === "") return false;
+    if (!profile.hasOwnProperty('bio') || profile.bio === "") return false;
 
     return true;
 }
@@ -189,7 +190,7 @@ export default function EditProfile() {
                     }}>
                     <Grid item xs={12}>
                         <TextField
-                            id="userNameField"
+                            id="userNameEditField"
                             label="UserName"
                             variant="filled"
                             readOnly={false}
@@ -206,7 +207,7 @@ export default function EditProfile() {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            id="cityField"
+                            id="cityEditField"
                             label="Location"
                             variant="filled"
                             readOnly={false}

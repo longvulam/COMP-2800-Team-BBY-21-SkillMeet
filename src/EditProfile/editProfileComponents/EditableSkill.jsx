@@ -103,7 +103,7 @@ export default function EditableSkill(props) {
                         width: 'calc(100% - 5em)',
                     }}>
                         <Autocomplete
-                            id={"skillName_" + index}
+                            id={"skillName_edit-" + index}
                             options={filteredOptions}
                             value={data.skillName}
                             onChange={(event, newValue) => updateSkillsList(newValue, "skillName")}
@@ -130,7 +130,7 @@ export default function EditableSkill(props) {
                     </IconButton>
                 </div>
                 <Autocomplete
-                    id={"skillLevel_" + index}
+                    id={"skillLevel_edit-" + index}
                     options={skillLevelOptions}
                     value={data.skillLevel}
                     forcePopupIcon={false}
@@ -151,7 +151,7 @@ export default function EditableSkill(props) {
                     width: '100%',
                 }}>
                     <InputBase
-                        id={"skillDescription_" + index}
+                        id={"skillDescription_edit-" + index}
                         value={data.skillDescription}
                         onChange={(event) => updateSkillsList(event.target.value, "skillDescription")}
                         readOnly={false}

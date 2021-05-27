@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     }
   },
+  inputRoot: {
+    width:'95%',
+    height:'2.5em',
+    marginBottom:'3em',
+  },
   button: {
     margin: theme.spacing(2),
   },
@@ -41,6 +46,17 @@ const useStyles = makeStyles((theme) => ({
   editAvatarbtn: {
     marginLeft: '12em',
     marginTop: '-7em',
+  },
+  bioInput: {
+    backgroundColor: '#e3f6f5',
+    borderBottom: '1px solid black',
+    width: '85%'
+  },
+  levelInput:{
+    width: '55%',
+  },
+  skillDescInput:{
+    width: '80%',
   }
 }))
 
@@ -50,10 +66,10 @@ const Create = () => {
   const history = useHistory();
 
   const [user, setUser] = useState({
-    uid:"",
-    displayName:"",
-    bio:"",
-    city:"",
+    uid: "",
+    displayName: "",
+    bio: "",
+    city: "",
     avatarImageUrl: "",
   });
 
@@ -61,17 +77,17 @@ const Create = () => {
   const [bioError, setBioError] = useState('');
   const [cityError, setCityError] = useState('');
 
-  useEffect(()=>{
+  useEffect(() => {
     auth.onAuthStateChanged((user) => {
-        if (user) {
-            setUser(prev => {
-                return {
-                    ...prev,
-                    uid: user.uid,
-                }
-            })
-        }
-      });
+      if (user) {
+        setUser(prev => {
+          return {
+            ...prev,
+            uid: user.uid,
+          }
+        })
+      }
+    });
   }, []);
 
   const [skillFields, setSkillFields] = useState([
@@ -95,7 +111,7 @@ const Create = () => {
     }
   }
 
-  function searchedSkillUpdate (fieldName, newValue, index) {
+  function searchedSkillUpdate(fieldName, newValue, index) {
     const currSkill = skillFields[index];
     currSkill[fieldName] = newValue;
     console.log('Onchange', skillFields);
@@ -113,13 +129,13 @@ const Create = () => {
       city: user.city,
       avatar: user.avatarImageUrl
     })
-    
+
     await Promise.all(skillFields.map((skill, i) => {
-        userRef.collection("Skills").doc("Skill" + (i + 1)).set({
-            "skillName": skill.skillName,
-            "skillLevel": skill.skillLevel,
-            "skillDescription": skill.skillDescription
-        })
+      userRef.collection("Skills").doc("Skill" + (i + 1)).set({
+        "skillName": skill.skillName,
+        "skillLevel": skill.skillLevel,
+        "skillDescription": skill.skillDescription
+      })
     }));
 
     history.push("/profile");
@@ -127,9 +143,10 @@ const Create = () => {
 
   const handleAddFields = () => {
     setSkillFields(prevValues => [
-        ...prevValues, 
-        { skillName: "", skillLevel: "", skillDescription: "" 
-    }])
+      ...prevValues,
+      {
+        skillName: "", skillLevel: "", skillDescription: ""
+      }])
   }
 
   const handleRemoveFields = (index) => {
@@ -150,10 +167,10 @@ const Create = () => {
 
   function updateField(value, fieldName) {
     setUser(prev => {
-        return { 
-            ...prev,
-            [fieldName]: value,
-        } 
+      return {
+        ...prev,
+        [fieldName]: value,
+      }
     });
   }
 
@@ -165,63 +182,72 @@ const Create = () => {
   return (
     <div id="profile-form">
       <Container style={{ textAlign: 'center' }}>
-        <h6 style={{ color: '#1434A4', padding: '5px', textAlign: 'center' }}>Please fill these details to complete your profile setup</h6>
+        <h4 style={{ color: '#1434A4', fontSize: '1.5em', padding: '5px', textAlign: 'center' }}>Please fill these details to complete your profile setup</h4>
         <form className={classes.root} onSubmit={handleSubmit}>
 
           <div className={classes.avatarWrap}>
             <Avatar
-            id="avatarPic"
-            alt="Profile Picture"
-            src={user.avatarImageUrl}
-            className={classes.avatar} />
+              id="avatarPic"
+              alt="Profile Picture"
+              src={user.avatarImageUrl}
+              className={classes.avatar} />
           </div>
           <div>
-            <input type="file" id="uploadImage" onChange={handleImageChange} hidden="hidden"/>
+            <input type="file" id="uploadImage" onChange={handleImageChange} hidden="hidden" />
             <Fab size="small" onClick={handleEditPicture} className={classes.editAvatarbtn}>
               <EditIcon />
-            </Fab>   
+            </Fab>
           </div>
 
           <TextField
             autoFocus
             label="Display Name"
             required
-            variant="outlined"
+            variant="filled"
             name="displayName"
-            className="otherInputs"
+            id="nameInput"
             onChange={(e) => updateField(e.target.value, 'displayName')}
+            inputProps={{
+              'aria-label': 'naked',
+              style: {
+                textAlign: 'left',
+                height: '2em',
+                width: '50vw',
+                border: 'none',
+                backgroundColor: '#e3f6f5'
+              }
+            }}
           />
-          <div style={{ fontSize: '0.8em', color: 'red' }}>
-            {nameError}
-          </div>
-
-          <TextField
-            multiline
-            rows={4}
-            className="otherInputs"
-            label="Bio"
-            required
-            value={user.bio}
-            variant="outlined"
-            onChange={(e) => updateField(e.target.value, 'bio')}
-          />
-          <div style={{ fontSize: '0.8em', color: 'red' }}>
-            {bioError}
-          </div>
 
           <TextField
             id="city"
             label="City"
-            className="otherInputs"
             name="city"
             required
             value={user.city}
-            variant="outlined"
+            variant="filled"
             onChange={(e) => updateField(e.target.value, 'city')}
+            inputProps={{
+              style: {
+                textAlign: 'left',
+                height: '2em',
+                width: '50vw',
+                border: 'none',
+                backgroundColor: '#e3f6f5'
+              }
+            }}
           />
-          <div style={{ fontSize: '0.8em', color: 'red' }}>
-            {cityError}
-          </div>
+
+          <TextField
+            multiline
+            rows={4}
+            label="Bio"
+            required
+            value={user.bio}
+            variant="outlined"
+            className = {classes.bioInput}
+            onChange={(e) => updateField(e.target.value, 'bio')}
+            />
 
           {skillFields.map((skillField, index) => (
             <div key={index}>
@@ -230,10 +256,10 @@ const Create = () => {
                 marginTop: '2vh',
                 alignItems: 'center',
                 textAlign: 'center',
-                backgroundColor: 'lightGrey',
+                backgroundColor: '#E8E8E8',
                 borderRadius: '5px'
               }}>
-                <p style={{ color: '#1434A4', fontSize: '14px', padding: '5px', textAlign: 'center' }}>Add a skill to your profile:</p>
+                <p style={{ color: '#1434A4', fontSize: '1.4em', padding: '5px', textAlign: 'center' }}>Add a skill to your profile:</p>
 
                 <Grid item xs={12}>
                   <Autocomplete
@@ -244,7 +270,6 @@ const Create = () => {
                     value={skillField.skillName}
                     onChange={(e, newVal) => searchedSkillUpdate('skillName', newVal, index)}
                     disableClearable
-                    placeholder="Search By Skills"
                     forcePopupIcon={false}
                     renderInput={params => {
                       return (
@@ -268,6 +293,7 @@ const Create = () => {
                   <InputLabel id="level">Skill Level</InputLabel>
                   <Select
                     native
+                    className = {classes.levelInput}
                     name="skillLevel"
                     label="Skill Level"
                     id="level"
@@ -275,10 +301,11 @@ const Create = () => {
                     value={skillField.skillLevel}
                     onChange={event => handleChangeInput(index, event)}
                   >
-                    <option value='Expert'>Expert</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Beginner">Beginner</option>
                     <option value='Novice'>Novice</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value='Expert'>Expert</option>
+
                   </Select>
                 </Grid>
                 <Grid item xs={12}>
@@ -289,6 +316,7 @@ const Create = () => {
                     label="Skill Description"
                     placeholder="Enter anything you would like to share with others related to the skill:"
                     required
+                    className = {classes.skillDescInput}
                     variant="outlined"
                     value={skillField.skillDescription}
                     onChange={event => handleChangeInput(index, event)}

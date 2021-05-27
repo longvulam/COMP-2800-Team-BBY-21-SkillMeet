@@ -136,7 +136,7 @@ export default function UserSearchCard(props) {
   }
   return (
     <>
-        <Paper className={classes.paper}elevation={4} key={id}>
+        <Paper className={classes.paper} elevation={4} key={id}>
             <Grid container direction="column" 
               spacing={1} className={classes.infoGrid}>
 

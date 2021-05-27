@@ -23,13 +23,13 @@ function handleLogout() {
 class AboutUs extends Component {
     render() {
         const data = teamData;
-        return (<div style={{margin: '-.5em'}}>
+        return (<div style={{marginTop: '-.5em', width: '100vw'}}>
             <Navbar handleLogout={handleLogout} />
             <HeroImage />
             <Mission />
             <div style={{ textAlign: 'center', border: '1px solid black', backgroundColor: 'black', marginBottom: '3rem' }}>
             <h1 style={{ color: 'lightblue', marginTop: '1.5rem', marginBottom: '1rem' }}>Our Team..</h1>
-            <Grid container spacing={1} justify="center" style={{width: '100%'}}>
+            <Grid container spacing={1} justify="center" style={{width: '100vw'}}>
                 {data.map(card => {
                     const { memberPic, memberName, memberBio } = card;
                     console.log('memberPic', memberPic)
@@ -70,13 +70,13 @@ const teamData = [
     {
         memberPic: ArunabPic,
         memberName: 'Arunab Singh',
-        memberBio: `Arunab is a great asset to our team, and we are happy to have him on.
+        memberBio: `Arunab is a great asset to our team, and we are happy to have him.
         He brings skills and tenacity to the team.`,
     },
     {
         memberPic: OwenPic,
         memberName: 'Owen Arando',
-        memberBio: `Owen is a smart hardworking developer, who were glad had joined our
+        memberBio: `Owen is a smart hardworking developer, and were glad he's joined our
        team.  He is driven and passionate.`,
     },
 ]

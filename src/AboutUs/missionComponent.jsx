@@ -10,7 +10,7 @@ class Mission extends Component {
             <p style={{ marginBottom:'1.5rem', color: 'white' }}>"At SkillMeet our mission is to enable people to connect and grow by create a space where like-minded individuals gather to inspire one another."</p>
             </div>
             <div style={{ textAlign: 'center',}}>
-                <FontAwesomeIcon icon={["fas", "chevron-down"]} color="black" opacity=".4" size="3x" onClick={() => window.scrollBy(0, 690)} />
+                <FontAwesomeIcon icon={["fas", "chevron-down"]} color="black" opacity=".4" size="3x" onClick={() => window.scrollBy(0, 550)} />
             </div>
             </React.Fragment>
             ;
