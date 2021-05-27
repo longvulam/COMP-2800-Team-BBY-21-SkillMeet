@@ -2,6 +2,7 @@ import $ from 'jquery';
 import firebase from './firebase';
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import SkillMeet from './img/SkillMeet.png';
 
 const Navbar = (props) => {
 

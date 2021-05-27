@@ -23,13 +23,13 @@ function handleLogout() {
 class AboutUs extends Component {
     render() {
         const data = teamData;
-        return (<div style={{margin: '-.5em'}}>
+        return (<div style={{marginTop: '-.5em', width: '100vw'}}>
             <Navbar handleLogout={handleLogout} />
             <HeroImage />
             <Mission />
             <div style={{ textAlign: 'center', border: '1px solid black', backgroundColor: 'black', marginBottom: '3rem' }}>
             <h1 style={{ color: 'lightblue', marginTop: '1.5rem', marginBottom: '1rem' }}>Our Team..</h1>
-            <Grid container spacing={1} justify="center" style={{width: '100%'}}>
+            <Grid container spacing={1} justify="center" style={{width: '100vw'}}>
                 {data.map(card => {
                     const { memberPic, memberName, memberBio } = card;
                     console.log('memberPic', memberPic)

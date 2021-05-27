@@ -115,7 +115,7 @@ const Message = (props) => {
                     src={avatar} alt='Pic' />
                 <Paper className={from === auth.currentUser.uid ? classes.currentUserStyle : classes.otherUserStyle}>
                   <Typography 
-                  variant="body"
+                  variant="body1"
                   className={from === auth.currentUser.uid ? classes.currentUserMsg : classes.otherUserMsg}>
                     {message}
                   </Typography>
