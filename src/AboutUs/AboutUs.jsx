@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import HeroImage from './heroImageComponent';
-import Mission from './missionComponent';
-import Team2 from './ourTeam2.0Component';
-import ContactUs from './contactUsComponent';
+import HeroImage from './aboutUsComponents/HeroImage';
+import Mission from './aboutUsComponents/Mission';
+import Team2 from './aboutUsComponents/OurTeam';
+import ContactUs from './aboutUsComponents/ContactUs';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../Navbar';
