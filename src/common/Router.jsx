@@ -13,7 +13,7 @@ import FriendsPageNav from '../Friends/friendsComponents/FriendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import { ProtectedRoute } from "./ProtectedRoute";
-import Social from '../socialMedia/Socials';
+import Social from '../SocialMedia/Socials';
 import Navbar from '../Navbar';
 import { PublicRoute } from "./PublicRoute";
 
