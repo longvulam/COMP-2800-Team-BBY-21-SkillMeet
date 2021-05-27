@@ -141,6 +141,18 @@
   background-color: whitesmoke;
 }
 
+#social-container{
+  margin-top: 0;
+  text-align: center;
+  background-color: whitesmoke;
+}
+
+#fb-content{
+  text-align: center;
+  background-color: whitesmoke;
+  padding: 15px;
+}
+
 /* sets layout and style for the top navbar */
 .navbar {
   display: flex;

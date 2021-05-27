@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
-import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Message from './chatPageComponents/message';
 import { auth, db, waitForCurrentUser, firestore, getCurrentUserDataAsync } from '../firebase';
+import Typography from '@material-ui/core/Typography';
+import SendIcon from '@material-ui/icons/Send';
 
 export default function ChatRoom(props) {
     const { chatRoomId } = useParams();
@@ -55,13 +57,18 @@ export default function ChatRoom(props) {
         isLoading ? <LoadingSpinner /> :
             <div className={classes.pageContainer}>
 
-                <Paper style={{ marginBottom: '1em', display:'flex', justifyContent:'space-between' }}>
-                    <div style={{ fontSize: '32pt', backgroundColor: 'cyan', width: '100%' }}>{chatRoomName}
-                    </div>
-                    <Button size='small'  style={{ backgroundColor: 'cyan' }} onClick={(event) => history.goBack()}>
-                            <ArrowBackSharpIcon />
-                        </Button>
-                </Paper>
+                <div className={classes.chatRoomHeader}>
+                    <Typography variant="h4" 
+                    className={classes.chatRoomHeaderText}>
+                      {chatRoomName}
+                    </Typography>
+                    <Button className={classes.backButton} 
+                    variant="contained"
+                    color="secondary"
+                    onClick={(event) => history.goBack()}>
+                            <ArrowBackIcon className={classes.backArrowIcon} />
+                    </Button>
+                </div>
 
                 <div className={classes.msgContainer}>
                     {messages.map((msg, index) =>
@@ -73,7 +80,9 @@ export default function ChatRoom(props) {
                             avatar={msg.from === auth.currentUser.uid ? currentUserAvatar : otherUserAvatar}
                         />)}
                 </div>
-                <Paper className={classes.messagePaper}>
+                <Paper 
+                elevation={5}
+                className={classes.messagePaper}>
                     <InputBase value={currentMsg}
                         multiline
                         className={classes.inputMessage}
@@ -81,7 +90,10 @@ export default function ChatRoom(props) {
                         onChange={handleChange}
                         onKeyPress={submitOnCtrlEnter}
                     />
-                    <Button className={classes.sendButton} onClick={sendMessage}>Send message</Button>
+                    <Button 
+                     variant="contained"
+                     color="primary"
+                    className={classes.sendButton} onClick={sendMessage}><SendIcon className={classes.sendIcon}/></Button>
                 </Paper>
             </div>
     );
@@ -92,6 +104,7 @@ const useStyles = makeStyles((theme) => ({
         overflowY: 'scroll',
         overflowX: 'hidden',
         flex: 1,
+        paddingBottom:'2em',
     },
     pageContainer: {
         display: 'flex',
@@ -99,22 +112,58 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-end',
         height: '100vh',
     },
-    inputMessage: {
-        width: '60vw',
-        backgroundColor: theme.palette.primary.light,
-        borderRadius: '.5em',
-        margin: '1em',
-        padding: '.5em',
-    },
-    sendButton: {
-        color: 'goldenRod',
-        marginLeft: '5vw',
-        marginRight: '1vw',
-    },
     messagePaper: {
         display: 'flex',
         alignItems: 'center',
-    }
+        justifyContent:'space-between',
+        minHeight:'4.5em',
+    },
+    sendButton: {
+        color: 'white',
+        marginRight: '1.5em',
+        height:'3em',
+        width:'4em',
+    },
+    inputMessage: {
+        width: 'calc(100vw - 7em)',
+        backgroundColor: theme.palette.primary.main,
+        color:'white',
+        borderRadius: '.5em',
+        marginLeft: '0.5em',
+        overflowY:'scroll',
+        verticalAlign: 'textBottom',
+        minHeight:'3em',
+        marginTop:'1em',
+        marginBottom:'1em',
+        padding:'0.5em',
+    },
+    chatRoomHeader: {
+      margin:'auto',
+      marginBottom: '1em', 
+      display:'flex', 
+      justifyContent:'space-between',
+      alignItems:'flex-end',
+      paddingTop:'0.25em',
+      width:'100vw',
+      height:'3em',
+      backgroundColor:theme.palette.primary.dark,
+    },
+    chatRoomHeaderText:{
+      marginLeft:'0.5em',
+      color:'white',
+    },
+    backButton: {
+      height:'2.5em',
+      width:'1.5em',
+      marginBottom:'0.5em',
+      marginRight:'0.5em',
+      backgroundColor: 'darkOrange',
+    },
+    backArrowIcon:{
+        color:'white',
+        height:'1.25em',
+        width:'1.5em',
+    },
 }));
 
 let collRef = db.collection('chatrooms')
