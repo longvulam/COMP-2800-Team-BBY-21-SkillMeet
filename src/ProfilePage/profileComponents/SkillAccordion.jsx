@@ -55,7 +55,7 @@ const AccordionSummary = withStyles((theme) => ({
 }))(MuiAccordionSummary);
 
 export default function SkillAccordion(props) {
-    const { skillName, skillLevel, skillDescription } = props;
+    const { index, skillName, skillLevel, skillDescription } = props;
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
 
@@ -83,12 +83,14 @@ export default function SkillAccordion(props) {
                         flexDirection:'column'
                     }}>
                     <Typography
+                    id={"skillName_" + index}
                     variant='h6'
                     className={classes.skillsAndLevels}
                     >
                       {skillName}
                     </Typography>
                     <Typography
+                    id={"skillLevel_" + index}
                     variant='subtitle1'
                     className={classes.skillLevels}
                     >
@@ -99,6 +101,7 @@ export default function SkillAccordion(props) {
             <AccordionDetails
             className={classes.skillAccordionDetails}>
                  <Typography
+                    id={"skillDescription_" + index}
                     className={classes.skillsAndLevels}
                     variant='body1'
                     >

@@ -5,15 +5,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Grid, Snackbar } from '@material-ui/core';
 import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
+import FacebookBtn from './profileComponents/ProfileFacebookButton';
 import LogOutButton from './profileComponents/LogOutButton';
 import { OtherUserButtons } from './profileComponents/OtherUserButtons';
-import { Alert } from './profileComponents/profileAlert';
+import { ProfileAlert } from './profileComponents/profileAlert';
 import { PersonalInfo } from './profileComponents/PersonalInfo';
 import { SkillsList } from './SkillsList';
 
 import LoadingSpinner from '../common/LoadingSpinner';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
-
 
 export const useStyles = makeStyles((theme) => ({
     buttonsWrap: {
@@ -113,16 +113,18 @@ export default function Profile() {
                         style={{
                             width: '100%'
                         }}>
-                        <ProfileBio bio={profileData.bio} />
+                        <ProfileBio 
+                            editable={false}
+                            bio={profileData.bio} />
                     </Grid>
                 </Grid>
                 <Snackbar
                     open={successOpen}
                     autoHideDuration={4000}
                     onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="success">
-                        This is a success message!
-                    </Alert>
+                    <ProfileAlert onClose={handleClose} severity="success">
+                        Saved Successfully!
+                    </ProfileAlert>
                 </Snackbar>
             </div>
     );
@@ -174,8 +176,14 @@ function CurrentUserButtons(props) {
 
     return (
         <div className={classes.buttonsWrap}>
-            <LogOutButton
-            />
+            <FacebookBtn 
+                style={{
+                    marginRight: '60vw',
+                    marginTop: '2vw',
+                    height: '2.5em',
+                    width: '2.5em',
+                }}/>
+            <LogOutButton />
             <EditButton
                 style={{
                     marginRight: '4vw',

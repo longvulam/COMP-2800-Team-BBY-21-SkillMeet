@@ -29,6 +29,7 @@ export function PersonalInfo(props) {
             </Grid>
             <Grid item xs={12}>
                 <Typography
+                    id="cityField"
                     variant='subtitle1'
                 >
                     {userProfile.city}

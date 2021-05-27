@@ -5,7 +5,7 @@ import Profile from '../ProfilePage/Profile';
 import Friends from '../Friends/Friends';
 import Create from '../RegistrationPages/Create';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import AboutUs from "../AboutUs/aboutUsComponent";
+import AboutUs from "../AboutUs/aboutUs2.0Component";
 import EditProfilePage from '../EditProfile/EditProfilePage';
 import Search from "../SearchPage/SearchPage";
 import FriendRequests from '../Friends/FriendRequests';
@@ -13,7 +13,8 @@ import FriendsPageNav from '../Friends/friendsComponents/friendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import { ProtectedRoute } from "./ProtectedRoute";
-import SocialMedia from '../socialMedia/twitterFeed';
+import Social from '../socialMedia/Socials';
+import Navbar from '../Navbar';
 import { PublicRoute } from "./PublicRoute";
 
 
@@ -38,9 +39,10 @@ export function Router() {
                 <AboutUs />
             </PublicRoute>
 
-            <Route path="/socialmedia">
-                <SocialMedia />
-            </Route>
+            <ProtectedRoute path="/socialmedia">
+                <Navbar />
+                <Social />
+            </ProtectedRoute>
 
             <ProtectedRoute exact path="/create">
                 <Create />

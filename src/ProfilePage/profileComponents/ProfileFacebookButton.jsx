@@ -1,27 +1,27 @@
 import React from 'react';
 import Fab from '@material-ui/core/Fab';
-import EditIcon from '@material-ui/icons/Edit';
+import FacebookIcon from '@material-ui/icons/Facebook';
 import { withRouter } from "react-router";
 
-class EditButton extends React.Component {
+class FacebookBtn extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { match, location, history } = this.props;
+    const { history } = this.props;
     
     return (
       <Fab 
         id="editBtn"
         style={this.props.style}
-        onClick={()=>history.push("/editProfile")}
+        onClick={()=>history.push("/socialmedia")}
         aria-label="edit"
         color={'primary'}>
-        <EditIcon />
+        <FacebookIcon />
       </Fab>
     );
   }
 }
 
-export default withRouter(EditButton);
+export default withRouter(FacebookBtn);

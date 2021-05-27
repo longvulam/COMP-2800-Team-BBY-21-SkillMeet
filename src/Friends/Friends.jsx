@@ -39,7 +39,7 @@ export default function FriendsPage() {
                         style={{
                             margin: 'auto',
                             marginTop: '2vh',
-                            width: '95vw',
+                            width: '97.5vw',
                             alignItems: 'center',
                         }}>
                         {friendsList.map((friendInfo, index) => {

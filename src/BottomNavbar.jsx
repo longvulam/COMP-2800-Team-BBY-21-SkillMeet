@@ -6,6 +6,7 @@ import AccountIcon from '@material-ui/icons/AccountCircle';
 import ChatIcon from '@material-ui/icons/Chat';
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/People';
+import Paper from '@material-ui/core/Paper';
 
 import { useHistory } from 'react-router-dom';
 import { Badge } from '@material-ui/core';
@@ -54,7 +55,9 @@ export default function LabelBottomNavigation() {
   }
 
   return (
-    <div className = {classes.navbarWrap}>
+    <Paper 
+    elevation={4}
+    className = {classes.navbarWrap}>
     <BottomNavigation value={value} onChange={twoCallbacks} className={classes.root}>
       <BottomNavigationAction label="Profile" value="/profile" icon={<AccountIcon />} />
       <BottomNavigationAction 
@@ -77,7 +80,7 @@ export default function LabelBottomNavigation() {
         }
       />
     </BottomNavigation>
-    </div>
+    </Paper>
   );
 }
 

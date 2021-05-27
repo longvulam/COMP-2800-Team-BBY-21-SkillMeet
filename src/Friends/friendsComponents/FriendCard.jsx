@@ -5,11 +5,35 @@ import IconButton from '@material-ui/core/IconButton';
 import MessageIcon from '@material-ui/icons/Message';
 import { useHistory } from 'react-router';
 import { db, getCurrentUserDataAsync } from '../../firebase';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '100%',
+        margin: 'auto',
+        height:'4em',
+        backgroundColor: theme.palette.primary.dark,
+    },
+    friendName: {
+        color:'white',
+    },
+    messageFab: {
+        backgroundColor:'white',
+        height:'3em',
+        width:'3em',
+        color:theme.palette.primary.main,
+    }
+}));
 
 export default function FriendCard(props) {
     const history = useHistory();
     const { friendId, friendName, chatRoomId, setLoading, avatar } = props;
-
+    const classes = useStyles();
     async function createChatroomAndRedirect() {
         setLoading(true);
         try {
@@ -27,19 +51,13 @@ export default function FriendCard(props) {
 
     return (
         <>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                width: '95%',
-                margin: 'auto',
-            }}>
+            <Paper className={classes.paper}>
                 <Avatar
                     onClick={()=>history.push('/profile/' + friendId)}
                     src={avatar}
                     style={{
-                        width: '3em',
-                        height: '3em',
+                        width: '2.5em',
+                        height: '2.5em',
                     }}
                     alt={friendName}
                 />
@@ -47,18 +65,19 @@ export default function FriendCard(props) {
                     display: 'flex',
                     alignItems: 'center',
                 }}>
-                    <Typography variant="body1"
-                        style={{
-                            textAlign: 'center',
-                            width: '30vw',
-                        }}>
+                    <Typography
+                        className={classes.friendName}
+                        align='center'
+                        variant='h6'>
                         {friendName}
                     </Typography>
                 </div>
-                <IconButton onClick={event => createChatroomAndRedirect(chatRoomId)}>
+                <Fab 
+                    className={classes.messageFab}
+                    onClick={event => createChatroomAndRedirect(chatRoomId)}>
                     <MessageIcon />
-                </IconButton>
-            </div>
+                </Fab>
+            </Paper>
         </>
     );
 }

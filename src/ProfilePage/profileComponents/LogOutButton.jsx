@@ -45,7 +45,8 @@ export default function LogoutButton (props) {
 
   return (
     <>
-    <Fab  
+    <Fab 
+      id="logoutBtn"
       className={classes.LogoutButton}
       onClick={handleClickOpen}
       id="logoutBtn"
@@ -62,10 +63,10 @@ export default function LogoutButton (props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button id="noConfirmBtn" onClick={handleClose} color="primary">
           No
         </Button>
-        <Button onClick={handleLogout} color="primary" autoFocus>
+        <Button id="yesConfirmBtn" onClick={handleLogout} color="primary" autoFocus>
           Yes
         </Button>
       </DialogActions>

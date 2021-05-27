@@ -4,6 +4,7 @@ import LoadingSpinner from "../common/LoadingSpinner";
 import { db, firestore, waitForCurrentUser } from "../firebase";
 import ChatRoomCard from "./chatPageComponents/chatRoomCard";
 import firebase from 'firebase';
+import Grid from '@material-ui/core/Grid';
 
 export default function ChatRooms(props) {
     const [isLoading, setIsLoading] = useState(true);
@@ -26,14 +27,21 @@ export default function ChatRooms(props) {
     const rooms = [...newRooms, ...sortedRooms];
     return (
         isLoading ? <LoadingSpinner /> :
-            <div>
+            <Grid container
+            style={{
+                marginTop:'1em',
+            }}
+            spacing={1}>
                 {rooms.length === 0 ? EmptyListMessage() :
                     rooms.map((room, index) =>
+                        <Grid Item
+                        item xs={12}>
                         <ChatRoomCard
                             room={room}
                             key={index} />
+                        </Grid>
                     )}
-            </div>
+            </Grid>
     );
 }
 

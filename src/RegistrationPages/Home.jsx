@@ -37,7 +37,7 @@ export default function Home(props) {
 
   return (
 
-    <div className="landingPage">
+    <div style={{margin: '-.5em'}} className="landingPage">
       <Navbar />
       <div className="landing-page-background">
 
