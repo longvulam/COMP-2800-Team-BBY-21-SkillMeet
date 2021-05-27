@@ -5,7 +5,7 @@ import Profile from '../ProfilePage/Profile';
 import Friends from '../Friends/Friends';
 import Create from '../RegistrationPages/Create';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import AboutUs from "../AboutUs/aboutUsComponent";
+import AboutUs from "../AboutUs/aboutUs2.0Component";
 import EditProfilePage from '../EditProfile/EditProfilePage';
 import Search from "../SearchPage/SearchPage";
 import FriendRequests from '../Friends/FriendRequests';

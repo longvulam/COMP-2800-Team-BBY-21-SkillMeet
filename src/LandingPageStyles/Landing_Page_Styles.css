@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
 * {
   margin-right: 0;
   margin-left: 0;
@@ -24,8 +26,6 @@
 }
 
 .white-background {
-  margin-left: 10%;
-  margin-right: 10%;
   margin-bottom: auto;
   padding: 20px;
   background-color: whitesmoke;
@@ -169,9 +169,9 @@
 .navbar {
   display: flex;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  background-color: #588BAE;
+  background-color: #2C698D;
   color: black;
   border-radius: 0px 0px 4px 4px;
   width: 100%;
@@ -191,6 +191,11 @@
 /* sets the height of links in the navbar to 100% */
 .navbar-links {
   height: 100%;
+}
+
+/* sets font of the about us in navbar */
+.navbar-active {
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 /* sets layout of the individual links in the navbar */
@@ -218,7 +223,6 @@
 /* changes the background, border, and cursor when hovering links in the navbar */
 .navbar-links li:hover {
   background-color: #B4CDCD;
-  border-radius: 0px 0px 15px 15px;
   border: 0px double rgb(0, 0, 0, .2);
   cursor: pointer;
 }
