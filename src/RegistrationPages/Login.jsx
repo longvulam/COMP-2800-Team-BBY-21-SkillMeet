@@ -165,7 +165,7 @@ function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <p className="errorMsg">{emailError}</p>
+            <p id="emailError" className="errorMsg">{emailError}</p>
 
             <label>Password:</label>
             <input
@@ -175,7 +175,7 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <p className="errorMsg">{passwordError}</p>
+            <p id="passwordError" className="errorMsg">{passwordError}</p>
 
             <input className="mainBtn" type="submit" onClick={handleLogin} value="Sign In"></input>
 
@@ -195,6 +195,7 @@ function Login() {
             <h3 className="formHeading">Sign Up Form</h3>
             <label>Email:</label>
             <input
+              id="userEmailField"
               type="email"
               className="userEmailID"
               autoFocus
@@ -202,48 +203,51 @@ function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <p className="errorMsg">{emailError}</p>
+            <p id="emailError" className="errorMsg">{emailError}</p>
 
             <label>FirstName:</label>
             <input
+              id="firstNameField"
               type="text"
               className="otherInputs"
               required
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
-            <p className="errorMsg">{firstNameError}</p>
+            <p id="firstNameError" className="errorMsg">{firstNameError}</p>
 
             <label>LastName:</label>
             <input
+              id="lastNameField"
               type="text"
               required
               className="otherInputs"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
-            <p className="errorMsg">{lastNameError}</p>
+            <p id="lastNameError" className="errorMsg">{lastNameError}</p>
 
             <label>Create Password:</label>
             <input
+              id="passwordField"
               type="password"
               required
               className="userPassword"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <p className="errorMsg">{passwordError}</p>
+            <p id="passwordError" className="errorMsg">{passwordError}</p>
 
-            <input className="mainBtn" type="submit" onClick={handleSignup} value="Sign Up"></input>
+            <input className="mainBtn" type="submit" onClick={handleSignup} value="Sign Up" />
 
             <p className="signInLine">
               Have an Account?
-                                <button className="signInReDirect" onClick={() => {
+            <button id="loginBtn" className="signInReDirect" onClick={() => {
                 setHasAccount(!hasAccount);
                 clearInputsLogin()
                 clearErrors();
               }
-              }>Sign In</button>
+            }>Sign In</button>
             </p>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
           </>
