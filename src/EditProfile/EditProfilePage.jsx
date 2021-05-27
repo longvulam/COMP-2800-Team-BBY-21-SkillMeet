@@ -283,6 +283,7 @@ function SkillsList(props) {
         .map((skill, index) =>
             <EditableSkill
                 key={index}
+                index={index}
                 data={skill}
                 skillsList={userSkills}
                 changeState={setUserProfile}
