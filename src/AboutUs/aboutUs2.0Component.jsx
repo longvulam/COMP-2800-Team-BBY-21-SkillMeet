@@ -11,6 +11,7 @@ import LamPic from '../img/lamPic.jpg';
 import ArunabPic from '../img/arunabPic.jpg';
 import OwenPic from '../img/owenPic.jpg';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container'
 
 library.add(fas);
@@ -19,7 +20,7 @@ function handleLogout() {
 
 }
 
-class AboutUs2 extends Component {
+class AboutUs extends Component {
     render() {
         const data = teamData;
         return (<div>
@@ -49,7 +50,7 @@ class AboutUs2 extends Component {
     }
 }
 
-export default AboutUs2;
+export default AboutUs;
 
 
 

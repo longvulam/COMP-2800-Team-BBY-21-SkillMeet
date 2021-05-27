@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Background from '../aboutUsSplash.jpg';
 
 class HeroImage extends Component {
