@@ -33,9 +33,7 @@ export function Router() {
             <PublicRoute exact path="/">
                 <Home />
             </PublicRoute>
-            <PublicRoute path="/create">
-                <Create />
-            </PublicRoute>
+
             <PublicRoute path="/aboutUs">
                 <AboutUs />
             </PublicRoute>
@@ -44,7 +42,11 @@ export function Router() {
                 <SocialMedia />
             </Route>
 
-            <ProtectedRoute path='/editProfile'>
+            <ProtectedRoute exact path="/create">
+                <Create />
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path='/editProfile'>
                 <EditProfilePage />
             </ProtectedRoute>
             <ProtectedRoute path='/chatRoom/:chatRoomId'>
@@ -56,17 +58,17 @@ export function Router() {
                 <Route path={["/profile/:uid", "/profile"]}>
                     <Profile />
                 </Route>
-                <Route path="/friends">
+                <Route exact path="/friends">
                     <Friends />
                 </Route>
-                <Route path="/search">
+                <Route exact path="/search">
                     <Search />
                 </Route>
-                <Route path='/friendRequests'>
+                <Route exact path='/friendRequests'>
                     <FriendsPageNav />
                     <FriendRequests />
                 </Route>
-                <Route path='/chatRooms'>
+                <Route exact path='/chatRooms'>
                     <ChatRoomsList />
                 </Route>
 
