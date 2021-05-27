@@ -17,19 +17,19 @@ export default function ChatRoom(props) {
     const [chatRoomName, setChatRoomName] = useState("");
     const [currentUserAvatar, setCurrentUserAvatar] = useState("");
     const [otherUserAvatar, setOtherUserAvatar] = useState("");
-
+    const [friendId, setFriendId] = useState("");
 
     useEffect(async () => {
         const currentUser = await waitForCurrentUser();
         const currentUserDocData = await getCurrentUserDataAsync(currentUser.uid);
+        const friendUid = await setDbRefsAndGetFriendId(currentUser, chatRoomId);
+        const friendData = await getFriend(friendUid);
         setCurrentUserAvatar(currentUserDocData.avatar);
-        await setDbRefs(currentUser, chatRoomId);
-        const friendDocData = await friendRef.get();
-        setOtherUserAvatar(friendDocData.data().avatar);
+        setFriendId(friendData.id);
+        setOtherUserAvatar(friendData.avatar);
         enableListening(updateMessages);
 
-        const name = await getChatRoomName(currentUser, chatRoomId);
-        setChatRoomName(name);
+        setChatRoomName(friendData.displayName);
         setIsLoading(false);
     }, []);
 
@@ -46,7 +46,7 @@ export default function ChatRoom(props) {
     function sendMessage(event) {
         sendMessageToDB(currentMsg);
         setCurrentMsg("");
-        friendRef.set({
+        db.collection('users').doc(friendId).set({
             newMessagesNo: firestore.FieldValue.increment(1)
         }, {merge: true});
     }
@@ -123,8 +123,6 @@ let collRef = db.collection('chatrooms')
 let chatroomRef = db.collection('chatrooms')
     .doc();
 
-let friendRef = db.collection('users');
-
 async function enableListening(updateMessages) {
     collRef.onSnapshot(querySnapshot => {
         const arr = [];
@@ -140,12 +138,18 @@ async function enableListening(updateMessages) {
     });
 }
 
-async function setDbRefs(currentUser, chatRoomId) {
+async function setDbRefsAndGetFriendId(currentUser, chatRoomId) {
     chatroomRef = db.collection('chatrooms').doc(chatRoomId);
     collRef = chatroomRef.collection('messages');
     const chatroom = await chatroomRef.get().then(doc => doc.data());
-    const friendId = chatroom.uids.find(id => id !== currentUser.uid);
-    friendRef = friendRef.doc(friendId);
+    return chatroom.uids.find(id => id !== currentUser.uid);
+}
+
+async function getFriend(friendId) {
+    const friendDoc = await db.collection('users').doc(friendId).get();
+    const friendData = friendDoc.data();
+    friendData.id = friendDoc.id;
+    return friendData;
 }
 
 /** @param {String} newMessage */
@@ -164,10 +168,4 @@ async function sendMessageToDB(newMessage) {
     chatroomRef.set({
         recentMessage: messageRef
     }, { merge: true });
-}
-
-async function getChatRoomName(currentUser, roomId) {
-    const userChatRoom = await db.collection('users').doc(currentUser.uid)
-        .collection('chatrooms').where('roomId', '==', roomId).get();
-    return userChatRoom.docs[0].data().name;
 }
