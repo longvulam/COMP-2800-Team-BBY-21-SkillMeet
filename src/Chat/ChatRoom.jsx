@@ -23,14 +23,13 @@ export default function ChatRoom(props) {
         const currentUser = await waitForCurrentUser();
         const currentUserDocData = await getCurrentUserDataAsync(currentUser.uid);
         const friendUid = await setDbRefsAndGetFriendId(currentUser, chatRoomId);
-        const friendAvatar = await getFriendAvatar(friendUid);
+        const friendData = await getFriend(friendUid);
         setCurrentUserAvatar(currentUserDocData.avatar);
-        setFriendId(friendUid);
-        setOtherUserAvatar(friendAvatar);
+        setFriendId(friendData.id);
+        setOtherUserAvatar(friendData.avatar);
         enableListening(updateMessages);
 
-        const name = await getChatRoomName(currentUser, chatRoomId);
-        setChatRoomName(name);
+        setChatRoomName(friendData.displayName);
         setIsLoading(false);
     }, []);
 
@@ -146,9 +145,11 @@ async function setDbRefsAndGetFriendId(currentUser, chatRoomId) {
     return chatroom.uids.find(id => id !== currentUser.uid);
 }
 
-async function getFriendAvatar(friendId) {
+async function getFriend(friendId) {
     const friendDoc = await db.collection('users').doc(friendId).get();
-    return friendDoc.data().avatar;
+    const friendData = friendDoc.data();
+    friendData.id = friendDoc.id;
+    return friendData;
 }
 
 /** @param {String} newMessage */
@@ -167,10 +168,4 @@ async function sendMessageToDB(newMessage) {
     chatroomRef.set({
         recentMessage: messageRef
     }, { merge: true });
-}
-
-async function getChatRoomName(currentUser, roomId) {
-    const userChatRoom = await db.collection('users').doc(currentUser.uid)
-        .collection('chatrooms').where('roomId', '==', roomId).get();
-    return userChatRoom.docs[0].data().name;
 }
