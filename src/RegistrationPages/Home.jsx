@@ -44,7 +44,7 @@ export default function Home(props) {
         <div className="white-background">
           <div className="app-name">{appName}</div>
           <div className="app-hook">{appHook}</div>
-          <div className="app-description">{appDescription}</div>
+          {/* <div className="app-description">{appDescription}</div> */}
         </div>
         <Login />
       </div>
