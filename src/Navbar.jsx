@@ -26,7 +26,7 @@ const Navbar = (props) => {
     return ( 
         
         <nav className="navbar" {...classes.navbar}>
-        <a className={classes.logoWrapper} to="/">
+        <a className={classes.logoWrapper} href="/">
             <img className={classes.logo} src={SkillMeet} />
         </a>
         <div className="navbar-links">
