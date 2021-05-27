@@ -35,7 +35,7 @@ export default function ProfileBio(props) {
         >
             {editable ? 
             <InputBase
-                id="profileBio"
+                id="bioEditField"
                 value={bioInfo}
                 multiline
                 onChange={handleChange}
@@ -46,7 +46,7 @@ export default function ProfileBio(props) {
                     color: 'white'
                 }} /> 
             : <Typography
-                id="profileBio"
+                id="bioField"
                 variant="body1"
                 style={{
                     width:'95%',

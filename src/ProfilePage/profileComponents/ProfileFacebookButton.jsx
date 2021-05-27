@@ -13,7 +13,7 @@ class FacebookBtn extends React.Component {
     
     return (
       <Fab 
-        id="editBtn"
+        id="facebookBtn"
         style={this.props.style}
         onClick={()=>history.push("/socialmedia")}
         aria-label="edit"
