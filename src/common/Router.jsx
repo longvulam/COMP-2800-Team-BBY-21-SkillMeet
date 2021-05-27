@@ -9,7 +9,7 @@ import AboutUs from "../AboutUs/AboutUs";
 import EditProfilePage from '../EditProfile/EditProfilePage';
 import Search from "../SearchPage/SearchPage";
 import FriendRequests from '../Friends/FriendRequests';
-import FriendsPageNav from '../Friends/friendsComponents/friendsPageNav';
+import FriendsPageNav from '../Friends/friendsComponents/FriendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import { ProtectedRoute } from "./ProtectedRoute";

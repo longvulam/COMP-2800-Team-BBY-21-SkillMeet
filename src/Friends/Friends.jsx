@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FriendsPageNav from './friendsComponents/friendsPageNav';
+import FriendsPageNav from './friendsComponents/FriendsPageNav';
 import Grid from '@material-ui/core/Grid';
 
 import FriendCard from './friendsComponents/FriendCard';
