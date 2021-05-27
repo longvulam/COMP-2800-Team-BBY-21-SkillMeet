@@ -174,8 +174,7 @@ function CurrentUserButtons(props) {
 
     return (
         <div className={classes.buttonsWrap}>
-            <LogOutButton
-            />
+            <LogOutButton />
             <EditButton
                 style={{
                     marginRight: '4vw',

@@ -157,6 +157,7 @@ function Login() {
 
                         <label>Email:</label>
                         <input
+                            id="userEmailField"
                             type="email"
                             className="userEmailID"
                             autoFocus
@@ -168,6 +169,7 @@ function Login() {
 
                         <label>Password:</label>
                         <input
+                            id="passwordField"
                             type="password"
                             required
                             className="userPassword"
@@ -176,7 +178,7 @@ function Login() {
                         />
                         <ErrorMessage errorValue={passwordError} id="passwordError" />
 
-                        <input className="mainBtn" type="submit" onClick={handleLogin} value="Sign In"></input>
+                        <input id="loginBtn" className="mainBtn" type="submit" onClick={handleLogin} value="Sign In"></input>
 
                         <p className="signUpLine">
                             Don't have an Account?
@@ -237,11 +239,14 @@ function Login() {
                         />
                         <ErrorMessage errorValue={passwordError} id="passwordError" />
 
-                        <input className="mainBtn" type="submit" onClick={handleSignup} value="Sign Up" />
+                        <input id="registerBtn" className="mainBtn" type="submit" onClick={handleSignup} value="Sign Up" />
 
                         <p className="signInLine">
                             Have an Account?
-            <button id="loginBtn" className="signInReDirect" onClick={() => {
+                            <button 
+                              id="toLoginBtn" 
+                              className="signInReDirect" 
+                              onClick={() => {
                                 setHasAccount(!hasAccount);
                                 clearInputsLogin()
                                 clearErrors();
