@@ -36,10 +36,10 @@ export default function FriendsPage() {
 
         }}>
 
-        {requests.map(request => {
+        {requests.map((request, index) => {
           const { displayName, city, id, avatar} = request;
           return (
-            <Grid item xs={12}
+            <Grid id={"pendingUser_" + index} item xs={12}
             key={id} 
             style={{
               width:'100%',

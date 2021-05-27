@@ -144,11 +144,11 @@ export default function SearchPage() {
     spacing={1}
     className={classes.userContain}
     >
-  {searchedUsers.map(user => {
+  {searchedUsers.map((user, index) => {
     console.log('Searched users', user);
     const { name, city, skillName, skillLevel, id, avatar, isFriending } = user;
     return (
-      <Grid item xs={12} className={classes.cardContain}>
+      <Grid id={"user_" + index} item xs={12} className={classes.cardContain}>
         <UserSearchCard
           name={name}
           city={city}
