@@ -15,15 +15,8 @@ import FriendRequests from '../Friends/FriendRequests';
 import FriendsPageNav from '../Friends/friendsComponents/FriendsPageNav';
 import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
-<<<<<<< HEAD
-import { ProtectedRoute } from "./ProtectedRoute";
-import Social from '../SocialMedia/Socials';
-import Navbar from '../Navbar';
-import { PublicRoute } from "./PublicRoute";
-=======
 import Twitter from '../SocialMedia/TwitterPage';
 import Social from '../SocialMedia/Socials';
->>>>>>> b6a1055a9c4ee9631ed59145f92d456591f3a2de
 
 
 const bottomNavbarRoutes = [
