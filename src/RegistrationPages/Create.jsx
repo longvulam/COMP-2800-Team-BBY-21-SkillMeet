@@ -241,6 +241,7 @@ const Create = () => {
           <TextField
             multiline
             rows={4}
+            id = "level"
             label="Bio"
             required
             value={user.bio}
@@ -352,6 +353,7 @@ const Create = () => {
 
           <Button
             className={classes.button}
+            id='create-profile-button'
             variant="contained"
             color="primary"
             type="submit">

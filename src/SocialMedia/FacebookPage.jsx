@@ -9,13 +9,13 @@ export default class FacebookPage extends Component {
             <div id="fb-content">
                 <FacebookProvider appId="5637173396354300">
                     
-                    <Page href="https://www.facebook.com/bcit.ca" tabs="timeline" />
+                    <Page href="https://www.facebook.com/SkillMeet-104493365179779" tabs="timeline" />
                     <br/>
                     <br/>
-                    <Like href="http://www.facebook.com/bcit.ca" colorScheme="dark" showFaces share />
+                    <Like href="https://www.facebook.com/SkillMeet-104493365179779" colorScheme="dark" showFaces share />
                     <br/>
 
-                    <Comments href="http://www.facebook.com/bcit.ca" />
+                    <Comments href="https://www.facebook.com/SkillMeet-104493365179779" />
                 </FacebookProvider>
             </div>
 

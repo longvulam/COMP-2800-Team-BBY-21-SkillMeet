@@ -84,6 +84,7 @@
   background-color: blue;
 }
 
+.otherInputs,
 .userEmailID,
 .userPassword {
   width: 95%;
