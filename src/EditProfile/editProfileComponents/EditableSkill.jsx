@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+/**
+ * functional component that displays the current skills associated with
+ * a user, and allows them to be editted.  Skills are save by updating firstore data.
+ * @param props data, index, skillsList, and changeState
+ * @returns 
+ */
 export default function EditableSkill(props) {
     const { data, index, skillsList, changeState } = props;
     const classes = useStyles();
@@ -55,12 +61,14 @@ export default function EditableSkill(props) {
         });
     }
 
+    /** gets current skill in the input based on it's id */
     async function getThisSkill() {
         let thisSkill = skillsList.find(skill => skill.id === data.id);
         thisSkill = thisSkill ? thisSkill : skillsList.find(skill => !skill.id);
         return thisSkill;
     }
 
+    /** deletes a skill based on comparing to the input to the previous skill */
     async function deleteSkill(event) {
         const thisSkill = await getThisSkill();
 
@@ -79,7 +87,7 @@ export default function EditableSkill(props) {
         .map(uSkill => uSkill.skillName);
 
     const filteredOptions = skillOptions.filter(skillName =>
-        !skillNames.includes(skillName) && 
+        !skillNames.includes(skillName) &&
         !skillsList.some(us => us.skillName == skillName) ||
         skillName === data.skillName
     );

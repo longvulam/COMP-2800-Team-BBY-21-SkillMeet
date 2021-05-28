@@ -6,7 +6,6 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel'
-import { makeStyles } from '@material-ui/core/styles';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
@@ -16,53 +15,11 @@ import { Avatar, Grid, Button, IconButton, Fab } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(2),
-    }
-  },
-  inputRoot: {
-    width:'95%',
-    height:'2.5em',
-    marginBottom:'3em',
-  },
-  button: {
-    margin: theme.spacing(2),
-  },
-  avatarWrap: {
-    width: '100%',
-    height: '12em',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatar: {
-    height: '7.5em',
-    width: '7.5em',
-  },
-  editAvatarbtn: {
-    marginLeft: '12em',
-    marginTop: '-7em',
-  },
-  bioInput: {
-    backgroundColor: '#e3f6f5',
-    borderBottom: '1px solid black',
-    width: '85%'
-  },
-  levelInput:{
-    width: '55%',
-  },
-  skillDescInput:{
-    width: '80%',
-  }
-}))
+import { profileFormStyles } from "../common/PageStyles";
 
 
 const Create = () => {
-  const classes = useStyles();
+  const classes = profileFormStyles();
   const history = useHistory();
 
   const [user, setUser] = useState({
@@ -73,10 +30,7 @@ const Create = () => {
     avatarImageUrl: "",
   });
 
-  const [nameError, setNameError] = useState('');
-  const [bioError, setBioError] = useState('');
-  const [cityError, setCityError] = useState('');
-
+  /** Checks for user authentication after rendering components. */
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -94,23 +48,36 @@ const Create = () => {
     { skillName: "", skillLevel: "Expert", skillDescription: "" },
   ])
 
+
+  /** Handles the onChange method when the users enter their skills to their profile */
   let count = 0;
   const handleChangeInput = (index, event) => {
     const values = [...skillFields];
     values[index][event.target.name] = event.target.value;
     setSkillFields(values);
 
+    /** Displaying an easter egg when the user enters beekeeping as their skill name and expert as their skill value */
     for (let i = 0; i < skillFields.length; i++) {
-      if (count == 0 && (skillFields[i].skillName == "beekeeping" || skillFields[i].skillName == "Beekeeping")
-        && skillFields[i].skillLevel == "Expert" && skillFields[i].skillDescription == "") {
-        count++;
-        $("#hiddenEasterEgg2").fadeIn(500, function () {
-          window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
-        });
-      }
+        const skill = skillFields[i];
+        let isBeeKeeping = skill.skillName == "beekeeping";
+        isBeeKeeping = isBeeKeeping || skill.skillName == "Beekeeping";
+        const descEmpty = skill.skillDescription == "";
+        const isExpert = skill.skillLevel == "Expert";
+        if (count == 0 && isBeeKeeping && isExpert && descEmpty) {
+            count++;
+            $("#hiddenEasterEgg2").fadeIn(500, function () {
+                window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
+            });
+        }
     }
   }
 
+  /**
+   * Handles the change made when selecting the skill name while adding skills to your profile.
+   * @param {skillName} fieldName 
+   * @param {String} newValue 
+   * @param {num} index 
+   */
   function searchedSkillUpdate(fieldName, newValue, index) {
     const currSkill = skillFields[index];
     currSkill[fieldName] = newValue;
@@ -119,6 +86,12 @@ const Create = () => {
     console.log('Skills Searched', skillFields);
   }
 
+  /**
+   * This function writes the data entered in the form to
+   * the logged in user's firebase table.
+   * Then directs the user to their profile page.
+   * @param {submit event} e 
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -141,6 +114,7 @@ const Create = () => {
     history.push("/profile");
   };
 
+  /** Adds another empty skill card for the user to fill and add a skill to their profile. */
   const handleAddFields = () => {
     setSkillFields(prevValues => [
       ...prevValues,
@@ -149,6 +123,7 @@ const Create = () => {
       }])
   }
 
+  /** Removes a skill card in case the user wants to delete it. */
   const handleRemoveFields = (index) => {
     const values = [...skillFields];
     if (values.length == 1) return;
@@ -156,6 +131,7 @@ const Create = () => {
     setSkillFields(values);
   }
 
+  /** Reads the changes made on the profile image uploaded and updates the field. */
   const handleImageChange = async (event) => {
     const avatarImage = event.target.files[0];
     const storageRef = storage.ref();
@@ -165,6 +141,11 @@ const Create = () => {
     updateField(avatarImageUrl, 'avatarImageUrl');
   }
 
+  /**
+   * Updates the field for profile picture.
+   * @param {String} value 
+   * @param {skillName, skillLevel, skillDescription} fieldName 
+   */
   function updateField(value, fieldName) {
     setUser(prev => {
       return {
@@ -174,6 +155,7 @@ const Create = () => {
     });
   }
 
+  /** Lets the user select an image to set as profile picture for our app. */
   const handleEditPicture = () => {
     const fileInput = document.getElementById('uploadImage');
     fileInput.click();

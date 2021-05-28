@@ -1,3 +1,8 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import React from "react";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
@@ -17,7 +22,7 @@ import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import Twitter from '../SocialMedia/TwitterPage';
 import Social from '../SocialMedia/Socials';
-
+ 
 
 const bottomNavbarRoutes = [
     "/profile/:uid",
@@ -27,6 +32,10 @@ const bottomNavbarRoutes = [
     "/friendRequests",
     "/chatRooms",
 ];
+
+/**
+ * The router component to handle routing and redirect caused renders.
+ */
 export function Router() {
 
     return (<BrowserRouter>
@@ -37,6 +46,7 @@ export function Router() {
             </PublicRoute>
 
             <PublicRoute path="/aboutUs">
+            <PublicNavbar />
                 <AboutUs />
             </PublicRoute>
 

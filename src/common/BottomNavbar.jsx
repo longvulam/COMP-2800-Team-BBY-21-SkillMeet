@@ -1,3 +1,8 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -25,6 +30,10 @@ const useStyles = makeStyles({
   }
 });
 
+/**
+ * Functional component built using Material UI components 
+ * to create a Navigation bar on the bottom.
+ */
 export default function LabelBottomNavigation() {
   const classes = useStyles();
   const [value, setValue] = React.useState('recents');
@@ -37,17 +46,7 @@ export default function LabelBottomNavigation() {
     subscribeToUpdates(setNewMessagesNo, setNewRequestsNo);
   }, []);
 
-  function handleChangeURL(event, newValue){
-    if (newValue != "friends" && newValue != "chat") {
-      history.push(`/${newValue}`);
-      setHistoryValue(newValue);
-    }
-  };
-
-  function handleChange(event, newValue){
-    setValue(newValue);
-  };
-
+  /** Value handler function */
   function twoCallbacks(event, newValue) {
     history.push(`${newValue}`);
     setHistoryValue(newValue);
@@ -94,6 +93,7 @@ export default function LabelBottomNavigation() {
   );
 }
 
+/** Subscribes to message and request notification updates. */
 async function subscribeToUpdates(setNewMessagesNo, setNewRequestsNo){
     const user = await waitForCurrentUser();
     db.collection('users').doc(user.uid)

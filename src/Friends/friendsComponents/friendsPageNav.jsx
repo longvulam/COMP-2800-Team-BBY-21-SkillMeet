@@ -23,6 +23,11 @@ const useStyles = makeStyles({
   }
 });
 
+/**
+ * functional component that creates a navbar used to navigate between friend 
+ * requests and a user's friend list.
+ * 
+ */
 export default function LabelBottomNavigation() {
   const classes = useStyles();
   const [value, setValue] = React.useState('recents');
@@ -30,12 +35,17 @@ export default function LabelBottomNavigation() {
   const [historyValue, setHistoryValue] = React.useState("");
   const [newRequestsNo, setNewRequestsNo] = React.useState(0);
 
-  React.useEffect(async ()=> subscribeToUpdates(setNewRequestsNo), []);
+  React.useEffect(async () => subscribeToUpdates(setNewRequestsNo), []);
 
-  function handleChange(event, newValue){
+  function handleChange(event, newValue) {
     setValue(newValue);
   };
 
+  /**
+   * calls two other callback functions, sets the value for the navbar, and changes the routes.
+   * @param event on change, one of the buttons is pressed.
+   * @param newValue value that the bottom navigation bar displays
+   */
   function twoCallbacks(event, newValue) {
     history.push(`${newValue}`);
     setHistoryValue(newValue);
@@ -43,24 +53,28 @@ export default function LabelBottomNavigation() {
   }
 
   return (
-    <Paper 
-    elevation={2}
-    className = {classes.navbarWrap}>
+    <Paper
+      elevation={2}
+      className={classes.navbarWrap}>
       <BottomNavigation value={value} onChange={twoCallbacks} className={classes.root}>
-        <BottomNavigationAction label="Friends" value="/friends" 
+        <BottomNavigationAction label="Friends" value="/friends"
           icon={
             <Badge badgeContent={newRequestsNo} color="error">
               <GroupIcon />
-            </Badge>} 
+            </Badge>}
         />
-        <BottomNavigationAction label="Requests" value="/friendRequests" icon={<Pending/>} />
+        <BottomNavigationAction label="Requests" value="/friendRequests" icon={<Pending />} />
       </BottomNavigation>
     </Paper>
   );
 }
 
-async function subscribeToUpdates(setNewRequestsNo){
-    const user = await waitForCurrentUser();
-    db.collection('users').doc(user.uid)
-      .onSnapshot(doc => setNewRequestsNo(doc.data().newRequestsNo));
+/**
+ * listens for changes to keep newRequestsNo, the number of new requests up to date.
+ * @param setNewRequestsNo a function that sets the new number of requests. 
+ */
+async function subscribeToUpdates(setNewRequestsNo) {
+  const user = await waitForCurrentUser();
+  db.collection('users').doc(user.uid)
+    .onSnapshot(doc => setNewRequestsNo(doc.data().newRequestsNo));
 }

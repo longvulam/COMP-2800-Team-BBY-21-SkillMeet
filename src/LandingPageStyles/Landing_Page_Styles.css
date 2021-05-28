@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 
 * {
+  margin-top: 0;
   margin-right: 0;
   margin-left: 0;
 }
@@ -57,7 +58,7 @@
 
 .loginContainer {
   background-color: #588BAE;
-  height: 42.5em;
+  height: 39.5em;
   padding: 20px;
   margin:auto;
   border-radius: 20px;
@@ -170,22 +171,21 @@
   color: black;
   border-radius: 0px 0px 4px 4px;
   width: 100%;
-  margin: 0 auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 3.5em;
   border: 1px solid rgba(0, 0, 0, .5);
 }
 
 /* sets the letter style of 'BESTRIDE' Name on navbar */
 .brand-title {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   margin: .5rem;
   color: whitesmoke;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   text-decoration: none;
-}
+  align-items: center;
 
-/* sets the height of links in the navbar to 100% */
-.navbar-links {
-  height: 100%;
 }
 
 /* sets font of the about us in navbar */
@@ -324,13 +324,16 @@
 @media (max-width: 870px) {
 
   .form-background {
-    background-image: url("../img/bottom.JPG");
-    padding-bottom: 70px;
+    background-image: url("../img/bottomv.jpg");
+    background-position: center;
+    background-repeat: repeat-x;
+    background-size: contain;
+    padding-bottom: 60px;
   }
 
   .landing-page-background {
-    height: 55vh;
-    min-height: 700px;
+    height: 60vh;
+    min-height: 560px;
     padding-top: 8vh;
     display: grid;
     grid-template-columns: 1fr;
@@ -362,7 +365,9 @@
   }
 
   .loginContainer {
-    margin: auto 15%;
+    margin-top: 10vh;
+    margin-left: 15%;
+    margin-right: 15%;
     width: 70%;
     padding: 15px;
     border-radius: 10px;
@@ -433,6 +438,7 @@
     margin: auto 2%;
     padding: 16px;
     border-radius: 15px;
+    margin-bottom: 50vh;
   }
 
   .app-name {
@@ -489,7 +495,7 @@
 @media (max-width: 420px) {
   .landing-page-background {
     height: 55vh;
-    min-height: 400px;
+    min-height: 450px;
     padding-top: 4vh;
     grid-row-gap: 2vh;
   }
@@ -520,10 +526,9 @@
   }
 
   .loginContainer {
-    /* margin: 0 15%; */
     justify-items: center;
     margin: auto;
-    width: 85%;
+    width: 75%;
     padding: 10px;
     border-radius: 10px;
     text-align: center;
@@ -533,9 +538,9 @@
   .userEmailID,
   .userPassword {
     width: 100%;
-    height: 2em;
+    height: 2.5em;
     padding: 12px 16px;
-    margin: 8px 0;
+    margin: 5px 0;
   }
 
   .signInReDirect,

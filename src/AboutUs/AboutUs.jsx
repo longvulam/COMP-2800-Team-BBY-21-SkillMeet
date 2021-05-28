@@ -1,3 +1,9 @@
+
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import React, { Component } from 'react';
 import PublicRoute from '../common/PublicRoute';
 import HeroImage from './aboutUsComponents/HeroImage';
@@ -11,39 +17,43 @@ import LamPic from '../img/lamPic.jpg';
 import ArunabPic from '../img/arunabPic.jpg';
 import OwenPic from '../img/owenPic.jpg';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container'
+
 
 library.add(fas);
 
+/** handles the logout based on PublicRoute */
 function handleLogout() {
 
 }
 
+/**
+ * class component that creates the AboutUs Page by displaying a hero image, a mission
+ * statement, our team info, and contact info.
+ */
 class AboutUs extends Component {
     render() {
         const data = teamData;
-        return (<div style={{marginTop: '-.5em', width: '100vw'}}>
+        return (<div style={{ marginTop: '-.5em', width: '100vw' }}>
             <PublicRoute handleLogout={handleLogout} />
             <HeroImage />
             <Mission />
             <div style={{ textAlign: 'center', border: '1px solid black', backgroundColor: 'black', marginBottom: '3rem' }}>
-            <h1 style={{ color: 'lightblue', marginTop: '1.5rem', marginBottom: '1rem' }}>Our Team..</h1>
-            <Grid container spacing={1} justify="center" style={{width: '100vw'}}>
-                {data.map(card => {
-                    const { memberPic, memberName, memberBio } = card;
-                    console.log('memberPic', memberPic)
-                    return (
-                        <Grid item xs={6} justify="center" alignItems="center"  >
-                        <Team2
-                            memberPic={memberPic}
-                            memberName={memberName}
-                            memberBio={memberBio}
-                        />
-                        </Grid>
-                    )
-                })}
-            </Grid>
+                <h1 style={{ color: 'lightblue', marginTop: '1.5rem', marginBottom: '1rem' }}>Our Team..</h1>
+                <Grid container spacing={1} justify="center" style={{ width: '100vw' }}>
+                    {data.map(card => {
+                        const { memberPic, memberName, memberBio } = card;
+                        console.log('memberPic', memberPic)
+                        return (
+                            <Grid item xs={6} justify="center" alignItems="center"  >
+                                <Team2
+                                    memberPic={memberPic}
+                                    memberName={memberName}
+                                    memberBio={memberBio}
+                                />
+                            </Grid>
+                        )
+                    })}
+                </Grid>
             </div>
             <ContactUs />
         </div>);

@@ -13,16 +13,22 @@ import firebase from '../../firebase';
 
 const useStyles = makeStyles((theme) => ({
   LogoutButton: {
-    backgroundColor:theme.palette.primary.dark,
-    color:'white',
+    backgroundColor: theme.palette.primary.dark,
+    color: 'white',
     marginRight: '6vw',
     marginTop: '2vw',
     height: '2.5em',
     width: '2.5em',
   },
- }));
+}));
 
-export default function LogoutButton (props) {
+/**
+ * functional component for a logout button along with it's functionality of
+ * logging a user out, and a diaolgue that confirms with users before logging out.
+ * @param props props passed to the function
+ * 
+ */
+export default function LogoutButton(props) {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
@@ -39,38 +45,38 @@ export default function LogoutButton (props) {
 
     var promise = firebase.auth().signOut();
     promise.then(function () {
-    window.location.href = '/';
-  });
+      window.location.href = '/';
+    });
   }
 
   return (
     <>
-    <Fab 
-      id="logoutBtn"
-      className={classes.LogoutButton}
-      onClick={handleClickOpen}
-      id="logoutBtn"
+      <Fab
+        id="logoutBtn"
+        className={classes.LogoutButton}
+        onClick={handleClickOpen}
+        id="logoutBtn"
       >
-      <LogoutIcon/>
-    </Fab>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-    >
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Are You Sure You Want To Logout?
+        <LogoutIcon />
+      </Fab>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are You Sure You Want To Logout?
         </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button id="noConfirmBtn" onClick={handleClose} color="primary">
-          No
+        </DialogContent>
+        <DialogActions>
+          <Button id="noConfirmBtn" onClick={handleClose} color="primary">
+            No
         </Button>
-        <Button id="yesConfirmBtn" onClick={handleLogout} color="primary" autoFocus>
-          Yes
+          <Button id="yesConfirmBtn" onClick={handleLogout} color="primary" autoFocus>
+            Yes
         </Button>
-      </DialogActions>
-    </Dialog>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

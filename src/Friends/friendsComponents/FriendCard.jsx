@@ -15,20 +15,26 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         width: '100%',
         margin: 'auto',
-        height:'4em',
+        height: '4em',
         backgroundColor: theme.palette.primary.dark,
     },
     friendName: {
-        color:'white',
+        color: 'white',
     },
     messageFab: {
-        backgroundColor:'white',
-        height:'3em',
-        width:'3em',
-        color:theme.palette.primary.main,
+        backgroundColor: 'white',
+        height: '3em',
+        width: '3em',
+        color: theme.palette.primary.main,
     }
 }));
 
+/**
+ * functional component that displays a user's friends' information, and allows
+ * you to access your chat with them.
+ * @param props props passed to the function
+ * 
+ */
 export default function FriendCard(props) {
     const history = useHistory();
     const { friendId, friendName, chatRoomId, setLoading, avatar } = props;
@@ -82,6 +88,12 @@ export default function FriendCard(props) {
     );
 }
 
+/**
+ * creates a chatroom in the database when two users start a chat for the first time.
+ * @param friendId friend doc ID from firestore
+ * @param friendName friend name from their user doc
+ * @returns roomId, the Id of the chatroom that the two users share
+ */
 async function createChatRoomInDB(friendId, friendName) {
     const currentUser = await getCurrentUserDataAsync();
     const uids = [currentUser.id, friendId];
