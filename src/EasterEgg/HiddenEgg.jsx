@@ -2,7 +2,11 @@ import { Component } from 'react';
 import $ from 'jquery';
 
 /**
- * Source:  https://github.com/mikeflynn/egg.js/blob/master/egg.js
+ * Lines 11 - 135 are taken from th github depository, 
+ * the code is for displaying an easter egg on a website.
+ * 
+ * @author mikeflynn, yikfun, webdeveric
+ * @see  https://github.com/mikeflynn/egg.js/blob/master/egg.js
  */
 function Egg(/* keySequence, fn, metadata */) {
     this.eggs = [];
@@ -129,9 +133,10 @@ Egg.prototype.listen = Egg.prototype.Listen;
 Egg.prototype.addCode = Egg.prototype.AddCode;
 Egg.prototype.addHook = Egg.prototype.AddHook;
 
-
 class HiddenEgg extends Component {
     componentDidMount() {
+
+        /** Displays an easter egg by making use of the code in Line 11-135. */
         var egg = new Egg();
         egg.addCode("f,r,i,e,n,d,s", function () {
             $('#hiddenEasterEgg').fadeIn(500, function () {
@@ -148,7 +153,6 @@ class HiddenEgg extends Component {
             <div>
                 <img src="https://media.giphy.com/media/ihYEWzTBNT6sqEvhmn/giphy.gif" id="hiddenEasterEgg" alt="spongebob and Patrick"></img>
             </div>
-            // <div style="width:100%"><div style="height:0;padding-bottom:56.25%;position:relative;width:100%"><iframe allowfullscreen="" frameBorder="0" height="100%" src="https://giphy.com/embed/gLiV9vhb02Yikmagf3/video" style="left:0;position:absolute;top:0" width="100%"></iframe></div></div>
         );
     }
 }

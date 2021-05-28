@@ -73,10 +73,7 @@ const Create = () => {
     avatarImageUrl: "",
   });
 
-  const [nameError, setNameError] = useState('');
-  const [bioError, setBioError] = useState('');
-  const [cityError, setCityError] = useState('');
-
+  /** Checks for user authentication after rendering components. */
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -94,12 +91,15 @@ const Create = () => {
     { skillName: "", skillLevel: "Expert", skillDescription: "" },
   ])
 
+
+  /** Haandles the onChange method when the users enter their skills to their profile */
   let count = 0;
   const handleChangeInput = (index, event) => {
     const values = [...skillFields];
     values[index][event.target.name] = event.target.value;
     setSkillFields(values);
 
+    /** Displaying an easter egg when the user enters beekeeping as their skill name and expert as their skil value */
     for (let i = 0; i < skillFields.length; i++) {
       if (count == 0 && (skillFields[i].skillName == "beekeeping" || skillFields[i].skillName == "Beekeeping")
         && skillFields[i].skillLevel == "Expert" && skillFields[i].skillDescription == "") {
@@ -111,6 +111,12 @@ const Create = () => {
     }
   }
 
+  /**
+   * Handles the change made when selecting the skill name while adding skills to your profile.
+   * @param {skillName} fieldName 
+   * @param {String} newValue 
+   * @param {num} index 
+   */
   function searchedSkillUpdate(fieldName, newValue, index) {
     const currSkill = skillFields[index];
     currSkill[fieldName] = newValue;
@@ -119,6 +125,12 @@ const Create = () => {
     console.log('Skills Searched', skillFields);
   }
 
+  /**
+   * This function writes the data entered in the form to
+   * the logged in user's firebase table.
+   * Then directs the user to their profiel page.
+   * @param {submit event} e 
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -141,6 +153,7 @@ const Create = () => {
     history.push("/profile");
   };
 
+  /** Adds another empty skill card for the user to fill and add a skill to their profile. */
   const handleAddFields = () => {
     setSkillFields(prevValues => [
       ...prevValues,
@@ -149,6 +162,7 @@ const Create = () => {
       }])
   }
 
+  /** Removes a skill card in case the user wants to delete it. */
   const handleRemoveFields = (index) => {
     const values = [...skillFields];
     if (values.length == 1) return;
@@ -156,6 +170,7 @@ const Create = () => {
     setSkillFields(values);
   }
 
+  /** Reads the changes made on the profile image uploaded and updates the field. */
   const handleImageChange = async (event) => {
     const avatarImage = event.target.files[0];
     const storageRef = storage.ref();
@@ -165,6 +180,11 @@ const Create = () => {
     updateField(avatarImageUrl, 'avatarImageUrl');
   }
 
+  /**
+   * Updates the field for profiel picture.
+   * @param {String} value 
+   * @param {skillName, skillLevel, skillDescription} fieldName 
+   */
   function updateField(value, fieldName) {
     setUser(prev => {
       return {
@@ -174,6 +194,7 @@ const Create = () => {
     });
   }
 
+  /** Lets the user select an image to set as profile picture for our app. */
   const handleEditPicture = () => {
     const fileInput = document.getElementById('uploadImage');
     fileInput.click();

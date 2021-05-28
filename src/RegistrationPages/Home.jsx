@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import firebase from '../firebase';
 import Login from './Login';
 import PublicNavbar from '../common/PublicNavbar';
-import $ from 'jquery';
 import { useHistory } from "react-router-dom";
 
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
@@ -16,6 +15,8 @@ export default function Home(props) {
   const history = useHistory();
   const [user, setUser] = useState('');
 
+
+  /** Checks the authentication status of the user. */
   const authListener = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -25,7 +26,11 @@ export default function Home(props) {
       }
     });
   }
-
+  
+/** 
+ * Runs the authListenser function after rendering compnents and then at every update on the page.
+ * Redirects user to /profile path if the user is logged in.
+ */
   useEffect(() => {
     authListener()
     if (user) {

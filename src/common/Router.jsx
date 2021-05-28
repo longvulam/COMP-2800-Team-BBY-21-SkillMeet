@@ -37,6 +37,7 @@ export function Router() {
             </PublicRoute>
 
             <PublicRoute path="/aboutUs">
+            <PublicNavbar />
                 <AboutUs />
             </PublicRoute>
 

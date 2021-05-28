@@ -3,6 +3,12 @@ import { FacebookProvider, Like } from 'react-facebook';
 import { Page } from 'react-facebook';
 import { Comments } from 'react-facebook';
 
+/**
+ * The code displayed is a modified version of the code examples displayed on the page linked.
+ * 
+ * @author zlatkofedor
+ * @see https://www.npmjs.com/package/react-facebook
+ */
 export default class FacebookPage extends Component {
     render() {
         return (
