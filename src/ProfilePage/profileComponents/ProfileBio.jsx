@@ -8,16 +8,21 @@ const defaultBioText = `Bio Loading`;
 
 
 const useStyles = makeStyles((theme) => ({
- bioTypography: {
-   backgroundColor:theme.palette.primary.main,
-   color:'white',
-   width: '100%',
-   display: 'flex',
-   alignItems: 'center',
-   justifyContent: 'center',
- },
+    bioTypography: {
+        backgroundColor: theme.palette.primary.main,
+        color: 'white',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 }));
 
+/**
+ * funcitonal component that creates the profile bio.
+ * @param props props passed to the function.  bio, editable, and changeState
+ * 
+ */
 export default function ProfileBio(props) {
     const { bio, editable, changeState } = props;
     const classes = useStyles();
@@ -33,28 +38,28 @@ export default function ProfileBio(props) {
             elevation={2}
             className={classes.bioTypography}
         >
-            {editable ? 
-            <InputBase
-                id="bioEditField"
-                value={bioInfo}
-                multiline
-                onChange={handleChange}
-                style={{
-                    width:'95%',
-                    marginTop:'0.25em',
-                    marginBottom:'0.25em',
-                    color: 'white'
-                }} /> 
-            : <Typography
-                id="bioField"
-                variant="body1"
-                style={{
-                    width:'95%',
-                    marginTop:'0.25em',
-                    marginBottom:'0.25em',
-                }}>
-              {bioInfo}
-            </Typography>}
+            {editable ?
+                <InputBase
+                    id="bioEditField"
+                    value={bioInfo}
+                    multiline
+                    onChange={handleChange}
+                    style={{
+                        width: '95%',
+                        marginTop: '0.25em',
+                        marginBottom: '0.25em',
+                        color: 'white'
+                    }} />
+                : <Typography
+                    id="bioField"
+                    variant="body1"
+                    style={{
+                        width: '95%',
+                        marginTop: '0.25em',
+                        marginBottom: '0.25em',
+                    }}>
+                    {bioInfo}
+                </Typography>}
         </Paper>
     );
 }

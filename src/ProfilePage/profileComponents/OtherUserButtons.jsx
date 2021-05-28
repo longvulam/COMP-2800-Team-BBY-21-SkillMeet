@@ -6,6 +6,12 @@ import { useStyles } from '../Profile';
 import { db, firestore, getCurrentUserDataAsync } from '../../firebase';
 import { useHistory } from 'react-router';
 
+/**
+ * functional component that contains buttons that are displayed on a
+ * friend's profile.
+ * @param {*} props 
+ * @returns 
+ */
 export function OtherUserButtons(props) {
     const history = useHistory();
     const { profileData, isFriend, setLoading } = props;
@@ -17,6 +23,10 @@ export function OtherUserButtons(props) {
         setIsPendingFriendShip(true);
     }
 
+    /**
+     * creates a chatroom and then redirects the user to the chatroom page.
+     * @param e an event of clicking on the IconButton
+     */
     async function createChatroomAndRedirect(e) {
         setLoading(true);
         try {
@@ -45,6 +55,12 @@ export function OtherUserButtons(props) {
         </div>);
 }
 
+/**
+ * uses queries to create data for a chatroom in the firestore database.
+ * @param friendId user id of a friend
+ * @param friendName name of a friend
+ * @returns 
+ */
 async function createChatRoomInDB(friendId, friendName) {
     const currentUser = await getCurrentUserDataAsync();
     const uids = [currentUser.id, friendId];
@@ -66,6 +82,11 @@ async function createChatRoomInDB(friendId, friendName) {
     return roomId;
 }
 
+/**
+ * request to add a friend by querying firestore and creating documents in both user's
+ * 'Friends' collections.
+ * @param uid user 
+ */
 async function addFriend(uid) {
     const currentUserData = await getCurrentUserDataAsync();
 

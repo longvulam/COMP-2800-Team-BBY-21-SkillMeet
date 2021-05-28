@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { Avatar, Grid, Snackbar } from '@material-ui/core';
 import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
@@ -12,7 +11,6 @@ import { OtherUserButtons } from './profileComponents/OtherUserButtons';
 import { ProfileAlert } from './profileComponents/ProfileAlert';
 import { PersonalInfo } from './profileComponents/PersonalInfo';
 import { SkillsList } from './profileComponents/SkillsList';
-
 import LoadingSpinner from '../common/LoadingSpinner';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
 
@@ -38,6 +36,11 @@ export const useStyles = makeStyles((theme) => ({
     },
 }));
 
+/**
+ * functional component that displays a user's profile.  A users profile is made up 
+ * of personal info, a bio, skills, and buttons.
+ * 
+ */
 export default function Profile() {
     const history = useHistory();
     const { uid } = useParams();
@@ -55,6 +58,11 @@ export default function Profile() {
         setSuccessOpen(false);
     };
 
+    /**
+     * sets the data for the profileData state, as well as the isLoadingData state.
+     * @param userProfile current user data from firestore 
+     * @param userFriendDoc data of a friend from firestore
+     */
     async function afterLoaded(userProfile, userFriendDoc) {
         if (uid) {
             const userFriend = userFriendDoc.data();
@@ -131,6 +139,12 @@ export default function Profile() {
     );
 }
 
+/**
+ * loads the profile data based on if it's the current user, or their friend.
+ * @param uid user id from firestore auth
+ * @param callback a function passed to loadProfile
+ * @returns the data used to fill the profile page.
+ */
 async function loadProfile(uid, callback) {
     const currentUser = await waitForCurrentUser();
 
@@ -157,7 +171,8 @@ async function loadProfile(uid, callback) {
 }
 
 /**
- * @return {Array}
+ * gets the data of the chatrooms that the user a part of for firestore.
+ * @return an array of data with chatroom information from firestore
  */
 async function getChatRoom(currentUserId, uid) {
     if (!uid) return undefined;
@@ -171,18 +186,23 @@ async function getChatRoom(currentUserId, uid) {
     return roomsData.filter(room => room.uids.every(id => bothUids.includes(id)));
 }
 
+/**
+ * functional component that returns button.
+ * @param props props passed to the function
+ * @returns 2 social media buttons a logout button and an edit button.
+ */
 function CurrentUserButtons(props) {
     const { } = props;
     const classes = useStyles();
 
     return (
         <div className={classes.buttonsWrap}>
-            <TwitterBtn style = {{
+            <TwitterBtn style={{
                 height: '2.5em',
                 width: '2.5em',
                 marginTop: '2vw',
                 marginRight: '3vw'
-            }}/>
+            }} />
             <FacebookBtn
                 style={{
                     marginRight: '50vw',

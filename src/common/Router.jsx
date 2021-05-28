@@ -22,7 +22,7 @@ import ChatRoomsList from "../Chat/ChatRoomsList";
 import ChatRoom from "../Chat/ChatRoom";
 import Twitter from '../SocialMedia/TwitterPage';
 import Social from '../SocialMedia/Socials';
-
+ 
 
 const bottomNavbarRoutes = [
     "/profile/:uid",
