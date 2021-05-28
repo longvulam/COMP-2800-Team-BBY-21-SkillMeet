@@ -146,6 +146,7 @@ export default function UserSearchCard(props) {
                         className={classes.avatar}
                         alt="Profile Pic"
                         src={avatar}
+                        id={"searchUserPic_" + id}
                         onClick={()=> history.push('/profile/' + id)}
                       />
                       <div className={classes.nameAndLocation}>

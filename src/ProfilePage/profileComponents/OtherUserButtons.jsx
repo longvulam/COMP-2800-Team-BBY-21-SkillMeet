@@ -40,7 +40,7 @@ export function OtherUserButtons(props) {
                 (<IconButton
                     onClick={handleClick}
                     disabled={isPendingFriendShip}>
-                    <PersonAddIcon />
+                    <PersonAddIcon id={"addBtn_" + profileData.id}/>
                 </IconButton>)}
         </div>);
 }
