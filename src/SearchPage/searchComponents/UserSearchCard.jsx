@@ -11,68 +11,83 @@ import React from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useHistory } from 'react-router';
 
+/**
+ * Creats a Mui alert based on what is passed through the props
+ * @param {*} props props passed into the function.
+ * @returns an alert with the props
+ */
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+/**
+ *  useStyle React hook used to style the elements.
+ */
 const useStyles = makeStyles((theme) => ({
-  paper:{
-    width:'100%',
-    display:'flex',
-    alignItems:'center',
+  paper: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
   },
-  avatar : {
-    height:'2.5em',
-    width:'2.5em',
-    marginRight:'1em',
-    marginLeft:'0.5em',
-    backgroundColor:theme.palette.primary.main,
+  avatar: {
+    height: '2.5em',
+    width: '2.5em',
+    marginRight: '1em',
+    marginLeft: '0.5em',
+    backgroundColor: theme.palette.primary.main,
   },
   addIcon: {
-    width:'0.9em',
-    height:'0.9em',
+    width: '0.9em',
+    height: '0.9em',
   },
   fab: {
-    width:'2.5em',
-    height:'2.5em',
-    marginRight:'0.5em',
+    width: '2.5em',
+    height: '2.5em',
+    marginRight: '0.5em',
   },
-  chips : {
-    fontSize:'1em',
+  chips: {
+    fontSize: '1em',
   },
-  infoGrid:{
-    width:'100%%',
-    height:'100%',
-    alignItems:'center',
-    margin:'auto',
+  infoGrid: {
+    width: '100%%',
+    height: '100%',
+    alignItems: 'center',
+    margin: 'auto',
   },
   firstGridItem: {
-    width:'100%',
-    display:'flex',
-    justifyContent:'space-between',
-    alignItems:'top',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'top',
   },
   skillGridItem: {
-    marginTop:'0.5em',
-    width:'100%',
-    backgroundColor:theme.palette.primary.light,
+    marginTop: '0.5em',
+    width: '100%',
+    backgroundColor: theme.palette.primary.light,
   },
   skills: {
-    marginLeft:'0.5em',
+    marginLeft: '0.5em',
   },
   skillLevel: {
-      marginLeft:'0.5em',
+    marginLeft: '0.5em',
   },
   nameAndLocation: {
-      display:'flex',
-      flexDirection:'column',
+    display: 'flex',
+    flexDirection: 'column',
   },
   avatarNameLocation: {
-      display:'flex',
-      alignItems:'center',
+    display: 'flex',
+    alignItems: 'center',
   }
 }));
 
+/**
+ * Functional component that display the individual user information of users that
+ * match the skills set in the search bar.  A user's picture, name, city, skill, 
+ * and skill level are all displayed.
+ * @param {*} props props passed to the function
+ * 
+ */
 export default function UserSearchCard(props) {
   const classes = useStyles();
   const history = useHistory();
@@ -82,113 +97,134 @@ export default function UserSearchCard(props) {
 
   const [snackbarState, setSnackbarState] = React.useState({
     open: false,
-    vertical:'bottom',
-    horizontal:'center',
+    vertical: 'bottom',
+    horizontal: 'center',
     Transition: 'fade',
   });
   const { open, vertical, horizontal, Transition } = snackbarState;
 
-  function handleSnackbarOpen () {
+  /**
+   * sets the snackbar state to true, position it, and style it.
+   */
+  function handleSnackbarOpen() {
     setSnackbarState({
       open: true,
-      vertical:'bottom',
-      horizontal:'center',
+      vertical: 'bottom',
+      horizontal: 'center',
       Transition: 'fade',
     });
-
   }
+
+  /**
+   * sets the snackbar state to false.
+   */
   function handleSnackbarClose() {
     setSnackbarState({
-      ...snackbarState, 
+      ...snackbarState,
       open: false,
     });
   }
+
+/**
+ * runs the add friend function and shows a snackbar while also setting a boolean
+ * to true indicating a request was sent after the addfriend button is clicked. 
+ */
   function handleAddClick() {
     setRequestSent(true);
     addFriend();
     handleSnackbarOpen();
   }
+
+  /**
+   * request to add a friend by creating document in each user's 'Friends' collection
+   * with booleans indicating the pending/unconfirmed status and the opposite user's
+   * user id.
+   */
   async function addFriend() {
     const currentUserData = await getCurrentUserDataAsync();
     console.log(currentUserData.uid);
     db.collection('users').doc(currentUserData.uid).collection('Friends').doc('sent' + id)
-		.set({
-          isConfirmed: false,
-          friendID: id,
-		})
-		.then(() => {
-    			console.log("Document successfully written!");
-		})
-		.catch((error) => {
-    			console.error("Error writing document: ", error);
-		});
+      .set({
+        isConfirmed: false,
+        friendID: id,
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
     db.collection('users').doc(id).collection('Friends').doc('received' + currentUserData.uid)
-		.set({
-    			isPending: true,
-          friendID: currentUserData.uid
-		})
-		.then(() => {
-    			console.log("Document successfully written!");
-		})
-		.catch((error) => {
-    			console.error("Error writing document: ", error);
-		});
+      .set({
+        isPending: true,
+        friendID: currentUserData.uid
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
   }
   return (
     <>
-        <Paper className={classes.paper} elevation={4} key={id}>
-            <Grid container direction="column" 
-              spacing={1} className={classes.infoGrid}>
+      <Paper className={classes.paper} elevation={4} key={id}>
+        <Grid container direction="column"
+          spacing={1} className={classes.infoGrid}>
 
-              <Grid item className={classes.firstGridItem}>
-                  <div className={classes.avatarNameLocation}>
-                      <Avatar 
-                        className={classes.avatar}
-                        alt="Profile Pic"
-                        src={avatar}
-                        onClick={()=> history.push('/profile/' + id)}
-                      />
-                      <div className={classes.nameAndLocation}>
-                          <Typography variant="h6">{name}</Typography>
-                          <Typography variant="subtitle1">{city}</Typography>
-                      </div>
-                  </div>
-                  <Fab 
-                    disabled={isFriending}
-                    id={id + "_btn"}
-                    className={classes.fab} 
-                    color={requestSent ? "default" : "primary"} 
-                    onClick = { () => handleAddClick()}>
-                      <PersonAddIcon className={classes.addIcon}/>
-                  </Fab>
-              </Grid>
+          <Grid item className={classes.firstGridItem}>
+            <div className={classes.avatarNameLocation}>
+              <Avatar
+                className={classes.avatar}
+                alt="Profile Pic"
+                src={avatar}
+                onClick={() => history.push('/profile/' + id)}
+              />
+              <div className={classes.nameAndLocation}>
+                <Typography variant="h6">{name}</Typography>
+                <Typography variant="subtitle1">{city}</Typography>
+              </div>
+            </div>
+            <Fab
+              disabled={isFriending}
+              id={id + "_btn"}
+              className={classes.fab}
+              color={requestSent ? "default" : "primary"}
+              onClick={() => handleAddClick()}>
+              <PersonAddIcon className={classes.addIcon} />
+            </Fab>
+          </Grid>
 
-              <Grid item className={classes.skillGridItem}>
-                <div className={classes.skills}>
-                  <Typography variant="h6" display='inline'>{skillName}</Typography>
-                  <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
-                </div>
-              </Grid>
-            </Grid>
-        </Paper>
-        <Snackbar
-          autoHideDuration={1500}
-          anchorOrigin={{ vertical, horizontal }}
-          open={open}
-          onClose={handleSnackbarClose}
-          TransitionComponent={Transition}
-        >
+          <Grid item className={classes.skillGridItem}>
+            <div className={classes.skills}>
+              <Typography variant="h6" display='inline'>{skillName}</Typography>
+              <Typography variant="subtitle1" display='inline' className={classes.skillLevel}>{skillLevel}</Typography>
+            </div>
+          </Grid>
+        </Grid>
+      </Paper>
+      <Snackbar
+        autoHideDuration={1500}
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleSnackbarClose}
+        TransitionComponent={Transition}
+      >
         <Alert severity="info">Added {name}</Alert>
-        </Snackbar> 
+      </Snackbar>
     </>
   );
 }
 
+/**
+ * gets the current user's data from their firestore 'users' document
+ * @returns user an object with key value pairs representing user information
+ */
 function getCurrentUserDataAsync() {
-    return new Promise((resolve, reject) =>
-        auth.onAuthStateChanged((user) => {
-            if (!user) return;
-            resolve(user);   
-        })
-    );
+  return new Promise((resolve, reject) =>
+    auth.onAuthStateChanged((user) => {
+      if (!user) return;
+      resolve(user);
+    })
+  );
 }
