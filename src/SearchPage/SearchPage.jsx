@@ -1,3 +1,8 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,22 +11,28 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import UserSearchCard from './searchComponents/UserSearchCard';
 import Grid from '@material-ui/core/Grid';
-
 import { db, auth } from '../firebase';
-
 import { skillOptions } from '../dataStores/skills';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { SearchSettingsContext } from './searchComponents/SearchSettingsContext';
-
 import debugPackage from 'debug';
 const debug = debugPackage('dev');
 debug.enabled = true;
 
+
+/**
+ * gets the current user's document ID from firebase auth. 
+ * @returns curUserID String the current user's ID
+ */
 async function getCurrentUIDAsync() {
   const curUserID = await getCurrentUserDataAsync();
   return curUserID;
 }
 
+/**
+ * gets the current user's data for their document in firebase
+ * @returns a promise object that listens for changes, and if there is a user it resolves the user doc id.
+ */
 function getCurrentUserDataAsync() {
   return new Promise((resolve, reject) =>
       auth.onAuthStateChanged((user) => {
@@ -32,6 +43,9 @@ function getCurrentUserDataAsync() {
 }
 getCurrentUIDAsync();
 
+/**
+ *  useStyle React hook used to style the elements.
+ */
 const useStyles = makeStyles((theme) => ({
   inputRoot: {
     width:'95%',
@@ -84,6 +98,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * Functional component built using Material UI components to create a search bar, 
+ * which is used to query firestore to find users with the searched skill.  
+ */
 export default function SearchPage() {
   const classes = useStyles();
   const searchSettings = useContext(SearchSettingsContext);
@@ -91,12 +109,22 @@ export default function SearchPage() {
   const initialState = havePrevSettings ? searchSettings.skills : [];
   const [searchedSkills, setSearchedSkills] = useState(initialState);
 
+  /**
+   * Checks to see if the user is returning to the search page, and 
+   * if they are, renders what was previously shown.
+   */
   useEffect(() => {
     if(havePrevSettings) {
         getUsersFromSkillSearch(searchedSkills, setSearchedUsers)
     }
   }, []);
 
+  /**
+   * Updates the array in state to hold the newly searched skill.  Array is used
+   * so the function will work with multiple searched skills in the future.
+   * @param {*} event a change in what is selected in the Autocomplete
+   * @param {*} currentSelectedSkills the skill currently selecte din the Autocomplete
+   */
   function searchedSkillUpdate (event, currentSelectedSkills) {
     console.log('Onchange', currentSelectedSkills);
     const skills = [currentSelectedSkills];
@@ -167,6 +195,14 @@ export default function SearchPage() {
   );
 }
 
+/**
+ * gets the users that have skills that match the skills that another user
+ * has searched for by querying firestore.
+ * @param {*} searchedSkills an array of skills that the user searched for
+ * @param {*} setSearchedUsers a function used to set the searchedUsers array in state
+ * @returns a userFriend obj with an id, name, city, avatar, skillName, skillLevel, and 
+ *          boolean indicating if users are friends/pending friends.
+ */
 async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
   if(searchedSkills.length <= 0) {return}
 
@@ -177,6 +213,13 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
     .where('skillName', 'in', searchedSkills)
     .get();
 
+  /**
+   * gets a ref of the parent document.
+   * I found the idea for this code on stackoverflow.com
+   * 
+   * @author Frank Van Puffelen
+   * @see https://stackoverflow.com/questions/56219469/firestore-get-the-parent-document-of-a-subcollection
+   */
   snapshots.forEach(userSkillDoc => {
     userSkillDocs.push(userSkillDoc.data());
     userRefDocs.push(userSkillDoc.ref.parent.parent)

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import LoadingSpinner from "../common/LoadingSpinner";
 import { db, firestore, waitForCurrentUser } from "../firebase";
-import ChatRoomCard from "./ChatPageComponents/ChatRoomCard";
+import ChatRoomCard from "./chatPageComponents/ChatRoomCard";
 import firebase from 'firebase';
 import Grid from '@material-ui/core/Grid';
 
