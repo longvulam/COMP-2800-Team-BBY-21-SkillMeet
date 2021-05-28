@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import MessageIcon from '@material-ui/icons/Message';
 import { useHistory } from 'react-router';
 import { db, getCurrentUserDataAsync } from '../../firebase';
@@ -53,7 +52,7 @@ export default function FriendCard(props) {
         <>
             <Paper className={classes.paper}>
                 <Avatar
-                    onClick={()=>history.push('/profile/' + friendId)}
+                    onClick={() => history.push('/profile/' + friendId)}
                     src={avatar}
                     style={{
                         width: '2.5em',
@@ -72,7 +71,8 @@ export default function FriendCard(props) {
                         {friendName}
                     </Typography>
                 </div>
-                <Fab 
+                <Fab
+                    id={friendId}
                     className={classes.messageFab}
                     onClick={event => createChatroomAndRedirect(chatRoomId)}>
                     <MessageIcon />

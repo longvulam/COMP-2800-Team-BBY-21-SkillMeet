@@ -15,9 +15,7 @@
 
 .landing-page-background {
   height: 100vh;
-  min-height: 900px;
-  padding-top: 10vh;
-  background-image: url("../img/friends1.jpg");
+  background-image: url("../img/aboutUsBackground.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -26,48 +24,44 @@
 }
 
 .white-background {
-  margin-bottom: auto;
   padding: 20px;
   background-color: whitesmoke;
-  opacity: 0.7;
+  opacity: 0.9;
   border-radius: 20px;
+  max-height: 10em;
+  margin-bottom: 10em;
 }
 
 .app-name {
   font-size: 95px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-weight: 800;
+  font-family: 'Roboto Condensed', sans-serif;
   text-align: left;
-  color: rgb(0, 33, 71);
+  color: #272643;
 }
 
 .app-description {
   font-size: 35px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-weight: 400;
+  font-family: 'Roboto Condensed', sans-serif;
   padding-top: 25px;
   padding-bottom: 25px;
-  color: #000589;
+  color: #272643;
   text-align: left;
-  padding-left: 0;
 }
 
 .app-hook {
   font-size: 45px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-weight: 500;
-  text-align: left;
-  color: #000589;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-align: center;
+  color: #272643;
 }
-
-
 
 .loginContainer {
   background-color: #588BAE;
-  height: fit-content;
+  height: 42.5em;
   padding: 20px;
-  margin-right: 20px;
+  margin:auto;
   border-radius: 20px;
+  height:45em;
 }
 
 .mainBtn {
@@ -291,8 +285,8 @@
 
   .loginContainer {
     padding: 15px;
-    margin-right: 10px;
     border-radius: 10px;
+    height:45em;
   }
 
   button {
@@ -371,7 +365,6 @@
     margin: auto 15%;
     width: 70%;
     padding: 15px;
-    margin-right: 10px;
     border-radius: 10px;
   }
 
@@ -463,7 +456,6 @@
   .loginContainer {
     width: 70%;
     padding: 15px;
-    margin-right: 10px;
     border-radius: 10px;
   }
 
@@ -497,7 +489,7 @@
 @media (max-width: 420px) {
   .landing-page-background {
     height: 55vh;
-    min-height: 520px;
+    min-height: 400px;
     padding-top: 4vh;
     grid-row-gap: 2vh;
   }
@@ -505,6 +497,7 @@
   .white-background {
     margin: auto 2%;
     padding: 10px;
+    margin-bottom: 10em;
     border-radius: 15px;
   }
 
@@ -529,7 +522,7 @@
   .loginContainer {
     /* margin: 0 15%; */
     justify-items: center;
-    margin: auto 7.5%;
+    margin: auto;
     width: 85%;
     padding: 10px;
     border-radius: 10px;

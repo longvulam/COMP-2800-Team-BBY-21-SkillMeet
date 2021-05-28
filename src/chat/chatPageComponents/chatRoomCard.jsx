@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChatRoomCard(props) {
-    const { room } = props;
+    const { room, index } = props;
 
     const classes = useStyles();
     const chatroomLocation = generateLocation(room);
@@ -68,8 +68,19 @@ export default function ChatRoomCard(props) {
                   <div className={classes.avatarNameLocation}>
                         <Avatar src={room.avatar} alt='Profile Pic' className={classes.avatar} />
                         <div className={classes.nameAndLocation}>
-                        <Typography className={classes.friendName} variant='h6'>{room.name + ": "} </Typography>
-                        <Typography className={classes.recentMsg} variant='subtitle2'>{room.recentMessage ? room.recentMessage.content : ""}</Typography>
+                        <Typography 
+                            className={classes.friendName} 
+                            variant='h6'
+                        >
+                            {room.name + ": "} 
+                        </Typography>
+                        <Typography 
+                            id={"recent_" + index}
+                            className={classes.recentMsg} 
+                            variant='subtitle2'
+                        >
+                            {room.recentMessage ? room.recentMessage.content : ""}
+                        </Typography>
                         </div>
                     </div>
                     </Grid>

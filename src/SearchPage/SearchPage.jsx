@@ -128,7 +128,7 @@ export default function SearchPage() {
               ...params.InputProps,
               endAdornment: (
                 <InputAdornment position="end">
-                <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
+                <Button id="searchBtn" onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
                     <SearchIcon color='primary' className={classes.searchIcon}/>
                 </Button>
                 </InputAdornment>
@@ -144,11 +144,11 @@ export default function SearchPage() {
     spacing={1}
     className={classes.userContain}
     >
-  {searchedUsers.map(user => {
+  {searchedUsers.map((user, index) => {
     console.log('Searched users', user);
     const { name, city, skillName, skillLevel, id, avatar, isFriending } = user;
     return (
-      <Grid item xs={12} className={classes.cardContain}>
+      <Grid id={"user_" + index} item xs={12} className={classes.cardContain}>
         <UserSearchCard
           name={name}
           city={city}

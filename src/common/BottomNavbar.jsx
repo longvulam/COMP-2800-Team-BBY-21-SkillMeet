@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { useHistory } from 'react-router-dom';
 import { Badge } from '@material-ui/core';
-import { db, waitForCurrentUser } from './firebase';
+import { db, waitForCurrentUser } from '../firebase';
 
 const useStyles = makeStyles({
   root: {
@@ -59,20 +59,30 @@ export default function LabelBottomNavigation() {
     elevation={4}
     className = {classes.navbarWrap}>
     <BottomNavigation value={value} onChange={twoCallbacks} className={classes.root}>
-      <BottomNavigationAction label="Profile" value="/profile" icon={<AccountIcon />} />
       <BottomNavigationAction 
-        label="Friends" 
-        value="/friends" 
+        id="profileBtn"
+        label="Profile"
+        value="/profile"
+        icon={<AccountIcon />} />
+      <BottomNavigationAction
+        id="friendsBottomBtn"
+        label="Friends"
+        value="/friends"
         icon={
           <Badge badgeContent={newRequestsNo} color="error">
             <LocationOnIcon />
           </Badge>
         } 
       />
-      <BottomNavigationAction label="Search" value="/search" icon={<SearchIcon />} />
-      <BottomNavigationAction 
-        label="Chat" 
-        value="/chatrooms" 
+      <BottomNavigationAction
+        id="searchBottomBtn"
+        label="Search"
+        value="/search"
+        icon={<SearchIcon />} />
+      <BottomNavigationAction
+        id="chatListBtn"
+        label="Chat"
+        value="/chatrooms"
         icon={
         <Badge badgeContent={newMessagesNo} color="error">
           <ChatIcon />

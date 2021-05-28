@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import FriendsPageNav from './friendsComponents/friendsPageNav';
+import FriendsPageNav from './friendsComponents/FriendsPageNav';
 import Grid from '@material-ui/core/Grid';
 
 import FriendCard from './friendsComponents/FriendCard';
 import LoadingSpinner from '../common/LoadingSpinner';
-import { db, waitForCurrentUser, firestore } from '../firebase';
+import { db, waitForCurrentUser } from '../firebase';
+import firebase from 'firebase';
 
 export default function FriendsPage() {
     const [isLoadingData, setLoading] = useState(true);
@@ -41,10 +42,11 @@ export default function FriendsPage() {
                             width: '97.5vw',
                             alignItems: 'center',
                         }}>
-                        {friendsList.map(friendInfo => {
+                        {friendsList.map((friendInfo, index) => {
                             const { displayName, id, avatar, chatRoomId } = friendInfo;
                             return (
                                 <Grid item
+                                    id={"friendUser_" + index}
                                     xs={12}
                                     key={id}
                                     style={{
@@ -88,7 +90,7 @@ async function getAllFriendsOnUser() {
 async function loadFriendsProfile(friendIds) {
     const res = await Promise.all([
         db.collection('users')
-            .where(firestore.FieldPath.documentId(), 'in', friendIds)
+            .where(firebase.firestore.FieldPath.documentId(), 'in', friendIds)
             .get().then(mapDocsToData),
         db.collection('chatrooms')
             .where('uids', 'array-contains-any', friendIds)

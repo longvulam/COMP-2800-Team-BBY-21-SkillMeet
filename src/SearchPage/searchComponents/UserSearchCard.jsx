@@ -155,6 +155,7 @@ export default function UserSearchCard(props) {
                   </div>
                   <Fab 
                     disabled={isFriending}
+                    id={id + "_btn"}
                     className={classes.fab} 
                     color={requestSent ? "default" : "primary"} 
                     onClick = { () => handleAddClick()}>
