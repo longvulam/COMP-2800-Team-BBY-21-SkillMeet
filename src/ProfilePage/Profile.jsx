@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useParams, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Avatar, Grid, InputBase, Button, IconButton } from '@material-ui/core';
-
-import SkillAccordion from './profileComponents/SkillAccordion';
+import { Avatar, Grid, Snackbar } from '@material-ui/core';
 import ProfileBio from './profileComponents/ProfileBio';
 import EditButton from './profileComponents/ProfileEditButton';
+import FacebookBtn from './profileComponents/ProfileFacebookButton';
+import TwitterBtn from './profileComponents/ProfileTwitterButton';
 import LogOutButton from './profileComponents/LogOutButton';
+import { OtherUserButtons } from './profileComponents/OtherUserButtons';
+import { ProfileAlert } from './profileComponents/ProfileAlert';
+import { PersonalInfo } from './profileComponents/PersonalInfo';
+import { SkillsList } from './profileComponents/SkillsList';
 
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import MessageIcon from '@material-ui/icons/Message';
-
+import LoadingSpinner from '../common/LoadingSpinner';
 import { db, getCurrentUserDataAsync, waitForCurrentUser } from '../firebase';
-import { useParams } from 'react-router-dom';
-import LoadingSpinner from '../classes/LoadingSpinner';
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
     buttonsWrap: {
         width: '100vw',
         display: 'flex',
@@ -31,93 +32,143 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         height: '4.5em',
         width: '4.5em',
-    }
+    },
+    name: {
+        color: theme.palette.primary.dark,
+    },
 }));
 
 export default function Profile() {
+    const history = useHistory();
     const { uid } = useParams();
     const classes = useStyles();
+    const location = useLocation();
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [isFriend, setIsFriend] = useState(false);
-    const [userProfile, setUserProfile] = useState();
+    const [profileData, setProfileData] = useState();
 
-    useEffect(() => Promise.all([
-        getCurrentUserDataAsync(uid).then(setUserProfile),
-        waitForCurrentUser()
-    ]).then(res => {
-        const currentUser = res[1];
-        if (!currentUser || !uid) {
-            setIsLoadingData(false);
-            return;
+    const openSnackbar = !!location.state && !!location.state.saveSuccess;
+
+    const [successOpen, setSuccessOpen] = useState(openSnackbar);
+    const handleClose = (e, reason) => {
+        if (reason === 'clickaway') return;
+        setSuccessOpen(false);
+    };
+
+    async function afterLoaded(userProfile, userFriendDoc) {
+        if (uid) {
+            const userFriend = userFriendDoc.data();
+            let isPendingFriendShip = false;
+
+            if (userFriend.hasOwnProperty("isConfirmed")) {
+                isPendingFriendShip = userFriend.isConfirmed === false;
+            }
+
+            if (userFriend.hasOwnProperty("isPending")) {
+                isPendingFriendShip = userFriend.isPending === true;
+            }
+            userProfile.isPending = isPendingFriendShip;
+            setIsFriend(userFriendDoc.exists && !isPendingFriendShip);
         }
+        setProfileData(userProfile);
+        setIsLoadingData(false);
+    }
 
-        db.collection('users').doc(currentUser.uid)
-            .collection('Friends').where('friendID', '==', uid)
-            .get()
-            .then(friendDoc => {
-                setIsFriend(!friendDoc.empty);
-                setIsLoadingData(false);
-            });
-    }), []);
+    useEffect(() => loadProfile(uid, afterLoaded), []);
 
     return (
         isLoadingData ? <LoadingSpinner /> :
-            <div style={{
-                width: '100vw',
-                height: 'calc(100vh - 4em)',
-                overflowY: 'scroll',
-                overflowX: 'hidden',
-            }}>
-                {!uid ? <CurrentUserButtons /> : <OtherUserButtons isFriend={isFriend} />}
+            <div className={classes.profilePage}
+                style={{
+                    width: '100vw',
+                    height: 'calc(100vh - 4em)',
+                    overflowY: 'scroll',
+                    overflowX: 'hidden',
+                }}>
+
+                {!uid ? <CurrentUserButtons /> :
+                    <OtherUserButtons
+                        isFriend={isFriend}
+                        setLoading={setIsLoadingData}
+                        profileData={profileData} />}
 
                 <div className={classes.avatarWrap}>
                     <Avatar
                         alt="Profile Picture"
-                        src="/static/images/avatar/1.jpg"
+                        src={profileData.avatar}
                         className={classes.avatar} />
                 </div>
 
-                <NameAndLocationInfo userProfile={userProfile} />
+                <PersonalInfo userProfile={profileData} />
 
                 <Grid container
                     direction="column"
                     spacing={1}
                     style={{
                         margin: 'auto',
-                        marginTop: '2vh',
                         width: '95vw',
                         alignItems: 'center',
                     }}>
-                    <SkillsList userSkills={userProfile.skills} />
+                    <SkillsList userSkills={profileData.skills} />
                     <Grid item xs={12}
                         style={{
                             width: '100%'
                         }}>
-                        <ProfileBio bio={userProfile.bio} />
+                        <ProfileBio
+                            editable={false}
+                            bio={profileData.bio} />
                     </Grid>
                 </Grid>
-
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={4000}
+                    onClose={handleClose}>
+                    <ProfileAlert onClose={handleClose} severity="success">
+                        Saved Successfully!
+                    </ProfileAlert>
+                </Snackbar>
             </div>
     );
 }
 
-function OtherUserButtons(props) {
-    const { isFriend } = props;
+async function loadProfile(uid, callback) {
+    const currentUser = await waitForCurrentUser();
 
-    const classes = useStyles();
+    const res = await Promise.all([
+        getCurrentUserDataAsync(uid),
+        uid ? getChatRoom(currentUser.uid, uid) : async () => false
+    ]);
 
-    return (
-        <div className={classes.buttonsWrap}>
-            {isFriend ?
-                (<IconButton>
-                    <MessageIcon />
-                </IconButton>
-                ) :
-                (<Button>
-                    <PersonAddIcon />
-                </Button>)
-            }
-        </div>)
+    const userProfileData = res[0];
+    if (!uid) {
+        callback(userProfileData, undefined);
+        return;
+    }
+
+    const chatRooms = res[1];
+    if (chatRooms.length === 1) {
+        userProfileData.chatRoomId = chatRooms[0].id;
+    }
+    const friendDoc = await db.collection('users').doc(currentUser.uid)
+        .collection('Friends').where('friendID', '==', uid)
+        .get();
+
+    callback(userProfileData, friendDoc.docs[0]);
+}
+
+/**
+ * @return {Array}
+ */
+async function getChatRoom(currentUserId, uid) {
+    if (!uid) return undefined;
+
+    const roomsSnapshot = await db.collection('chatrooms')
+        .where('uids', 'array-contains', currentUserId)
+        .get();
+
+    const roomsData = roomsSnapshot.docs.map(doc => { return { ...doc.data(), id: doc.id } });
+    const bothUids = [currentUserId, uid];
+    return roomsData.filter(room => room.uids.every(id => bothUids.includes(id)));
 }
 
 function CurrentUserButtons(props) {
@@ -126,14 +177,20 @@ function CurrentUserButtons(props) {
 
     return (
         <div className={classes.buttonsWrap}>
-            <LogOutButton
+            <TwitterBtn style = {{
+                height: '2.5em',
+                width: '2.5em',
+                marginTop: '2vw',
+                marginRight: '3vw'
+            }}/>
+            <FacebookBtn
                 style={{
-                    marginRight: '6vw',
+                    marginRight: '50vw',
                     marginTop: '2vw',
                     height: '2.5em',
                     width: '2.5em',
-                }}
-            />
+                }} />
+            <LogOutButton />
             <EditButton
                 style={{
                     marginRight: '4vw',
@@ -146,60 +203,4 @@ function CurrentUserButtons(props) {
     )
 }
 
-function NameAndLocationInfo(props) {
-    const { userProfile } = props;
-    return (
-        <Grid key="userProfile"
-            container
-            direction="column"
-            spacing={1}
-            style={{
-                margin: 'auto',
-                marginTop: '2vh',
-                alignItems: 'center',
-            }}>
-            <Grid item xs={12}>
-                <InputBase
-                    key="userName"
-                    value={userProfile.displayName}
-                    readOnly={true}
-                    inputProps={{
-                        'aria-label': 'naked',
-                        style: {
-                            textAlign: 'center',
-                            border: 'none',
-                        }
-                    }}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <InputBase
-                    readOnly={true}
-                    value={userProfile.city}
-                    inputProps={{
-                        'aria-label': 'naked',
-                        style: {
-                            textAlign: 'center',
-                            border: 'none',
-                        }
-                    }}
-                />
-            </Grid>
-        </Grid>)
-}
 
-function SkillsList(props) {
-    const { userSkills } = props;
-    return userSkills.map(accordion => {
-        const { skillName, skillLevel, skillDescription } = accordion;
-        return (
-            <Grid key={skillName} item xs={12}>
-                <SkillAccordion
-                    skillName={skillName}
-                    skillLevel={skillLevel}
-                    skillDescription={skillDescription}
-                />
-            </Grid>
-        );
-    })
-}

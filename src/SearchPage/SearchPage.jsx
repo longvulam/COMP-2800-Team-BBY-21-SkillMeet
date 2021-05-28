@@ -1,24 +1,25 @@
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
-import IconButton from '@material-ui/core/IconButton';
+import { useContext, useEffect, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper'
 import UserSearchCard from './searchComponents/UserSearchCard';
 import Grid from '@material-ui/core/Grid';
 
-import firebase, { db, auth } from '../firebase';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, auth } from '../firebase';
 
 import { skillOptions } from '../dataStores/skills';
-import createPalette from '@material-ui/core/styles/createPalette';
-console.log('SkillOptions', skillOptions);
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { SearchSettingsContext } from './searchComponents/SearchSettingsContext';
+
+import debugPackage from 'debug';
+const debug = debugPackage('dev');
+debug.enabled = true;
 
 async function getCurrentUIDAsync() {
   const curUserID = await getCurrentUserDataAsync();
-
+  return curUserID;
 }
 
 function getCurrentUserDataAsync() {
@@ -31,30 +32,50 @@ function getCurrentUserDataAsync() {
 }
 getCurrentUIDAsync();
 
-
 const useStyles = makeStyles((theme) => ({
+  inputRoot: {
+    width:'95%',
+    backgroundColor:'white',
+    height:'3.5em',
+    marginTop:'1em',
+    color: theme.palette.primary.dark,
+    "&.MuiOutlinedInput-notchedOutline": {
+      borderWidth: "0px",
+      borderColor: "blue"
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "0px",
+      borderColor: "blue"
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "0px",
+      borderColor: "blue"
+    }
+  },
   searchWrap: {
-    width: '98vw',
+    width: '100vw',
     display: 'flex', 
-    justifyContent:'space-between',
+    justifyContent:'space-around',
     alignItems:'top',
-    margin:'auto',
-    marginTop:'0.5em',
-    height:'3.em',
+    margin:'auto', 
+    position:'fixed',
+    top:'0',
+    height:'5.4em',
+    backgroundColor: theme.palette.primary.dark,
     zIndex:'1000',
   },
   searchBar: {
-    width:'calc(100% - 4.1em)',
+    width:'calc(100%)',
     color:'white',
   },
   searchIcon: {
-    width:'1.4em', 
+    width:'1.5em', 
     height:'auto',
   },
   userContain: {
     width:'98vw',
     margin:'auto',
-    marginTop:'1em',
+    marginTop:'5.5em',
     marginBottom:'4.5em',
     overflowY:'scroll',
   },
@@ -63,70 +84,79 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-async function loadSkillsAsync(setSkillListFromDB, mounted) {
-  const skillOptions = [];
-  db.collection("userSkills").get()
-  .then(querySs => {
-    querySs.forEach(doc => skillOptions.push(doc.data().name))
-    if (mounted) {setSkillListFromDB(skillOptions);}
-    return () => mounted = false
-  });
-}
-
 export default function SearchPage() {
   const classes = useStyles();
-  const [searchedSkills, setSearchedSkills] = useState([]);
+  const searchSettings = useContext(SearchSettingsContext);
+  const havePrevSettings = !!searchSettings.skills;
+  const initialState = havePrevSettings ? searchSettings.skills : [];
+  const [searchedSkills, setSearchedSkills] = useState(initialState);
+
+  useEffect(() => {
+    if(havePrevSettings) {
+        getUsersFromSkillSearch(searchedSkills, setSearchedUsers)
+    }
+  }, []);
+
   function searchedSkillUpdate (event, currentSelectedSkills) {
     console.log('Onchange', currentSelectedSkills);
-    setSearchedSkills([currentSelectedSkills]);
-    console.log('Skills Searched', searchedSkills);
+    const skills = [currentSelectedSkills];
+    setSearchedSkills(skills);
+    console.log('Skills Searched', skills);
+    searchSettings.skills = skills;
   }
   const [searchedUsers, setSearchedUsers] = useState([]);
   
   return (
   <>
-  <div className={classes.searchWrap}>
-    <Paper elevation={2} className={classes.searchBar}>
+ <div className={classes.searchWrap}>
       <Autocomplete
-        id="tags-standard"
-        onChange={searchedSkillUpdate}
-        options={skillOptions}
-        getOptionLabel={(option) => option}
-        renderInput={(params) => (
+      id="combo-box-demo"
+      className={classes.inputRoot}
+      options={skillOptions}
+      onChange={searchedSkillUpdate}
+      disableClearable
+      defaultValue={initialState.length === 0 ? "Search By Skills" : initialState[0]}
+      forcePopupIcon={false}
+      getOptionLabel={option => option}
+      renderInput={params => {
+        return (
           <TextField
             {...params}
-            variant="standard"
-            label="Search By Skills"
-            placeholder="Skills"
+            variant="outlined"
+            fullWidth
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <InputAdornment position="end">
+                <Button id="searchBtn" onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
+                    <SearchIcon color='primary' className={classes.searchIcon}/>
+                </Button>
+                </InputAdornment>
+              )
+            }}
           />
-        )}
-      />
-    </Paper>
-    <Paper elevation={2}
-    style={{
-      height:'100%'
-    }}>
-      <Button onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
-        <SearchIcon color='primary' className={classes.searchIcon}/>
-      </Button>
-    </Paper>
+        );
+      }}
+    />
   </div>
 
   <Grid container direction="column" 
     spacing={1}
     className={classes.userContain}
     >
-  {searchedUsers.map(user => {
-    console.log('Searchedusers', user);
-    const { name, city, skillName, skillLevel, id  } = user;
+  {searchedUsers.map((user, index) => {
+    console.log('Searched users', user);
+    const { name, city, skillName, skillLevel, id, avatar, isFriending } = user;
     return (
-      <Grid item xs={12} className={classes.cardContain}>
+      <Grid id={"user_" + index} item xs={12} className={classes.cardContain}>
         <UserSearchCard
           name={name}
           city={city}
           skillName={skillName}
           skillLevel={skillLevel}
           id={id}
+          avatar={avatar}
+          isFriending={isFriending}
         />
       </Grid>
     );
@@ -142,30 +172,42 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
 
   const userSkillDocs = [];
   const userRefDocs = [];
-  const users = [];
-  
+
   const snapshots = await db.collectionGroup('Skills')
-  .where('skillName', 'in', searchedSkills)
-  .get();
+    .where('skillName', 'in', searchedSkills)
+    .get();
+
   snapshots.forEach(userSkillDoc => {
     userSkillDocs.push(userSkillDoc.data());
     userRefDocs.push(userSkillDoc.ref.parent.parent)
   });
 
-  const userInfoDocs = await Promise.all(userRefDocs.map(userRef => userRef.get().then(doc => doc.data())));
-  userInfoDocs.map((userInfo, i)=> {
-    let user = {};
-    user.name = userInfo.displayName;
-    user.city = userInfo.city;
-    user.id = userInfo.id
-    user.skillName = userSkillDocs[i].skillName;
-    user.skillLevel = userSkillDocs[i].skillLevel;
-    users.push(user);
+  const userInfoDocs = await Promise.all(userRefDocs.map(userRef =>
+    userRef.get().then(doc => {
+        const data = doc.data();
+        data.id = doc.id;
+        return data;
+    })
+  ));
+  
+  const currentUID = await getCurrentUIDAsync();
+  const userFriendsRef = await db.collection('users').doc(currentUID)
+    .collection('Friends').get();
+
+  const userFriendsList = userFriendsRef.docs.map(userFriend => userFriend.data());
+
+  const users = userInfoDocs.map((userInfo, i)=> {
+      const userFriend = userFriendsList.find(friend => friend.friendID === userInfo.id);
+      return {
+          id: userInfo.id,
+          name: userInfo.displayName,
+          city: userInfo.city,
+          avatar: userInfo.avatar,
+          skillName: userSkillDocs[i].skillName,
+          skillLevel: userSkillDocs[i].skillLevel,
+          isFriending: userFriend ? true : false
+      };
   });
-  console.log('Users', users);
+
   setSearchedUsers(users);
 }
-
-
-
-

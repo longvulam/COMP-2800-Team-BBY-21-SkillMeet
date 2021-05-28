@@ -7,14 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
-import React, { useEffect, useState } from 'react';
-import firebase, { db, auth } from '../firebase';
+import React from 'react';
+import { db, auth } from '../firebase';
 import Avatar from '@material-ui/core/Avatar';
+import { useHistory } from 'react-router';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
 
 const useStyles = makeStyles((theme) => ({
   paper:{
@@ -77,7 +77,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserPendingCard2(props) {
   const classes = useStyles();
-  const { name, city, id, setRequests } = props;
+  const history = useHistory();
+  const { name, city, id, setRequests, avatar } = props;
   const [snackbarState, setSnackbarState] = React.useState({
     open: false,
     vertical:'bottom',
@@ -168,7 +169,11 @@ export default function UserPendingCard2(props) {
             spacing={1} className={classes.infoGrid}>
             <Grid item className={classes.firstGridItem}>
                 <div className={classes.avatarNameLocation}>
-                    <Avatar className={classes.avatar}/>
+                    <Avatar 
+                      onClick={(event) => history.push('/profile/' + id)}
+                      className={classes.avatar} 
+                      src={avatar} 
+                      alt="Profile Pic"/>
                     <div className={classes.nameAndLocation}>
                         <Typography variant="h6">{name}</Typography>
                         <Typography variant="subtitle1">{city}</Typography>
@@ -216,10 +221,3 @@ function getCurrentUserDataAsync() {
         })
     );
 }
-
-          // <IconButton onClick = { (e) => acceptRequest()}	>
-          //   <CheckCircleOutlinedIcon className={classes.addIcon}/>
-          // </IconButton>
-          // <IconButton onClick = { (e) => declineRequest()}	>
-          //   <CancelOutlinedIcon className={classes.addIcon}/>
-          // </IconButton>

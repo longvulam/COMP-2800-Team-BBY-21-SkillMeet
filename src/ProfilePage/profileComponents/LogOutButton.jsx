@@ -6,14 +6,26 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { useHistory } from "react-router-dom";
 import firebase from '../../firebase';
 
+const useStyles = makeStyles((theme) => ({
+  LogoutButton: {
+    backgroundColor:theme.palette.primary.dark,
+    color:'white',
+    marginRight: '6vw',
+    marginTop: '2vw',
+    height: '2.5em',
+    width: '2.5em',
+  },
+ }));
+
 export default function LogoutButton (props) {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-
+  const classes = useStyles();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -33,9 +45,11 @@ export default function LogoutButton (props) {
 
   return (
     <>
-    <Fab
-      style={props.style}
+    <Fab 
+      id="logoutBtn"
+      className={classes.LogoutButton}
       onClick={handleClickOpen}
+      id="logoutBtn"
       >
       <LogoutIcon/>
     </Fab>
@@ -49,10 +63,10 @@ export default function LogoutButton (props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button id="noConfirmBtn" onClick={handleClose} color="primary">
           No
         </Button>
-        <Button onClick={handleLogout} color="primary" autoFocus>
+        <Button id="yesConfirmBtn" onClick={handleLogout} color="primary" autoFocus>
           Yes
         </Button>
       </DialogActions>

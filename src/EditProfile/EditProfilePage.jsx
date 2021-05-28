@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
-import InputBase from '@material-ui/core/InputBase';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
 
 import ProfileBio from '../ProfilePage/profileComponents/ProfileBio';
 
@@ -12,37 +13,43 @@ import CancelButton from './editProfileComponents/CancelButton';
 import EditableSkill from './editProfileComponents/EditableSkill';
 
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 
-import { auth, db, getCurrentUserDataAsync } from '../firebase';
-import LoadingSpinner from '../classes/LoadingSpinner';
+import { auth, db, firestore, getCurrentUserDataAsync, storage } from '../firebase';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { useHistory } from 'react-router';
+
+import TextField from '@material-ui/core/TextField';
+import { Snackbar } from '@material-ui/core';
+import { EditProfileAlert } from './editProfileComponents/EditProfileAlert';
 
 function validateProfile(profile) {
     const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
 
-    if (emptySkill) {
-        return false;
-    }
+    if (!!emptySkill) return false;
+    if (!profile.hasOwnProperty('displayName') || profile.displayName === "") return false;
+    if (!profile.hasOwnProperty('city') || profile.city === "") return false;
+    if (!profile.hasOwnProperty('bio') || profile.bio === "") return false;
 
     return true;
 }
 
-async function submitChanges(profile, doneCallBack) {
+async function submitChanges(profile, afterSave, onInvalid) {
     const isValid = validateProfile(profile);
     if (!isValid) {
         console.log("Cannot save skills with empty values!");
+        onInvalid();
         return;
     }
-
-    const skills = profile.skills;
-    delete profile.skills;
+    const cloneProfile = Object.assign({}, profile);
+    const skills = cloneProfile.skills;
+    delete cloneProfile.skills;
 
     // Get a new write batch
     const batch = db.batch();
 
     const userRef = db.collection('users').doc(auth.currentUser.uid);
-    batch.update(userRef, profile);
+    batch.update(userRef, cloneProfile);
 
     const nonDeletedSkills = skills.filter(skill => !skill.isDeleted);
     nonDeletedSkills.filter(skill => !skill.isNew).forEach(skill => {
@@ -55,19 +62,20 @@ async function submitChanges(profile, doneCallBack) {
         batch.set(skillRef, skill);
     });
 
-    skills.filter(skill => skill.isDeleted).forEach(skill => {
+    const deletedSkills = skills.filter(skill => skill.id && skill.isDeleted);
+
+    deletedSkills.forEach(skill => {
         const skillRef = userRef.collection("Skills").doc(skill.id);
         batch.delete(skillRef);
     });
 
     // Commit the batch
-    batch.commit().then(doneCallBack);
+    batch.commit().then(afterSave);
 }
 
 async function addSkill(changeState) {
     changeState(previousState => {
         previousState.skills.push({
-            id: "skill" + (previousState.skills.length + 1),
             skillName: "",
             skillLevel: "",
             skillDescription: "",
@@ -82,12 +90,14 @@ async function addSkill(changeState) {
 export default function EditProfile() {
     const classes = useStyles();
     const history = useHistory();
+    const [errorOpen, setErrorOpen] = useState(false);
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [userProfile, setUserProfile] = useState({
         displayName: "",
         city: "",
         bio: "",
         skills: [],
+        avatar: "",
     });
 
     useEffect(() => getCurrentUserDataAsync()
@@ -106,18 +116,45 @@ export default function EditProfile() {
 
     function saveFinished() {
         console.log("Profile Saved!");
-        history.push('/profile');
+        history.push({
+            pathname: '/profile',
+            state: { saveSuccess: true }
+        });
     }
+
+    function onInvalid() {
+        setErrorOpen(true);
+    }
+
+    const handleImageChange = async (event) => {
+        const avatarImage = event.target.files[0];
+        const storageRef = storage.ref();
+        const avatarImageRef = storageRef.child(avatarImage.name);
+        await avatarImageRef.put(avatarImage);
+        const avatarImageUrl = await avatarImageRef.getDownloadURL();
+        changeState(avatarImageUrl, "avatar");
+    }
+
+    const handleEditPicture = () => {
+        const fileInput = document.getElementById('uploadImage');
+        fileInput.click();
+    }
+
+    const handleClose = (e, reason) => {
+        if (reason === 'clickaway') return;
+        setErrorOpen(false);
+    };
 
     return (
         isLoadingData ? <LoadingSpinner /> :
             <div style={{
                 width: '100vw',
-                height: 'calc(100vh - 4em)',
+                height: '100vh',
                 overflowY: 'scroll',
                 overflowX: 'hidden',
+                paddingBottom: '10em',
             }}>
-                <div className={classes.editWrap}>
+                <div className={classes.editWrap} id="btnWrapper">
                     <CancelButton
                         style={{
                             marginRight: '6vw',
@@ -127,22 +164,22 @@ export default function EditProfile() {
                         }}
                     />
                     <SaveButton
-                        onClick={(event) => submitChanges(Object.assign({}, userProfile), saveFinished)}
+                        onClick={(event) => submitChanges(userProfile, saveFinished, onInvalid)}
                         editable={true}
-                        style={{
-                            marginRight: '4vw',
-                            marginTop: '2vw',
-                            height: '2.5em',
-                            width: '2.5em',
-                        }}
                     />
                 </div>
 
                 <div className={classes.avatarWrap}>
                     <Avatar
-                        alt="C"
-                        src="/static/images/avatar/1.jpg"
+                        alt="Profile Pic"
+                        src={userProfile.avatar}
                         className={classes.avatar} />
+                </div>
+                <div className={classes.editAvatarWrap}>
+                    <input type="file" id="uploadImage" onChange={handleImageChange} hidden="hidden" />
+                    <Fab onClick={handleEditPicture} className={classes.editAvatarbtn}>
+                        <EditIcon />
+                    </Fab>
                 </div>
 
                 <Grid container direction="column" spacing={1}
@@ -152,7 +189,10 @@ export default function EditProfile() {
                         alignItems: 'center',
                     }}>
                     <Grid item xs={12}>
-                        <InputBase
+                        <TextField
+                            id="userNameEditField"
+                            label="UserName"
+                            variant="filled"
                             readOnly={false}
                             value={userProfile.displayName}
                             onChange={(event) => changeState(event.target.value, "displayName")}
@@ -161,11 +201,15 @@ export default function EditProfile() {
                                 style: {
                                     textAlign: 'center',
                                     border: 'none',
+                                    backgroundColor: '#e3f6f5'
                                 }
                             }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <InputBase
+                        <TextField
+                            id="cityEditField"
+                            label="Location"
+                            variant="filled"
                             readOnly={false}
                             value={userProfile.city}
                             onChange={(event) => changeState(event.target.value, "city")}
@@ -174,6 +218,7 @@ export default function EditProfile() {
                                 style: {
                                     textAlign: 'center',
                                     border: 'none',
+                                    backgroundColor: '#e3f6f5'
                                 }
                             }}
                         />
@@ -188,7 +233,7 @@ export default function EditProfile() {
                         alignItems: 'center',
                     }}>
                     <SkillsList
-                        userSkills={userProfile.skills.filter(skill => !skill.isDeleted)}
+                        userSkills={userProfile.skills}
                         setUserProfile={setUserProfile}
                     />
                     <Grid item xs={12}
@@ -199,8 +244,9 @@ export default function EditProfile() {
                             justifyContent: 'center',
                         }}>
                         <IconButton
+                            className={classes.addMoreSkillButton}
                             onClick={addSkill.bind(this, setUserProfile)}>
-                            <AddCircleIcon
+                            <AddIcon
                                 style={{
                                     width: '1.5em',
                                     height: '1.5em',
@@ -219,24 +265,31 @@ export default function EditProfile() {
                             editable={true} />
                     </Grid>
                 </Grid>
-
+                <Snackbar
+                    id="errorSnackbar"
+                    open={errorOpen}
+                    autoHideDuration={4000}
+                    onClose={handleClose}>
+                    <EditProfileAlert onClose={handleClose} severity="error">
+                        Values must not be empty
+                    </EditProfileAlert>
+                </Snackbar>
             </div>
     );
 }
 
 function SkillsList(props) {
     const { userSkills, setUserProfile } = props;
-    return userSkills.map((skill, index) =>
-        <Grid key={index} item xs={12} style={{
-            width: '100%',
-        }}>
+    return userSkills.filter(skill => !skill.isDeleted)
+        .map((skill, index) =>
             <EditableSkill
+                key={index}
+                index={index}
                 data={skill}
                 skillsList={userSkills}
                 changeState={setUserProfile}
             />
-        </Grid>
-    );
+        );
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -258,11 +311,31 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    editAvatarWrap: {
+        width: '100vw',
+        height: '4em',
+        marginLeft: '3em',
+        marginTop: '-1em',
+        marginBottom: '-1em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bacgroundColor: 'black',
+    },
     avatar: {
-        height: '4.5em',
-        width: '4.5em',
+        height: '6.5em',
+        width: '6.5em',
     },
-    infoWrap: {
-
+    addMoreSkillButton: {
+        backgroundColor: theme.palette.primary.dark,
+        width: '1.5em',
+        height: '1.5em',
+        color: 'white',
     },
+    editAvatarbtn: {
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.primary.dark,
+        height: '3em',
+        width: '3em',
+    }
 }));
