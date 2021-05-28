@@ -1,3 +1,8 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +14,10 @@ import { auth, db, waitForCurrentUser, firestore, getCurrentUserDataAsync } from
 import Typography from '@material-ui/core/Typography';
 import SendIcon from '@material-ui/icons/Send';
 
+/**
+ * Functional component built using Material UI components to create a chat-room, 
+ * Uses firestore to retrieve the messages associated with the current chat room.
+ */
 export default function ChatRoom(props) {
     const { chatRoomId } = useParams();
     const history = useHistory();
@@ -21,6 +30,7 @@ export default function ChatRoom(props) {
     const [otherUserAvatar, setOtherUserAvatar] = useState("");
     const [friendId, setFriendId] = useState("");
 
+    /** Loads initial data. */
     useEffect(async () => {
         const currentUser = await waitForCurrentUser();
         const currentUserDocData = await getCurrentUserDataAsync(currentUser.uid);
@@ -29,22 +39,25 @@ export default function ChatRoom(props) {
         setCurrentUserAvatar(currentUserDocData.avatar);
         setFriendId(friendData.id);
         setOtherUserAvatar(friendData.avatar);
-        enableListening(updateMessages);
+        subscribeToChanges(updateMessages);
 
         setChatRoomName(friendData.displayName);
         setIsLoading(false);
     }, []);
 
+    /** Updates the current message state from input. */
     function handleChange(event) {
         const value = event.target.value;
         setCurrentMsg(value);
     }
 
+    /** Sends the input text when user presses ctrl+enter keys. */
     function submitOnCtrlEnter(event) {
         if (!event.ctrlKey || !event.key === 'Enter') return;
         sendMessage(event);
     }
 
+    /** Insert new message to db and send notification to other user. */
     function sendMessage(event) {
         sendMessageToDB(currentMsg);
         setCurrentMsg("");
@@ -180,7 +193,11 @@ let collRef = db.collection('chatrooms')
 let chatroomRef = db.collection('chatrooms')
     .doc();
 
-async function enableListening(updateMessages) {
+/** 
+ * Listen to new messages and updates the state via the callback function
+ * @param {*} updateMessages
+ */
+async function subscribeToChanges(updateMessages) {
     collRef.onSnapshot(querySnapshot => {
         const arr = [];
         querySnapshot.docChanges().forEach(change => {
@@ -195,6 +212,7 @@ async function enableListening(updateMessages) {
     });
 }
 
+/** Updates the db ref to the new chat room id and returns with the friend uid. */
 async function setDbRefsAndGetFriendId(currentUser, chatRoomId) {
     chatroomRef = db.collection('chatrooms').doc(chatRoomId);
     collRef = chatroomRef.collection('messages');
@@ -202,6 +220,7 @@ async function setDbRefsAndGetFriendId(currentUser, chatRoomId) {
     return chatroom.uids.find(id => id !== currentUser.uid);
 }
 
+/** Retrieves the friend doc from Firestore. */
 async function getFriend(friendId) {
     const friendDoc = await db.collection('users').doc(friendId).get();
     const friendData = friendDoc.data();
@@ -209,7 +228,10 @@ async function getFriend(friendId) {
     return friendData;
 }
 
-/** @param {String} newMessage */
+/** 
+ * Sends the new message to the db..
+ * @param {String} newMessage 
+ */
 async function sendMessageToDB(newMessage) {
     if (newMessage.length === 0) return;
 

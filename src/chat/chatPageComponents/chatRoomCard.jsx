@@ -1,3 +1,8 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import { Avatar, makeStyles, Paper, Grid, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
@@ -53,6 +58,10 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
+/**
+ * Functional component built using Material UI components to create a Chat room card
+ * for chat rooms list page.
+ */
 export default function ChatRoomCard(props) {
     const { room, index } = props;
 
@@ -90,6 +99,7 @@ export default function ChatRoomCard(props) {
     )
 }
 
+/** Generates a location object from the room data. */
 function generateLocation(room) {
     return {
         pathname: "./chatroom/" + room.roomId,

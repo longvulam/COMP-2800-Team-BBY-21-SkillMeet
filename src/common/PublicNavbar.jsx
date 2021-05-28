@@ -1,8 +1,17 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import SkillMeet from '../img/SkillMeet.png';
 
+/**
+ * Functional component built using Material UI components 
+ * to create a public navigation bar.
+ */
 export default function PublicNavbar(props) {
 
     const useStyles = makeStyles({

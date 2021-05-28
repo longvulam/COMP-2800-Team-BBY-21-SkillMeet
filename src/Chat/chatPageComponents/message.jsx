@@ -1,8 +1,12 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import { Fragment } from "react";
 import { auth } from "../../firebase";
 import { makeStyles } from '@material-ui/core/styles';
-import { PlayCircleFilledWhiteTwoTone } from "@material-ui/icons";
-import { Avatar, Button, IconButton, InputBase, Paper } from '@material-ui/core';
+import { Avatar, Paper } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,43 +67,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
+/** Format the date for output. */
 function format(date) {
     let formattedDate = (date.getMonth() + 1) + "-" + date.getDate();
     formattedDate += " " + date.getHours() + ":" + date.getMinutes();
     return formattedDate;
 }
 
-// const Message = (props) => {
-//     const { content, from, timeStamp, avatar } = props;
-//     const classes = useStyles();
-
-//     const dateStr = format(new Date(timeStamp));
-//     const split = content.split("\\n");
-//     return (
-//         <Fragment>
-//              <Typography variant="subtitle2" className={from === auth.currentUser.uid ? classes.currentUserDateStyle : classes.otherUserDateStyle}>{dateStr}</Typography>
-//             <div className={from === auth.currentUser.uid ? classes.currentUserMessageWrapper : classes.otherUserMessageWrapper}>
-//                     <Avatar className={from === auth.currentUser.uid ? classes.currentUserAvatarStyle : classes.otherUserAvatarStyle}
-//                     src={avatar} alt='Pic' />
-//                 <Paper className={from === auth.currentUser.uid ? classes.currentUserStyle : classes.otherUserStyle}>
-//                     {split.map((value, index) => {
-//                         return (
-
-//                             <Fragment key={index}>
-//                                 {value}
-//                                 <br />
-//                             </Fragment>
-
-//                         );
-//                     })}
-//                 </Paper>
-//             </div>
-//         </Fragment>
-//     );
-// }
-
-
+/**
+ * Functional component built using Material UI components to create a message.
+ */
 const Message = (props) => {
     const { content, from, timeStamp, avatar } = props;
     const classes = useStyles();
