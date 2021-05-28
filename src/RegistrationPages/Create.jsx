@@ -6,7 +6,6 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel'
-import { makeStyles } from '@material-ui/core/styles';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
@@ -16,53 +15,11 @@ import { Avatar, Grid, Button, IconButton, Fab } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 
 import '../../src/LandingPageStyles/Landing_Page_Styles.css';
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(2),
-    }
-  },
-  inputRoot: {
-    width:'95%',
-    height:'2.5em',
-    marginBottom:'3em',
-  },
-  button: {
-    margin: theme.spacing(2),
-  },
-  avatarWrap: {
-    width: '100%',
-    height: '12em',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatar: {
-    height: '7.5em',
-    width: '7.5em',
-  },
-  editAvatarbtn: {
-    marginLeft: '12em',
-    marginTop: '-7em',
-  },
-  bioInput: {
-    backgroundColor: '#e3f6f5',
-    borderBottom: '1px solid black',
-    width: '85%'
-  },
-  levelInput:{
-    width: '55%',
-  },
-  skillDescInput:{
-    width: '80%',
-  }
-}))
+import { profileFormStyles } from "../common/PageStyles";
 
 
 const Create = () => {
-  const classes = useStyles();
+  const classes = profileFormStyles();
   const history = useHistory();
 
   const [user, setUser] = useState({
@@ -92,22 +49,26 @@ const Create = () => {
   ])
 
 
-  /** Haandles the onChange method when the users enter their skills to their profile */
+  /** Handles the onChange method when the users enter their skills to their profile */
   let count = 0;
   const handleChangeInput = (index, event) => {
     const values = [...skillFields];
     values[index][event.target.name] = event.target.value;
     setSkillFields(values);
 
-    /** Displaying an easter egg when the user enters beekeeping as their skill name and expert as their skil value */
+    /** Displaying an easter egg when the user enters beekeeping as their skill name and expert as their skill value */
     for (let i = 0; i < skillFields.length; i++) {
-      if (count == 0 && (skillFields[i].skillName == "beekeeping" || skillFields[i].skillName == "Beekeeping")
-        && skillFields[i].skillLevel == "Expert" && skillFields[i].skillDescription == "") {
-        count++;
-        $("#hiddenEasterEgg2").fadeIn(500, function () {
-          window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
-        });
-      }
+        const skill = skillFields[i];
+        let isBeeKeeping = skill.skillName == "beekeeping";
+        isBeeKeeping = isBeeKeeping || skill.skillName == "Beekeeping";
+        const descEmpty = skill.skillDescription == "";
+        const isExpert = skill.skillLevel == "Expert";
+        if (count == 0 && isBeeKeeping && isExpert && descEmpty) {
+            count++;
+            $("#hiddenEasterEgg2").fadeIn(500, function () {
+                window.setTimeout(function () { $('#hiddenEasterEgg2').hide(); }, 2500);
+            });
+        }
     }
   }
 
@@ -128,7 +89,7 @@ const Create = () => {
   /**
    * This function writes the data entered in the form to
    * the logged in user's firebase table.
-   * Then directs the user to their profiel page.
+   * Then directs the user to their profile page.
    * @param {submit event} e 
    */
   const handleSubmit = async (e) => {
@@ -181,7 +142,7 @@ const Create = () => {
   }
 
   /**
-   * Updates the field for profiel picture.
+   * Updates the field for profile picture.
    * @param {String} value 
    * @param {skillName, skillLevel, skillDescription} fieldName 
    */
