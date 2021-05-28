@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, IconButton, InputBase, Paper } from '@material-ui/core';
+import { Button, InputBase, Paper } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Message from './chatPageComponents/Message';
@@ -62,10 +62,12 @@ export default function ChatRoom(props) {
                     className={classes.chatRoomHeaderText}>
                       {chatRoomName}
                     </Typography>
-                    <Button className={classes.backButton} 
-                    variant="contained"
-                    color="secondary"
-                    onClick={(event) => history.goBack()}>
+                    <Button 
+                        id="backBtn"
+                        className={classes.backButton} 
+                        variant="contained"
+                        color="secondary"
+                        onClick={(event) => history.goBack()}>
                             <ArrowBackIcon className={classes.backArrowIcon} />
                     </Button>
                 </div>
@@ -83,17 +85,23 @@ export default function ChatRoom(props) {
                 <Paper 
                 elevation={5}
                 className={classes.messagePaper}>
-                    <InputBase value={currentMsg}
+                    <InputBase 
+                        id="messageField"
+                        value={currentMsg}
                         multiline
                         className={classes.inputMessage}
                         placeholder='type message. . .'
                         onChange={handleChange}
                         onKeyPress={submitOnCtrlEnter}
                     />
-                    <Button 
-                     variant="contained"
-                     color="primary"
-                    className={classes.sendButton} onClick={sendMessage}><SendIcon className={classes.sendIcon}/></Button>
+                    <Button
+                      id="sendMsgBtn"
+                      variant="contained"
+                      color="primary"
+                      className={classes.sendButton} 
+                      onClick={sendMessage}>
+                        <SendIcon className={classes.sendIcon} />
+                      </Button>
                 </Paper>
             </div>
     );

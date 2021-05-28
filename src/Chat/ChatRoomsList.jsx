@@ -38,6 +38,7 @@ export default function ChatRooms(props) {
                         item xs={12}>
                         <ChatRoomCard
                             room={room}
+                            index={index}
                             key={index} />
                         </Grid>
                     )}
