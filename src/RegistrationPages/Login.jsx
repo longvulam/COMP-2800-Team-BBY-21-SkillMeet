@@ -38,7 +38,7 @@ function Login() {
                 // The Firestore rules must allow the user to write. 
                 //------------------------------------------------------------------------------------------
 
-                var user = authResult.user;
+                const user = authResult.user;
                 if (authResult.additionalUserInfo.isNewUser) { //if new user
                     db.collection("users").doc(user.uid).set({ //write to firestore
                         name: user.displayName, //"users" collection
@@ -51,7 +51,7 @@ function Login() {
                             console.log("Error adding new user: " + error);
                         });
                 } else if (!authResult.additionalUserInfo.isNewUser) { //if not new user
-                    history.push("/profile"); //direct the user to /profiile route
+                    history.push("/profile"); //direct the user to /profile route
                 } else {
                     return true;
                 }
@@ -125,7 +125,7 @@ function Login() {
      * directs the user to /create route (2nd ste of setting up an account).
      * 
      * Checks for validation error for both first and last names.
-     * Checks in depth for validation wrrors for the email and password entered.
+     * Checks in depth for validation errors for the email and password entered.
      * displays a message in error field when an error occurs.
      */
     const handleSignup = () => {
