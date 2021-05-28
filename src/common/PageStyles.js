@@ -1,9 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
 
-/**
- *  useStyle React hook used to style the elements.
- */
 export const searchStyles = makeStyles((theme) => ({
     inputRoot: {
       width:'95%',
@@ -55,3 +52,61 @@ export const searchStyles = makeStyles((theme) => ({
       width:'100%',
     }
   }));
+
+export const userSearchCardStyles = makeStyles((theme) => ({
+    paper: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+    },
+    avatar: {
+        height: '2.5em',
+        width: '2.5em',
+        marginRight: '1em',
+        marginLeft: '0.5em',
+        backgroundColor: theme.palette.primary.main,
+    },
+    addIcon: {
+        width: '0.9em',
+        height: '0.9em',
+    },
+    fab: {
+        width: '2.5em',
+        height: '2.5em',
+        marginRight: '0.5em',
+    },
+    chips: {
+        fontSize: '1em',
+    },
+    infoGrid: {
+        width: '100%%',
+        height: '100%',
+        alignItems: 'center',
+        margin: 'auto',
+    },
+    firstGridItem: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'top',
+    },
+    skillGridItem: {
+        marginTop: '0.5em',
+        width: '100%',
+        backgroundColor: theme.palette.primary.light,
+    },
+    skills: {
+        marginLeft: '0.5em',
+    },
+    skillLevel: {
+        marginLeft: '0.5em',
+    },
+    nameAndLocation: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    avatarNameLocation: {
+        display: 'flex',
+        alignItems: 'center',
+    }
+}));
