@@ -1,8 +1,5 @@
 # SkillMeet
 
-## Table of content
-[ToC]
-
 ## Team Info
 
 | First name | Last name | Student number |
@@ -53,7 +50,7 @@ To join the development please follow the following steps closely.
 4. Open a Console terminal and navigate to the folder.
 5. Run `npm install` command in the terminal to install all the npm packages. (this might take a few minutes)
 6. To start the app run `npm start`, 
-> you should be able to see live updates while updating the code.[color=#3b75c6]
+> you should be able to see live updates while updating the code.
 
 #### Building the app for deployment
 
@@ -62,6 +59,9 @@ To join the development please follow the following steps closely.
 3. Run `npm run build` command to build.
 4. Wait for compilation into the `./build` folder
 5. Deploy to your selected hosting.
+
+## Test plan 
+[link](https://docs.google.com/spreadsheets/d/1rOo6PtFUHdW6Uj8GFyNudyBRIMXBxlBM0PVHV1ZnMM4/edit#gid=1849739995)
 
 
 ## 3rd party libraries used
