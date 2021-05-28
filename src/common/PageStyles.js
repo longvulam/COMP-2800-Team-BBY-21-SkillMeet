@@ -110,3 +110,45 @@ export const userSearchCardStyles = makeStyles((theme) => ({
         alignItems: 'center',
     }
 }));
+
+export const profileFormStyles = makeStyles((theme) => ({
+    root: {
+      '& .MuiTextField-root': {
+        margin: theme.spacing(2),
+      }
+    },
+    inputRoot: {
+      width:'95%',
+      height:'2.5em',
+      marginBottom:'3em',
+    },
+    button: {
+      margin: theme.spacing(2),
+    },
+    avatarWrap: {
+      width: '100%',
+      height: '12em',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    avatar: {
+      height: '7.5em',
+      width: '7.5em',
+    },
+    editAvatarbtn: {
+      marginLeft: '12em',
+      marginTop: '-7em',
+    },
+    bioInput: {
+      backgroundColor: '#e3f6f5',
+      borderBottom: '1px solid black',
+      width: '85%'
+    },
+    levelInput:{
+      width: '55%',
+    },
+    skillDescInput:{
+      width: '80%',
+    }
+  }))
