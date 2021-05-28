@@ -125,10 +125,10 @@ export default function UserSearchCard(props) {
     });
   }
 
-/**
- * runs the add friend function and shows a snackbar while also setting a boolean
- * to true indicating a request was sent after the addfriend button is clicked. 
- */
+  /**
+   * runs the add friend function and shows a snackbar while also setting a boolean
+   * to true indicating a request was sent after the addfriend button is clicked. 
+   */
   function handleAddClick() {
     setRequestSent(true);
     addFriend();

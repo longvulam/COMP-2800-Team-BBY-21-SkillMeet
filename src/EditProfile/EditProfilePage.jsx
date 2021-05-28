@@ -1,3 +1,8 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,6 +28,11 @@ import TextField from '@material-ui/core/TextField';
 import { Snackbar } from '@material-ui/core';
 import { EditProfileAlert } from './editProfileComponents/EditProfileAlert';
 
+/**
+ * validates that all requred inputs have been filled
+ * @param profile user information from firesbase
+ * @returns a boolean value used for validation
+ */
 function validateProfile(profile) {
     const emptySkill = profile.skills.find(skill => !skill.skillName || !skill.skillLevel);
 
@@ -34,6 +44,14 @@ function validateProfile(profile) {
     return true;
 }
 
+/**
+ * submits the changes made during the editting of the profile by updating the firestore document
+ * associated with the user.
+ * @param profile user information from firesbase
+ * @param afterSave a function that's used at the end of the function to redirect user.
+ * @param onInvalid a function for invalid entries
+ * 
+ */
 async function submitChanges(profile, afterSave, onInvalid) {
     const isValid = validateProfile(profile);
     if (!isValid) {
@@ -73,6 +91,11 @@ async function submitChanges(profile, afterSave, onInvalid) {
     batch.commit().then(afterSave);
 }
 
+/**
+ * adds a skill by pushing the newly entered skill information into a state
+ * array variable.
+ * @param changeState a function used to change a state variable
+ */
 async function addSkill(changeState) {
     changeState(previousState => {
         previousState.skills.push({
@@ -87,6 +110,12 @@ async function addSkill(changeState) {
     });
 }
 
+/**
+ * functional component that creates the EditProfile page.  The page contains the same
+ * information displayed in a user's profile page.  It allows the user to edit the 
+ * information and save it to the database, replacing the old data.
+ * 
+ */
 export default function EditProfile() {
     const classes = useStyles();
     const history = useHistory();
@@ -104,6 +133,7 @@ export default function EditProfile() {
         .then(setUserProfile)
         .then(() => setIsLoadingData(false)), []);
 
+    /** sets the user profile's data */
     async function changeState(newValue, fieldName) {
         setUserProfile(previousValues => {
             return {
@@ -114,18 +144,20 @@ export default function EditProfile() {
         setIsLoadingData(false);
     }
 
+    /** redirects user to the profile page after save is complete */
     function saveFinished() {
-        console.log("Profile Saved!");
         history.push({
             pathname: '/profile',
             state: { saveSuccess: true }
         });
     }
 
+    /** sets setErrorOpen to true which displas the error snackbar  */
     function onInvalid() {
         setErrorOpen(true);
     }
 
+    /** update the user's avatar image */
     const handleImageChange = async (event) => {
         const avatarImage = event.target.files[0];
         const storageRef = storage.ref();
@@ -135,11 +167,13 @@ export default function EditProfile() {
         changeState(avatarImageUrl, "avatar");
     }
 
+    /** allows the edit icon to act as the input for uploading a picture */
     const handleEditPicture = () => {
         const fileInput = document.getElementById('uploadImage');
         fileInput.click();
     }
 
+    /** handles closing the error snackbar */
     const handleClose = (e, reason) => {
         if (reason === 'clickaway') return;
         setErrorOpen(false);
@@ -278,6 +312,9 @@ export default function EditProfile() {
     );
 }
 
+/** removes a skill from being available in the autocomplete if the user already has
+ * it listed as a skill.
+ */
 function SkillsList(props) {
     const { userSkills, setUserProfile } = props;
     return userSkills.filter(skill => !skill.isDeleted)

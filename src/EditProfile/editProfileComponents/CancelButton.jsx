@@ -10,21 +10,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '2vw',
     height: '2.5em',
     width: '2.5em',
-    backgroundColor:'darkRed',
-    color:'white',
-}
+    backgroundColor: 'darkRed',
+    color: 'white',
+  }
 }));
 
-
-function CancelButton (props) {
+/** functional component that creats the cancel button, which will revert all
+ *  unsaved changes s
+ */
+function CancelButton(props) {
   const classes = useStyles();
   return (
     <Fab
       className={classes.cancelButton}
       onClick={() => props.history.push("/profile")}
       color='default'
-      >
-      <CancelIcon/>
+    >
+      <CancelIcon />
     </Fab>
   );
 }

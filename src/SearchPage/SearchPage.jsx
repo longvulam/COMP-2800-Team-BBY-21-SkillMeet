@@ -35,10 +35,10 @@ async function getCurrentUIDAsync() {
  */
 function getCurrentUserDataAsync() {
   return new Promise((resolve, reject) =>
-      auth.onAuthStateChanged((user) => {
-          if (!user) return;
-          resolve(user.uid);   
-      })
+    auth.onAuthStateChanged((user) => {
+      if (!user) return;
+      resolve(user.uid);
+    })
   );
 }
 getCurrentUIDAsync();
@@ -48,10 +48,10 @@ getCurrentUIDAsync();
  */
 const useStyles = makeStyles((theme) => ({
   inputRoot: {
-    width:'95%',
-    backgroundColor:'white',
-    height:'3.5em',
-    marginTop:'1em',
+    width: '95%',
+    backgroundColor: 'white',
+    height: '3.5em',
+    marginTop: '1em',
     color: theme.palette.primary.dark,
     "&.MuiOutlinedInput-notchedOutline": {
       borderWidth: "0px",
@@ -68,33 +68,33 @@ const useStyles = makeStyles((theme) => ({
   },
   searchWrap: {
     width: '100vw',
-    display: 'flex', 
-    justifyContent:'space-around',
-    alignItems:'top',
-    margin:'auto', 
-    position:'fixed',
-    top:'0',
-    height:'5.4em',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'top',
+    margin: 'auto',
+    position: 'fixed',
+    top: '0',
+    height: '5.4em',
     backgroundColor: theme.palette.primary.dark,
-    zIndex:'1000',
+    zIndex: '1000',
   },
   searchBar: {
-    width:'calc(100%)',
-    color:'white',
+    width: 'calc(100%)',
+    color: 'white',
   },
   searchIcon: {
-    width:'1.5em', 
-    height:'auto',
+    width: '1.5em',
+    height: 'auto',
   },
   userContain: {
-    width:'98vw',
-    margin:'auto',
-    marginTop:'5.5em',
-    marginBottom:'4.5em',
-    overflowY:'scroll',
+    width: '98vw',
+    margin: 'auto',
+    marginTop: '5.5em',
+    marginBottom: '4.5em',
+    overflowY: 'scroll',
   },
   cardContain: {
-    width:'100%',
+    width: '100%',
   }
 }));
 
@@ -114,8 +114,8 @@ export default function SearchPage() {
    * if they are, renders what was previously shown.
    */
   useEffect(() => {
-    if(havePrevSettings) {
-        getUsersFromSkillSearch(searchedSkills, setSearchedUsers)
+    if (havePrevSettings) {
+      getUsersFromSkillSearch(searchedSkills, setSearchedUsers)
     }
   }, []);
 
@@ -125,7 +125,7 @@ export default function SearchPage() {
    * @param {*} event a change in what is selected in the Autocomplete
    * @param {*} currentSelectedSkills the skill currently selecte din the Autocomplete
    */
-  function searchedSkillUpdate (event, currentSelectedSkills) {
+  function searchedSkillUpdate(event, currentSelectedSkills) {
     console.log('Onchange', currentSelectedSkills);
     const skills = [currentSelectedSkills];
     setSearchedSkills(skills);
@@ -133,65 +133,65 @@ export default function SearchPage() {
     searchSettings.skills = skills;
   }
   const [searchedUsers, setSearchedUsers] = useState([]);
-  
-  return (
-  <>
- <div className={classes.searchWrap}>
-      <Autocomplete
-      id="combo-box-demo"
-      className={classes.inputRoot}
-      options={skillOptions}
-      onChange={searchedSkillUpdate}
-      disableClearable
-      defaultValue={initialState.length === 0 ? "Search By Skills" : initialState[0]}
-      forcePopupIcon={false}
-      getOptionLabel={option => option}
-      renderInput={params => {
-        return (
-          <TextField
-            {...params}
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <InputAdornment position="end">
-                <Button id="searchBtn" onClick={ ()=> getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
-                    <SearchIcon color='primary' className={classes.searchIcon}/>
-                </Button>
-                </InputAdornment>
-              )
-            }}
-          />
-        );
-      }}
-    />
-  </div>
 
-  <Grid container direction="column" 
-    spacing={1}
-    className={classes.userContain}
-    >
-  {searchedUsers.map((user, index) => {
-    console.log('Searched users', user);
-    const { name, city, skillName, skillLevel, id, avatar, isFriending } = user;
-    return (
-      <Grid id={"user_" + index} item xs={12} className={classes.cardContain}>
-        <UserSearchCard
-          name={name}
-          city={city}
-          skillName={skillName}
-          skillLevel={skillLevel}
-          id={id}
-          avatar={avatar}
-          isFriending={isFriending}
+  return (
+    <>
+      <div className={classes.searchWrap}>
+        <Autocomplete
+          id="combo-box-demo"
+          className={classes.inputRoot}
+          options={skillOptions}
+          onChange={searchedSkillUpdate}
+          disableClearable
+          defaultValue={initialState.length === 0 ? "Search By Skills" : initialState[0]}
+          forcePopupIcon={false}
+          getOptionLabel={option => option}
+          renderInput={params => {
+            return (
+              <TextField
+                {...params}
+                variant="outlined"
+                fullWidth
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button id="searchBtn" onClick={() => getUsersFromSkillSearch(searchedSkills, setSearchedUsers)}>
+                        <SearchIcon color='primary' className={classes.searchIcon} />
+                      </Button>
+                    </InputAdornment>
+                  )
+                }}
+              />
+            );
+          }}
         />
+      </div>
+
+      <Grid container direction="column"
+        spacing={1}
+        className={classes.userContain}
+      >
+        {searchedUsers.map((user, index) => {
+          console.log('Searched users', user);
+          const { name, city, skillName, skillLevel, id, avatar, isFriending } = user;
+          return (
+            <Grid id={"user_" + index} item xs={12} className={classes.cardContain}>
+              <UserSearchCard
+                name={name}
+                city={city}
+                skillName={skillName}
+                skillLevel={skillLevel}
+                id={id}
+                avatar={avatar}
+                isFriending={isFriending}
+              />
+            </Grid>
+          );
+        })
+        }
       </Grid>
-    );
-  })
-  }
-  </Grid>
-  </>  
+    </>
   );
 }
 
@@ -204,7 +204,7 @@ export default function SearchPage() {
  *          boolean indicating if users are friends/pending friends.
  */
 async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
-  if(searchedSkills.length <= 0) {return}
+  if (searchedSkills.length <= 0) { return }
 
   const userSkillDocs = [];
   const userRefDocs = [];
@@ -227,29 +227,29 @@ async function getUsersFromSkillSearch(searchedSkills, setSearchedUsers) {
 
   const userInfoDocs = await Promise.all(userRefDocs.map(userRef =>
     userRef.get().then(doc => {
-        const data = doc.data();
-        data.id = doc.id;
-        return data;
+      const data = doc.data();
+      data.id = doc.id;
+      return data;
     })
   ));
-  
+
   const currentUID = await getCurrentUIDAsync();
   const userFriendsRef = await db.collection('users').doc(currentUID)
     .collection('Friends').get();
 
   const userFriendsList = userFriendsRef.docs.map(userFriend => userFriend.data());
 
-  const users = userInfoDocs.map((userInfo, i)=> {
-      const userFriend = userFriendsList.find(friend => friend.friendID === userInfo.id);
-      return {
-          id: userInfo.id,
-          name: userInfo.displayName,
-          city: userInfo.city,
-          avatar: userInfo.avatar,
-          skillName: userSkillDocs[i].skillName,
-          skillLevel: userSkillDocs[i].skillLevel,
-          isFriending: userFriend ? true : false
-      };
+  const users = userInfoDocs.map((userInfo, i) => {
+    const userFriend = userFriendsList.find(friend => friend.friendID === userInfo.id);
+    return {
+      id: userInfo.id,
+      name: userInfo.displayName,
+      city: userInfo.city,
+      avatar: userInfo.avatar,
+      skillName: userSkillDocs[i].skillName,
+      skillLevel: userSkillDocs[i].skillLevel,
+      isFriending: userFriend ? true : false
+    };
   });
 
   setSearchedUsers(users);

@@ -3,6 +3,12 @@ import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../Profile';
 
+/**
+ * functional component that displays a user's personal info
+ * of name and city.
+ * @param props userProfile, info from firestore about the user
+ * 
+ */
 export function PersonalInfo(props) {
     const { userProfile } = props;
     const classes = useStyles();
