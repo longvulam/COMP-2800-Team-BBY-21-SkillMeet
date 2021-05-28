@@ -1,3 +1,8 @@
+/**
+ * @author Team21 Bcit 
+ * @version May 2021
+ */
+
 import { useEffect } from "react";
 import { useState } from "react";
 import LoadingSpinner from "../common/LoadingSpinner";
@@ -6,25 +11,30 @@ import ChatRoomCard from "./chatPageComponents/ChatRoomCard";
 import firebase from 'firebase';
 import Grid from '@material-ui/core/Grid';
 
-export default function ChatRooms(props) {
+/**
+ * Functional component built using Material UI components to create a chat-rooms list, 
+ * Uses firestore to retrieve the chat rooms associated with currently logged in user.
+ */
+export default function ChatRoomsList(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [chatRooms, setRooms] = useState([]);
 
+    /** Runs after chat rooms data are loaded */
     async function afterLoaded(newRooms) {
         setRooms(prevValues => [...prevValues, ...newRooms]);
         setIsLoading(false);
     }
 
+    /** Gets user and listen to changes on chat rooms. 
+     * Also zero-out message notification numbers from current user.
+     * Runs only once. */
     useEffect(async () => {
         const user = await waitForCurrentUser();
         subscribeToChanges(user, afterLoaded);
         removeMessageNotifications(user);
     }, []);
 
-    const newRooms = chatRooms.filter(room => !room.hasOwnProperty('recentMessage'));
-    const sortedRooms = chatRooms.filter(room => room.recentMessage)
-        .sort((a, b) => a.recentMessage.timeStamp < b.recentMessage.timeStamp ? 1 : -1);
-    const rooms = [...newRooms, ...sortedRooms];
+    const sortedRooms = getSortedChatrooms(chatRooms);
     return (
         isLoading ? <LoadingSpinner /> :
             <Grid container
@@ -32,8 +42,8 @@ export default function ChatRooms(props) {
                 marginTop:'1em',
             }}
             spacing={1}>
-                {rooms.length === 0 ? EmptyListMessage() :
-                    rooms.map((room, index) =>
+                {sortedRooms.length === 0 ? EmptyListMessage() :
+                    sortedRooms.map((room, index) =>
                         <Grid Item
                         item xs={12}>
                         <ChatRoomCard
@@ -46,6 +56,15 @@ export default function ChatRooms(props) {
     );
 }
 
+/** Creates a new array of sorted rooms */
+function getSortedChatrooms(chatRooms) {
+    const newRooms = chatRooms.filter(room => !room.hasOwnProperty('recentMessage'));
+    const sortedRooms = chatRooms.filter(room => room.recentMessage)
+        .sort((a, b) => a.recentMessage.timeStamp < b.recentMessage.timeStamp ? 1 : -1);
+    return [ ...newRooms, ...sortedRooms ];
+}
+
+/** Message stateless component for empty chat rooms list. */
 function EmptyListMessage() {
 
     /** @type {CSSStyleDeclaration} */
@@ -63,6 +82,7 @@ function EmptyListMessage() {
     );
 }
 
+/** Subscribes to chat room and recent message changes. */
 async function subscribeToChanges(user, callback) {
     db.collection('users/' + user.uid + '/chatrooms')
         .onSnapshot(updateChatrooms);
