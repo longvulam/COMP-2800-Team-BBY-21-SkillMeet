@@ -152,7 +152,7 @@ export default function EditProfile() {
         });
     }
 
-    /** sets setErrorOpen to true which displas the error snackbar  */
+    /** sets setErrorOpen to true which displays the error snackbar  */
     function onInvalid() {
         setErrorOpen(true);
     }
@@ -316,15 +316,14 @@ export default function EditProfile() {
  * it listed as a skill.
  */
 function SkillsList(props) {
-    const { userSkills, setUserProfile } = props;
-    return userSkills.filter(skill => !skill.isDeleted)
+    return props.userSkills.filter(skill => !skill.isDeleted)
         .map((skill, index) =>
             <EditableSkill
                 key={index}
                 index={index}
                 data={skill}
-                skillsList={userSkills}
-                changeState={setUserProfile}
+                skillsList={props.userSkills}
+                changeState={props.setUserProfile}
             />
         );
 }
