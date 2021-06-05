@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { skillLevelOptions, skillOptions } from '../../dataStores/skills';
 import { Grid } from '@material-ui/core';
 
+skillOptions.push("");
+skillLevelOptions.push("");
 
 const useStyles = makeStyles((theme) => ({
     skillAutocomplete: {
@@ -38,44 +40,36 @@ const useStyles = makeStyles((theme) => ({
 
 /**
  * functional component that displays the current skills associated with
- * a user, and allows them to be editted.  Skills are save by updating firstore data.
+ * a user, and allows them to be edited.  Skills are save by updating firestore data.
  * @param props data, index, skillsList, and changeState
  * @returns 
  */
 export default function EditableSkill(props) {
-    const { data, index, skillsList, changeState } = props;
+    const { data, index, skillsList, changeState: updateProfile } = props;
     const classes = useStyles();
 
     async function updateSkillsList(newValue, fieldName) {
 
-        const thisSkill = await getThisSkill();
+        const thisSkill = skillsList[index];
 
         if (!thisSkill) return;
 
         thisSkill[fieldName] = newValue;
-        changeState(previousValues => {
-            return {
-                ...previousValues,
+        updateProfile(state => ({
+                ...state,
                 skills: skillsList
-            }
-        });
-    }
-
-    /** gets current skill in the input based on it's id */
-    async function getThisSkill() {
-        let thisSkill = skillsList.find(skill => skill.id === data.id);
-        thisSkill = thisSkill ? thisSkill : skillsList.find(skill => !skill.id);
-        return thisSkill;
+            })
+        );
     }
 
     /** deletes a skill based on comparing to the input to the previous skill */
     async function deleteSkill(event) {
-        const thisSkill = await getThisSkill();
+        const thisSkill = skillsList[index];
 
         if (!thisSkill) return;
 
         thisSkill.isDeleted = true;
-        changeState(previousValues => {
+        updateProfile(previousValues => {
             return {
                 ...previousValues,
                 skills: skillsList
