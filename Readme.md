@@ -9,7 +9,7 @@
 |    Owen    | Arando    | A01034466      |
 |  Arunab    | Singh     | A01255166      |
 
-## Project Hiearchy
+## Project Hierarchy
 Content of the project folder:
 
 ```
@@ -39,8 +39,8 @@ To join the development please follow the following steps closely.
 
 ### Contribution Prerequisites
 - You have Node installed at v8.0.0+
-- You are familiar with React and it's lifecycles and hooks.
-- You are familiar with Git.
+- You are familiar with React and it's life-cycles and hooks.
+- You have installed and is familiar with Git.
 
 ### Setting up the environment for development
 **Here are the steps to join the development:**
