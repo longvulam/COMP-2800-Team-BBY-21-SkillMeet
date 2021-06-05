@@ -117,6 +117,16 @@ function Login() {
             });
     }
 
+    const tryLogin = (event) => {
+        if (event.keyCode !== 13) return;
+        handleLogin();
+    }
+
+    const trySignUp = (event) => {
+        if (event.keyCode !== 13) return;
+        handleSignup();
+    }
+
     /**
      * Handles the Sign Up authentication for the app.
      * First, clears the errors that may be displayed previously, then
@@ -209,6 +219,7 @@ function Login() {
                             autoFocus
                             required
                             value={email}
+                            onKeyDown={tryLogin}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <ErrorMessage errorValue={emailError} id="emailError" />
@@ -220,6 +231,7 @@ function Login() {
                             required
                             className="userPassword"
                             value={password}
+                            onKeyDown={tryLogin}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <ErrorMessage errorValue={passwordError} id="passwordError" />
@@ -250,6 +262,7 @@ function Login() {
                             autoFocus
                             required
                             value={email}
+                            onKeyDown={trySignUp}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <ErrorMessage errorValue={emailError} id="emailError" />
@@ -261,6 +274,7 @@ function Login() {
                             className="otherInputs"
                             required
                             value={firstName}
+                            onKeyDown={trySignUp}
                             onChange={(e) => setFirstName(e.target.value)}
                         />
                         <ErrorMessage errorValue={firstNameError} id="firstNameError" />
@@ -272,6 +286,7 @@ function Login() {
                             required
                             className="otherInputs"
                             value={lastName}
+                            onKeyDown={trySignUp}
                             onChange={(e) => setLastName(e.target.value)}
                         />
                         <ErrorMessage errorValue={lastNameError} id="lastNameError" />
@@ -283,6 +298,7 @@ function Login() {
                             required
                             className="userPassword"
                             value={password}
+                            onKeyDown={trySignUp}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <ErrorMessage errorValue={passwordError} id="passwordError" />
