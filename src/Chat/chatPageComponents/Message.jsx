@@ -91,18 +91,22 @@ const Message = (props) => {
         }
     }, [])
     
+    const avatarStyle = from === auth.currentUser.uid ? classes.currentUserAvatarStyle : classes.otherUserAvatarStyle;
     return (
         <Fragment >
              <Typography variant="subtitle2" className={from === auth.currentUser.uid ? classes.currentUserDateStyle : classes.otherUserDateStyle}>{dateStr}</Typography>
             <div className={from === auth.currentUser.uid ? classes.currentUserMessageWrapper : classes.otherUserMessageWrapper}>
-                    <Avatar className={from === auth.currentUser.uid ? classes.currentUserAvatarStyle : classes.otherUserAvatarStyle}
-                    src={avatar} alt='Pic' />
-                <Paper className={from === auth.currentUser.uid ? classes.currentUserStyle : classes.otherUserStyle}>
-                  <Typography 
-                  variant="body1"
-                  className={from === auth.currentUser.uid ? classes.currentUserMsg : classes.otherUserMsg}>
+                    <Avatar 
+                        className={avatarStyle}
+                        src={avatar} alt='Pic' />
+                <Paper 
+                    id={"msg_" + index} 
+                    className={avatarStyle}>
+                    <Typography 
+                        variant="body1"
+                        className={avatarStyle}>
                     {message}
-                  </Typography>
+                    </Typography>
                 </Paper>
             </div>
         </Fragment>
