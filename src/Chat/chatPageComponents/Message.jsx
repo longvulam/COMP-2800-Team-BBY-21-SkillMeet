@@ -3,7 +3,7 @@
  * @version May 2021
  */
 
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { auth } from "../../firebase";
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Paper } from '@material-ui/core';
@@ -78,12 +78,19 @@ function format(date) {
  * Functional component built using Material UI components to create a message.
  */
 const Message = (props) => {
-    const { content, from, timeStamp, avatar } = props;
+    const { content, from, timeStamp, avatar, index, lastIndex } = props;
     const classes = useStyles();
 
     const dateStr = format(new Date(timeStamp));
     const message = content.replace("\\n", `
     `);
+
+    useEffect(()=> {
+        if (index == lastIndex) {
+            window.location.href = "#msg_" + lastIndex;
+        }
+    }, [])
+    
     return (
         <Fragment >
              <Typography variant="subtitle2" className={from === auth.currentUser.uid ? classes.currentUserDateStyle : classes.otherUserDateStyle}>{dateStr}</Typography>

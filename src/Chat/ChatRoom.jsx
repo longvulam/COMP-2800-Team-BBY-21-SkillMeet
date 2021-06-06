@@ -72,9 +72,11 @@ export default function ChatRoom(props) {
         history.go(jumps);
     }
 
+    let lastIndex = messages.length - 1;
+
     return (
         isLoading ? <LoadingSpinner /> :
-            <div className={classes.pageContainer}>
+            <div >
 
                 <div className={classes.chatRoomHeader}>
                     <Typography variant="h4" 
@@ -95,10 +97,12 @@ export default function ChatRoom(props) {
                     {messages.map((msg, index) =>
                         <Message
                             key={index}
+                            index={index}
                             content={msg.content}
                             from={msg.from}
                             timeStamp={msg.timeStamp}
                             avatar={msg.from === auth.currentUser.uid ? currentUserAvatar : otherUserAvatar}
+                            lastIndex={lastIndex}
                         />)}
                 </div>
                 <Paper 
@@ -132,18 +136,13 @@ const useStyles = makeStyles((theme) => ({
         overflowX: 'hidden',
         flex: 1,
         paddingBottom:'2em',
-    },
-    pageContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        height: '100vh',
+        maxHeight: 'calc(100vh - 10.8505em)'
     },
     messagePaper: {
         display: 'flex',
         alignItems: 'center',
         justifyContent:'space-between',
-        minHeight:'4.5em',
+        maxHeight:'4.5em',
     },
     sendButton: {
         color: 'white',
@@ -159,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '0.5em',
         overflowY:'scroll',
         verticalAlign: 'textBottom',
-        minHeight:'3em',
+        maxHeight:'3em',
         marginTop:'1em',
         marginBottom:'1em',
         padding:'0.5em',
