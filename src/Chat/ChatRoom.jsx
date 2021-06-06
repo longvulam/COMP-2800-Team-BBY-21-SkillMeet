@@ -66,6 +66,12 @@ export default function ChatRoom(props) {
         }, {merge: true});
     }
 
+    const goBack = (event) => {
+        const hash = window.location.hash;
+        const jumps = hash ? -2 : -1;
+        history.go(jumps);
+    }
+
     return (
         isLoading ? <LoadingSpinner /> :
             <div className={classes.pageContainer}>
@@ -80,7 +86,7 @@ export default function ChatRoom(props) {
                         className={classes.backButton} 
                         variant="contained"
                         color="secondary"
-                        onClick={(event) => history.goBack()}>
+                        onClick={goBack}>
                             <ArrowBackIcon className={classes.backArrowIcon} />
                     </Button>
                 </div>
