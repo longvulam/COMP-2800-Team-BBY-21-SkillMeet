@@ -13,7 +13,7 @@ export default function LoadingSpinner() {
 
     /** @type {CSSStyleDeclaration} */
     const wrapper = {
-        height: '100vh',
+        height: '98vh',
         width: '100vw',
         display: 'flex',
         justifyContent: 'center',
