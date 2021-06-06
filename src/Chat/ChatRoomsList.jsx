@@ -44,12 +44,11 @@ export default function ChatRoomsList(props) {
             spacing={1}>
                 {sortedRooms.length === 0 ? EmptyListMessage() :
                     sortedRooms.map((room, index) =>
-                        <Grid Item
-                        item xs={12}>
+                        <Grid item xs={12} key={index}>
                         <ChatRoomCard
                             room={room}
                             index={index}
-                            key={index} />
+                             />
                         </Grid>
                     )}
             </Grid>
@@ -115,7 +114,6 @@ async function subscribeToChanges(user, callback) {
                     room.id = change.doc.id;
                     changes.push(room);
                 });
-                console.log("hi");
                 const friendIds = changes.map(change => change.uids.find(uid => uid !== user.uid))
                 const friendsRef = db.collection('users').where(firebase.firestore.FieldPath.documentId(), 'in', friendIds);
                 const friendsData = await friendsRef.get()
@@ -138,7 +136,6 @@ async function subscribeToChanges(user, callback) {
                     }
 
                     uRoom.avatar = friend ? friend.avatar : "";
-                    console.log('hi2' + uRoom);
                 }));
 
                 callback(newRooms);
