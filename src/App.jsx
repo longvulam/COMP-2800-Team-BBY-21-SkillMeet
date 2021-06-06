@@ -7,7 +7,7 @@ function App() {
 
   return (
       <div className="App">
-        <div className = "content" style={styles.content}>
+        <div className = "content">
           <ThemeProvider theme={Theme}>
             <SearchSettingsContext.Provider value={initialState}>
               <Router />
@@ -18,10 +18,5 @@ function App() {
   );
 }
 
-const styles = {
-    content: {
-        height: '100vh',
-    }
-}
 
 export default App;
